@@ -1,0 +1,18 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/CIR/obj
+/CIR/bin
+/CIR/.config
+/.vs
+/CIR/Properties/PublishProfiles
+/CIR.Application/obj
+/CIR.Application/bin
+/CIR.Common/obj
+/CIR.Common/bin
+/CIR.Models/obj
+/CIR.Data/obj
+/CIR.Data/bin
+/CIR.Core/obj
+/CIR.Core/bin
