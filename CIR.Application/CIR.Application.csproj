@@ -7,7 +7,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Services\" />
+    <Folder Include="Services\GlobalConfiguration\" />
+    <Folder Include="Services\Common\" />
+    <Folder Include="Services\Users\" />
   </ItemGroup>
 
   <ItemGroup>

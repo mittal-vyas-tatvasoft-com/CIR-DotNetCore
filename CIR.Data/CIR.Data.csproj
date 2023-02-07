@@ -22,7 +22,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Data\" />
+    <Folder Include="Data\GlobalConfiguration\" />
+    <Folder Include="Data\Common\" />
+    <Folder Include="Data\Users\" />
   </ItemGroup>
 
 </Project>
