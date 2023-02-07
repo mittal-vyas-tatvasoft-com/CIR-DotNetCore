@@ -7,7 +7,7 @@ namespace CIR.Common.Data
     public class CIRDbContext : DbContext
     {
         public CIRDbContext(DbContextOptions<CIRDbContext> options) : base(options) { }
-        
+
     }
 }
 
