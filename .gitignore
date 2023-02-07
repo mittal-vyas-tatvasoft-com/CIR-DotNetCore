@@ -16,3 +16,5 @@
 /CIR.Data/bin
 /CIR.Core/obj
 /CIR.Core/bin
+/CIR.SQL/obj
+/CIR.SQL/bin/Debug/net7.0
