@@ -7,7 +7,17 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Scripts\" />
+    <None Remove="Scripts\CRS.sql" />
+    <None Remove="Scripts\Sprint1_Data.sql" />
+    <None Remove="Scripts\Sprint1_Schema.sql" />
+    <None Remove="Scripts\Sprint1_SP.sql" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="Scripts\CRS.sql" />
+    <Compile Include="Scripts\Sprint1_Data.sql" />
+    <Compile Include="Scripts\Sprint1_Schema.sql" />
+    <Compile Include="Scripts\Sprint1_SP.sql" />
   </ItemGroup>
 
 </Project>
