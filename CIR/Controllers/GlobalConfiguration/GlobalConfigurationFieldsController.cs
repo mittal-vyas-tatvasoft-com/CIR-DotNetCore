@@ -8,13 +8,13 @@ namespace CIR.Controllers.GlobalConfiguration
 	public class GlobalConfigurationFieldsController : ControllerBase
 	{
 		#region PROPERTIES
-		private readonly IGlobalConfigurationFieldsService _globalConfigurationFieldsService;
+		private readonly IGlobalConfigurationFieldsService globalConfigurationFieldsService;
 
 		#endregion
 		#region CONSTRUCTOR
-		public GlobalConfigurationFieldsController(IGlobalConfigurationFieldsService globalConfigurationFieldsService)
+		public GlobalConfigurationFieldsController(IGlobalConfigurationFieldsService iGlobalConfigurationFieldsServices)
 		{
-			_globalConfigurationFieldsService = globalConfigurationFieldsService;
+			globalConfigurationFieldsService = iGlobalConfigurationFieldsServices;
 		}
 		#endregion
 

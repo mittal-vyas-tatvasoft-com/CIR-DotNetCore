@@ -4,11 +4,11 @@ namespace CIR.Application.Services.GlobalConfiguration
 {
 	public class GlobalConfigurationFieldsService : IGlobalConfigurationFieldsService
 	{
-		private readonly IGlobalConfigurationFieldsRepository _globalConfigurationFieldsRepository;
+		private readonly IGlobalConfigurationFieldsRepository globalConfigurationFieldsRepository;
 
-		public GlobalConfigurationFieldsService(IGlobalConfigurationFieldsRepository globalConfigurationFieldsRepository)
+		public GlobalConfigurationFieldsService(IGlobalConfigurationFieldsRepository iGlobalConfigurationFieldsRepository)
 		{
-			_globalConfigurationFieldsRepository = globalConfigurationFieldsRepository;
+			globalConfigurationFieldsRepository = iGlobalConfigurationFieldsRepository;
 		}
 
 	}
