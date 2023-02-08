@@ -19,7 +19,6 @@
 
   <ItemGroup>
     <Folder Include="Entities\GlobalConfiguration\" />
-    <Folder Include="Entities\Users\" />
     <Folder Include="Interfaces\GlobalConfiguration\" />
     <Folder Include="Interfaces\Common\" />
     <Folder Include="Interfaces\Users\" />
