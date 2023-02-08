@@ -1,7 +1,10 @@
+using CIR.Application.Services.Users;
 using CIR.Common.CommonModels;
 using CIR.Common.Data;
 using CIR.Common.EmailGeneration;
 using CIR.Common.Helper;
+using CIR.Core.Interfaces.Users;
+using CIR.Data.Data.Users;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -59,7 +62,8 @@ builder.Services.Configure<ThumbnailModel>(thumbnailCreation);
 builder.Services.AddScoped<EmailGeneration>();
 builder.Services.AddScoped<ThumbnailCreation>();
 builder.Services.AddScoped<CSVExport>();
-
+builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
 
 //allow origin
 builder.Services.AddCors(options => options.AddDefaultPolicy(builder => builder.AllowAnyOrigin()
