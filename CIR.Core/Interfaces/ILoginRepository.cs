@@ -8,8 +8,8 @@ using System.Threading.Tasks;
 
 namespace CIR.Core.Interfaces
 {
- public interface ILoginRepository
+    public interface ILoginRepository
     {
-       
+
     }
 }

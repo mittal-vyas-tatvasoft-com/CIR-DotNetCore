@@ -9,7 +9,11 @@ namespace CIR.Common.Data
     {
         public CIRDbContext(DbContextOptions<CIRDbContext> options) : base(options) { }
 
-        public virtual DbSet<User> Users { get; set; }
+        public DbSet<User> Users
+        {
+            get;
+            set;
+        }
 
     }
 }

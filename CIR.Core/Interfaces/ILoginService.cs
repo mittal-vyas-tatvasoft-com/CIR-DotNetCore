@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CIR.Core.Interfaces
 {
-    internal class ILoginService
+    public interface ILoginService
     {
     }
 }

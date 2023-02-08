@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CIR.Application.Services
 {
-    internal class LoginService
+    public class LoginService
     {
     }
 }
