@@ -9,6 +9,8 @@ namespace CIR.Common.Data
     {
         public CIRDbContext(DbContextOptions<CIRDbContext> options) : base(options) { }
         public DbSet<GlobalConfigurationCutOffTime> GlobalConfigurationCutOffTimes { get; set; }
+        public DbSet<Holidays> Holidays { get; set; }
+
 
     }
 }
