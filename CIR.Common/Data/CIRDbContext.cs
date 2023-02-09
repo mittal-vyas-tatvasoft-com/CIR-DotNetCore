@@ -59,6 +59,8 @@ namespace CIR.Common.Data
             set;
         }
 
+        public virtual DbSet<GlobalConfigurationEmails> GlobalConfigurationEmails { get; set; }
+
     }
 }
 
