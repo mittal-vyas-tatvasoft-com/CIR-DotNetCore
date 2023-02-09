@@ -1,5 +1,6 @@
 ﻿
 using CIR.Core.Entities.GlobalConfiguration;
+using CIR.Core.Entities.Users;
 using Microsoft.EntityFrameworkCore;
 
 
