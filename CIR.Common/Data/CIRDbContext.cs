@@ -1,4 +1,10 @@
-﻿namespace CIR.Common.Data
+﻿
+using CIR.Core.Entities.GlobalConfiguration;
+using CIR.Core.Entities.Users;
+using Microsoft.EntityFrameworkCore;
+
+
+namespace CIR.Common.Data
 {
     public class CIRDbContext : DbContext
     {
@@ -37,6 +43,22 @@
             modelBuilder.Entity<RoleGrouping2Permission>().HasKey(x => new { x.RoleGroupingId, x.PermissionEnumId });
             modelBuilder.Entity<RoleGrouping2Culture>().HasKey(x => new { x.RoleGroupingId, x.CultureLcid });
         }
+        public DbSet<Currency> Currencies
+        {
+            get;
+            set;
+        }
+        public DbSet<CountryCode> CountryCodes
+        {
+            get;
+            set;
+        }
+        public DbSet<GlobalConfigurationCurrency> GlobalConfigurationCurrencies
+        {
+            get;
+            set;
+        }
+
         public virtual DbSet<GlobalConfigurationEmails> GlobalConfigurationEmails { get; set; }
 
     }
