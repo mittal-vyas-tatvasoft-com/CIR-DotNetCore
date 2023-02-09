@@ -1,9 +1,4 @@
-﻿
-using CIR.Core.Entities.Users;
-using Microsoft.EntityFrameworkCore;
-
-
-namespace CIR.Common.Data
+﻿namespace CIR.Common.Data
 {
     public class CIRDbContext : DbContext
     {
@@ -23,6 +18,8 @@ namespace CIR.Common.Data
             get;
             set;
         }
+        public DbSet<Holidays> Holidays { get; set; }
+
 
         public DbSet<RoleGrouping2Permission> RoleGrouping2Permissions
         {

@@ -28,6 +28,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Controllers\Users\" />
     <Folder Include="Controllers\GlobalConfiguration\" />
     <Folder Include="Controllers\Common\" />
   </ItemGroup>
