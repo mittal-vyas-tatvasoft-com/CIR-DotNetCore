@@ -27,31 +27,32 @@ namespace CIR.Data.Data.GlobalConfiguration
         {
             try
             {
-                if (cultureId < 1)
+                if (cultureId > 0)
                 {
-                    return new JsonResult(new CustomResponse<string>() { StatusCode = (int)HttpStatusCodesAndMessages.HttpStatus.BadRequest, Result = false, Message = HttpStatusCodesAndMessages.HttpStatus.BadRequest.GetDescriptionAttribute() });
-                }
-                List<GlobalConfigurationEmails> globalConfigurationEmailsList;
+                    List<GlobalConfigurationEmails> globalConfigurationEmailsList;
 
-                using (DbConnection dbConnection = new DbConnection())
-                {
-                    using (var connection = dbConnection.Connection)
+                    using (DbConnection dbConnection = new DbConnection())
                     {
-                        DynamicParameters parameters = new DynamicParameters();
-                        parameters.Add("@CultureId", cultureId);
-                        globalConfigurationEmailsList = connection.Query<GlobalConfigurationEmails>("spGetGlobalConfigurationEmailsByCultureId", parameters, commandType: CommandType.StoredProcedure).ToList();
+                        using (var connection = dbConnection.Connection)
+                        {
+                            DynamicParameters parameters = new DynamicParameters();
+                            parameters.Add("@CultureId", cultureId);
+                            globalConfigurationEmailsList = connection.Query<GlobalConfigurationEmails>("spGetGlobalConfigurationEmailsByCultureId", parameters, commandType: CommandType.StoredProcedure).ToList();
+                        }
                     }
-                }
 
-                if (globalConfigurationEmailsList.Count == 0)
-                {
-                    return new JsonResult(new CustomResponse<List<GlobalConfigurationEmails>>() { StatusCode = (int)HttpStatusCodesAndMessages.HttpStatus.NotFound, Result = false, Message = HttpStatusCodesAndMessages.HttpStatus.NotFound.GetDescriptionAttribute() });
+                    if (globalConfigurationEmailsList.Count == 0)
+                    {
+                        return new JsonResult(new CustomResponse<List<GlobalConfigurationEmails>>() { StatusCode = (int)HttpStatusCodesAndMessages.HttpStatus.NotFound, Result = false, Message = String.Format(SystemMessages.msgDataNotExists, "GlobalConfiguration Emails") });
+                    }
+
+                    return new JsonResult(new CustomResponse<List<GlobalConfigurationEmails>>() { StatusCode = (int)HttpStatusCodesAndMessages.HttpStatus.Success, Result = true, Message = HttpStatusCodesAndMessages.HttpStatus.Success.GetDescriptionAttribute(), Data = globalConfigurationEmailsList });
                 }
-                return new JsonResult(new CustomResponse<List<GlobalConfigurationEmails>>() { StatusCode = (int)HttpStatusCodesAndMessages.HttpStatus.Success, Result = true, Message = HttpStatusCodesAndMessages.HttpStatus.Success.GetDescriptionAttribute(), Data = globalConfigurationEmailsList });
+                return new JsonResult(new CustomResponse<string>() { StatusCode = (int)HttpStatusCodesAndMessages.HttpStatus.BadRequest, Result = false, Message = SystemMessages.msgBadRequest });
             }
-            catch (Exception ex)
+            catch
             {
-                return new JsonResult(new CustomResponse<Exception>() { StatusCode = (int)HttpStatusCodesAndMessages.HttpStatus.InternalServerError, Result = false, Message = SystemMessages.msgBadRequest });
+                return new JsonResult(new CustomResponse<Exception>() { StatusCode = (int)HttpStatusCodesAndMessages.HttpStatus.InternalServerError, Result = false, Message = SystemMessages.msgSomethingWentWrong });
             }
         }
         /// <summary>
@@ -64,35 +65,35 @@ namespace CIR.Data.Data.GlobalConfiguration
             try
             {
 
-                if (globalConfigurationEmails.Any(x => x.CultureId == 0 && x.FieldTypeId == 0))
-                {
-                    return new JsonResult(new CustomResponse<string>() { StatusCode = (int)HttpStatusCodesAndMessages.HttpStatus.BadRequest, Result = false, Message = HttpStatusCodesAndMessages.HttpStatus.BadRequest.GetDescriptionAttribute() });
-                }
-                string? result = "";
-                using (DbConnection dbConnection = new DbConnection())
+                if (globalConfigurationEmails.Any(x => x.CultureId != 0 && x.FieldTypeId != 0))
                 {
 
-                    using (var connection = dbConnection.Connection)
+                    string? result = "";
+                    using (DbConnection dbConnection = new DbConnection())
                     {
-                        foreach (var email in globalConfigurationEmails)
-                        {
-                            DynamicParameters parameters = new DynamicParameters();
-                            parameters.Add("@FieldTypeId", email.FieldTypeId);
-                            parameters.Add("@CultureId", email.CultureId);
-                            parameters.Add("@Content", email.Content);
-                            parameters.Add("@Subject", email.Subject);
 
-                            result = Convert.ToString(connection.ExecuteScalar("spUpdateGlobalConfigurationEmails", parameters, commandType: CommandType.StoredProcedure));
+                        using (var connection = dbConnection.Connection)
+                        {
+                            foreach (var email in globalConfigurationEmails)
+                            {
+                                DynamicParameters parameters = new DynamicParameters();
+                                parameters.Add("@FieldTypeId", email.FieldTypeId);
+                                parameters.Add("@CultureId", email.CultureId);
+                                parameters.Add("@Content", email.Content);
+                                parameters.Add("@Subject", email.Subject);
+
+                                result = Convert.ToString(connection.ExecuteScalar("spUpdateGlobalConfigurationEmails", parameters, commandType: CommandType.StoredProcedure));
+                            }
                         }
                     }
-                }
-                if (result != "False")
-                {
-                    return new JsonResult(new CustomResponse<string>() { StatusCode = (int)HttpStatusCodesAndMessages.HttpStatus.Success, Result = true, Message = string.Format(SystemMessages.msgDataUpdatedSuccessfully, "GlobalConfiguration Emails") });
+                    if (result != "False")
+                    {
+                        return new JsonResult(new CustomResponse<string>() { StatusCode = (int)HttpStatusCodesAndMessages.HttpStatus.Success, Result = true, Message = string.Format(SystemMessages.msgDataSavedSuccessfully, "GlobalConfiguration Emails") });
+                    }
                 }
                 return new JsonResult(new CustomResponse<string>() { StatusCode = (int)HttpStatusCodesAndMessages.HttpStatus.UnprocessableEntity, Result = false, Message = SystemMessages.msgBadRequest });
             }
-            catch (Exception ex)
+            catch
             {
                 return new JsonResult(new CustomResponse<Exception>() { StatusCode = (int)HttpStatusCodesAndMessages.HttpStatus.InternalServerError, Result = false, Message = SystemMessages.msgSomethingWentWrong});
             }
