@@ -6,14 +6,16 @@ namespace CIR.Data.Data.GlobalConfiguration
 	public class GlobalConfigurationFieldsRepository : IGlobalConfigurationFieldsRepository
 	{
 		#region PROPERTIES
-		private readonly CIRDbContext _cIRDbContext;
+		private readonly CIRDbContext cIRDbContext;
 		#endregion
 
 		#region CONSTRUCTOR
-		public GlobalConfigurationFieldsRepository(CIRDbContext cIRDbContext)
+		public GlobalConfigurationFieldsRepository(CIRDbContext context)
 		{
-			_cIRDbContext = cIRDbContext;
+			cIRDbContext = context ??
+			   throw new ArgumentNullException(nameof(context));
 		}
+
 		#endregion
 
 		#region METHODS
