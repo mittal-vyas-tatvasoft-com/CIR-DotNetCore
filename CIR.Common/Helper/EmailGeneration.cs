@@ -8,10 +8,10 @@ namespace CIR.Common.Helper
 {
 	public class EmailGeneration
 	{
-		private readonly EmailModel _emailModel;
-		public EmailGeneration(IOptions<EmailModel> emailModel)
+		private readonly EmailModel emailModel;
+		public EmailGeneration(IOptions<EmailModel> mailmodel)
 		{
-			_emailModel = emailModel.Value;
+			emailModel = mailmodel.Value;
 
 		}
 
@@ -19,7 +19,7 @@ namespace CIR.Common.Helper
 		{
 			try
 			{
-				string fromEmail = _emailModel.FromEmail;
+				string fromEmail = emailModel.FromEmail;
 				MailMessage mailMessage = new MailMessage
 				{
 					From = new MailAddress(fromEmail)
@@ -36,12 +36,12 @@ namespace CIR.Common.Helper
 					UseDefaultCredentials = false
 				};
 
-				NetworkCredential networkCredential = new NetworkCredential(fromEmail, _emailModel.Password);
+				NetworkCredential networkCredential = new NetworkCredential(fromEmail, emailModel.Password);
 				smtpClient.Credentials = networkCredential;
 
-				smtpClient.EnableSsl = _emailModel.Enablessl;
-				smtpClient.Port = _emailModel.port;
-				smtpClient.Host = _emailModel.Host;
+				smtpClient.EnableSsl = emailModel.Enablessl;
+				smtpClient.Port = emailModel.port;
+				smtpClient.Host = emailModel.Host;
 				smtpClient.Send(mailMessage);
 			}
 			catch (Exception)
