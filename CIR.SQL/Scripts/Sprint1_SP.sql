@@ -568,3 +568,56 @@ GO
 -- spGetUserDataForLogin End
 
 --------------------------------------------------------------------------------- Login End ----------------------------------------------------------------------------------------
+
+/****** Object:  StoredProcedure [dbo].[spCreateOrUpdateGlobalConfigurationFonts]    Script Date: 07-02-2023 18:39:59 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE PROCEDURE [dbo].[spCreateOrUpdateGlobalConfigurationFonts]
+(
+	@Id bigint,
+	@Name nvarchar(255),
+	@FontFamily nvarchar(255),
+	@FontFileName nvarchar(1024),
+	@IsDefault bit,
+	@Enabled bit
+)
+AS
+BEGIN
+	IF @Id = 0
+		BEGIN
+		  Insert into GlobalConfigurationFonts(Name,FontFamily,FontFileName,IsDefault,Enabled)
+		  values(@Name,@FontFamily,@FontFileName,@IsDefault,@Enabled)
+		END
+
+	ELSE IF @Id > 0
+		BEGIN
+			Update GlobalConfigurationFonts set
+			Name = @Name,
+			FontFamily = @FontFamily,
+			FontFileName = @FontFileName,
+			IsDefault = @IsDefault,
+			Enabled = @Enabled
+			where Id = @Id
+		END
+
+END
+GO
+
+/****** Object:  StoredProcedure [dbo].[spGetGlobalConfigurationFonts]    Script Date: 07-02-2023 18:05:44 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE PROCEDURE [dbo].[spGetGlobalConfigurationFonts]
+AS
+BEGIN
+	select * from GlobalConfigurationFonts
+END
+
+GO
