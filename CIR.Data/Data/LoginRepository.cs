@@ -44,7 +44,7 @@ namespace CIR.Data.Data
                 using (var connection = dbConnection.Connection)
                 {
                     DynamicParameters parameters = new DynamicParameters();
-                    //parameters.Add("@userName", model.UserName);
+                    parameters.Add("@userName", model.UserName);
                     parameters.Add("@password", model.Password);
                     userResult = await Task.FromResult(connection.Query<User>("spLogin", parameters, commandType: CommandType.StoredProcedure).FirstOrDefault());
 
