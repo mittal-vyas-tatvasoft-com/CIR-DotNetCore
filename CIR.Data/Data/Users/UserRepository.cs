@@ -1,6 +1,7 @@
 ﻿using CIR.Common.Data;
 using CIR.Common.Enums;
 using CIR.Common.Helper;
+using CIR.Common.Helper.EmailTemplates;
 using CIR.Core.Entities.Users;
 using CIR.Core.Interfaces.Users;
 using CIR.Core.ViewModel.Users;
@@ -21,7 +22,7 @@ namespace CIR.Data.Data.Users
 		#region Constructor
 		public UserRepository(CIRDbContext context, EmailGeneration emailService)
 		{
-			cIRDbContext = context;
+			cIRDbContext = context ?? throw new ArgumentNullException(nameof(context));
 			emailGeneration = emailService;
 		}
 		#endregion
@@ -66,20 +67,18 @@ namespace CIR.Data.Data.Users
 		/// <returns> if user exists true else false </returns>
 		public async Task<Boolean> UserExists(string email, long id)
 		{
-			User checkUserExists;
-			if (id == 0)
+			var result = false;
+			using (DbConnection dbConnection = new DbConnection())
 			{
-				checkUserExists = await cIRDbContext.Users.Where(x => x.Email == email).FirstOrDefaultAsync();
+				using (var connection = dbConnection.Connection)
+				{
+					DynamicParameters parameters = new DynamicParameters();
+					parameters.Add("@email", email);
+					parameters.Add("@id", id);
+					result = Convert.ToBoolean(connection.ExecuteScalar("spUserExists", parameters, commandType: CommandType.StoredProcedure));
+				}
 			}
-			else
-			{
-				checkUserExists = await cIRDbContext.Users.Where(x => x.Email == email && x.Id != id).FirstOrDefaultAsync();
-			}
-			if (checkUserExists != null)
-			{
-				return true;
-			}
-			return false;
+			return result;
 		}
 
 		/// <summary>
@@ -92,7 +91,7 @@ namespace CIR.Data.Data.Users
 		{
 			try
 			{
-				string result = "";
+				int result;
 				using (DbConnection dbConnection = new DbConnection())
 				{
 					using (var connection = dbConnection.Connection)
@@ -117,17 +116,21 @@ namespace CIR.Data.Data.Users
 						parameters.Add("@LoginAttempts", user.LoginAttempts);
 						parameters.Add("@CompanyName", user.CompanyName);
 						parameters.Add("@PortalThemeId", user.PortalThemeId);
-						result = Convert.ToString(connection.ExecuteScalar("spAddUpdateUsers", parameters, commandType: CommandType.StoredProcedure));
+						result = await Task.FromResult(connection.Execute("spAddUpdateUsers", parameters, commandType: CommandType.StoredProcedure));
 					}
 				}
-				if (result != null && result == "UserDetail saved successfully.")
+				if (result > 0 && user.Id == 0)
 				{
 					//send user creation mail 
-					string mailSubject = EmailGeneration.AccountCreationSubject();
-					string mailbody = EmailGeneration.UserAccountCreationTemplate(user);
+					string mailSubject = AccountCreationTemplates.AccountCreationSubject();
+					string mailbody = AccountCreationTemplates.UserAccountCreationTemplate(user);
 
 					emailGeneration.SendMail(user.Email, mailSubject, mailbody);
 					return new JsonResult(new CustomResponse<string>() { StatusCode = (int)HttpStatusCodesAndMessages.HttpStatus.Saved, Result = true, Message = string.Format(SystemMessages.msgDataSavedSuccessfully, "Users") });
+				}
+				if (result > 0 && user.Id != 0)
+				{
+					return new JsonResult(new CustomResponse<string>() { StatusCode = (int)HttpStatusCodesAndMessages.HttpStatus.Saved, Result = true, Message = string.Format(SystemMessages.msgDataUpdatedSuccessfully, "Users") });
 				}
 				return new JsonResult(new CustomResponse<string>() { StatusCode = (int)HttpStatusCodesAndMessages.HttpStatus.BadRequest, Result = false, Message = SystemMessages.msgBadRequest });
 			}
@@ -148,7 +151,7 @@ namespace CIR.Data.Data.Users
 			{
 				if (id == 0)
 				{
-					return new JsonResult(new CustomResponse<string>() { StatusCode = (int)HttpStatusCodesAndMessages.HttpStatus.NotFound, Result = false, Message = HttpStatusCodesAndMessages.HttpStatus.NotFound.GetDescriptionAttribute(), Data = SystemMessages.msgInvalidId });
+					return new JsonResult(new CustomResponse<string>() { StatusCode = (int)HttpStatusCodesAndMessages.HttpStatus.NotFound, Result = false, Message = string.Format(SystemMessages.msgInvalidId, "Users") });
 				}
 				var result = 0;
 				using (DbConnection dbConnection = new DbConnection())
