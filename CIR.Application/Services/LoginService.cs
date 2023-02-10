@@ -6,22 +6,22 @@ namespace CIR.Application.Services
 {
     public class LoginService: ILoginService
     {
-        private readonly ILoginRepository _loginRepository;
-        public LoginService(ILoginRepository loginRepository)
+        private readonly ILoginRepository loginRepository;
+        public LoginService(ILoginRepository _loginRepository)
         {
-            _loginRepository = loginRepository;
+            loginRepository = _loginRepository;
         }
         public async Task<IActionResult> Login(LoginModel model)
         {
-            return await _loginRepository.Login(model);
+            return await loginRepository.Login(model);
         }
         public async Task<IActionResult> ForgotPassword(ForgotPasswordModel forgotPasswordModel)
         {
-            return await _loginRepository.ForgotPassword(forgotPasswordModel);
+            return await loginRepository.ForgotPassword(forgotPasswordModel);
         }
         public async Task<IActionResult> ResetPassword(ResetPasswordModel resetPasswordModel)
         {
-            return await _loginRepository.ResetPassword(resetPasswordModel);
+            return await loginRepository.ResetPassword(resetPasswordModel);
         }
     }
 }
