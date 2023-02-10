@@ -420,3 +420,151 @@ BEGIN
 	DELETE FROM RoleGrouping where Id = @GroupId
 END
 END    
+
+----------------------------------------------------------------------------- spLogin Start ---------------------------------------------------------------------------------------
+
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+
+CREATE PROCEDURE [spLogin] (
+	@userName NVARCHAR(50)
+	,@password NVARCHAR(25)
+	)
+AS
+BEGIN
+	SELECT [Id]
+		,[UserName]
+		,[FirstName]
+		,[LastName]
+		,[RoleId]
+	FROM [Users]
+	WHERE [UserName] = @userName
+		AND [Password] = @password
+END
+GO
+
+-- spLogin End
+
+-- spResetLoginAttempts Start
+
+
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+
+CREATE PROCEDURE [dbo].[spResetLoginAttempts] (
+	@userName NVARCHAR(50)
+	,@password NVARCHAR(25)
+	)
+AS
+BEGIN
+	UPDATE Users
+	SET [LoginAttempts] = 0
+	WHERE [UserName] = @userName
+		AND [Password] = @password
+END
+GO
+
+-- spResetLoginAttempts End
+
+-- spResetPassword Start
+
+
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE PROCEDURE [dbo].[spResetPassword]
+(
+@UserName nvarchar(20),
+@Password nvarchar(20),
+@ResetRequired bit
+)
+AS
+BEGIN
+	UPDATE Users SET
+	Password  = @Password,
+	ResetRequired = @ResetRequired
+	WHERE UserName = @UserName
+END
+GO
+
+-- spResetPassword End 
+
+-- spResetRequired Start
+
+
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+
+CREATE PROCEDURE [dbo].[spResetRequired]
+(
+@userId bigint
+)	
+AS
+BEGIN
+	UPDATE Users SET
+	ResetRequired = 1
+	WHERE Id = @userId
+
+END
+GO
+
+-- spResetRequired End
+
+-- spIncrementLoginAttempts Start
+
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+
+CREATE PROCEDURE [dbo].[spIncrementLoginAttempts]
+(
+@userId bigint
+)	
+AS
+BEGIN
+	UPDATE Users SET
+	LoginAttempts = LoginAttempts + 1
+	WHERE Id = @userId
+	END
+GO
+
+-- spIncrementLoginAttempts End
+
+-- spGetUserDataForLogin Start
+
+
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+
+CREATE PROCEDURE [dbo].[spGetUserDataForLogin] (@userName NVARCHAR(50))
+AS
+BEGIN
+	SELECT [Id]
+	,[UserName]
+	,[Password]
+	,[LoginAttempts]
+	,[ResetRequired]
+	FROM [Users]
+	WHERE [UserName] = @userName
+END
+GO
+
+-- spGetUserDataForLogin End
+
+--------------------------------------------------------------------------------- Login End ----------------------------------------------------------------------------------------
