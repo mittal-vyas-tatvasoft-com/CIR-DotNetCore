@@ -37,22 +37,7 @@ CREATE PROCEDURE [dbo].[spGetGlobalConfigurationCurrenciesByCountryId]
 
 AS
 	BEGIN
-		   select globalCurrency.Id,
-		   globalCurrency.CountryId,
-		   globalCurrency.CurrencyId,
-		   globalCurrency.Enabled,
-		   country.CountryName,
-		   currency.CodeName
-
-			from GlobalConfigurationCurrencies globalCurrency
-			inner join CountryCodes country
-			on globalCurrency.CountryId = country.Id
-
-			inner join Currencies currency
-			on globalCurrency.CurrencyId = currency.Id
-
-			where country.Id = @countryId
-
+		   SELECT CountryId, CurrencyId, Enabled FROM GlobalConfigurationCurrencies WHERE CountryId=@countryId;
 	END;
 GO
 
@@ -74,29 +59,23 @@ CREATE PROCEDURE [dbo].[spCreateOrUpdateGlobalConfigurationCurrencies](@Id bigin
   
 AS  
 BEGIN  
- IF (@Id = 0  and not exists(SELECT 1 FROM GlobalConfigurationCurrencies WHERE CountryId = @CountryId and CurrencyId = @CurrencyId))
-  BEGIN  
-   INSERT INTO GlobalConfigurationCurrencies(CountryId,CurrencyId,Enabled)  
-   VALUES (@CountryId,@CurrencyId,@Enabled);  
-  END;  
-
-ELSE IF (exists(select 1 FROM GlobalConfigurationCurrencies WHERE CountryId = @CountryId and CurrencyId = @CurrencyId))
+ IF(exists(SELECT 1 FROM Currencies WHERE Id = @CurrencyId) and exists(SELECT 1 FROM CountryCodes WHERE Id = @CountryId))
 	BEGIN
-		UPDATE GlobalConfigurationCurrencies   
-	   SET CountryId = @CountryId,  
-		CurrencyId = @CurrencyId,  
-		Enabled = @Enabled  
-	   WHERE CountryId = @CountryId and CurrencyId = @CurrencyId;  
+		 IF (not exists(SELECT 1 FROM GlobalConfigurationCurrencies WHERE CountryId = @CountryId and CurrencyId = @CurrencyId))
+			BEGIN  
+			   INSERT INTO GlobalConfigurationCurrencies(CountryId,CurrencyId,Enabled)  
+			   VALUES (@CountryId,@CurrencyId,@Enabled);  
+			END;  
+
+		ELSE 
+			BEGIN
+				UPDATE GlobalConfigurationCurrencies   
+				SET CountryId = @CountryId,  
+				CurrencyId = @CurrencyId,  
+				Enabled = @Enabled  
+				WHERE CountryId = @CountryId and CurrencyId = @CurrencyId;  
+			END;
 	END;
-  
- ELSE IF @Id > 0  
-  BEGIN  
-   UPDATE GlobalConfigurationCurrencies   
-   SET CountryId = @CountryId,  
-    CurrencyId = @CurrencyId,  
-    Enabled = @Enabled  
-   WHERE Id = @Id;  
-  END;  
 END; 
 GO
 
@@ -440,7 +419,4 @@ AS
 BEGIN
 	DELETE FROM RoleGrouping where Id = @GroupId
 END
-END    internal class Sprint1_SP
-    {
-    }
-}
+END    
