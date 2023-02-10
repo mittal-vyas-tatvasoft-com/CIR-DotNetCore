@@ -36,7 +36,7 @@
         public static string msgAccountIsLocked = "Your Account is locked. To Unlock this account contact to Aramex Support team.";
         public static string msgInvalidUserNameOrPassword = "Invalid username or password.";
         public static string msgTokenNotGenerated = "Token not generated.";
-        public static string msgEnterValidUserNameAndEmail = "Please enter valid username and email.";
+        public static string msgEnterValidUserName = "Please enter valid username";
         public static string msgPasswordChangedSuccessfully = "Password Changed Successfully.";
         public static string msgIncorrectOldPassword = "Old Password Is InCorrect.";
         public static string msgInvalidEmailAddress = "Invalid Email Address.";
