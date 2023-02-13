@@ -1,12 +1,15 @@
 using CIR.Application.Services;
+using CIR.Application.Services.Common;
 using CIR.Application.Services.GlobalConfiguration;
 using CIR.Common.CommonModels;
 using CIR.Common.Data;
 using CIR.Common.EmailGeneration;
 using CIR.Common.Helper;
 using CIR.Core.Interfaces;
-using CIR.Data.Data;
+using CIR.Core.Interfaces.Common;
 using CIR.Core.Interfaces.GlobalConfiguration;
+using CIR.Data.Data;
+using CIR.Data.Data.Common;
 using CIR.Data.Data.GlobalConfiguration;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
@@ -72,6 +75,8 @@ builder.Services.AddScoped<IGlobalConfigurationCurrenciesService, GlobalConfigur
 builder.Services.AddScoped<IGlobalConfigurationCurrenciesRepository, GlobalConfigurationCurrenciesRepository>();
 builder.Services.AddScoped<IGlobalConfigurationHolidaysService, GlobalConfigurationHolidaysService>();
 builder.Services.AddScoped<IGlobalConfigurationHolidaysRepository, GlobalConfigurationHolidaysRepository>();
+builder.Services.AddScoped<ICommonRepository, CommonRepository>();
+builder.Services.AddScoped<ICommonService, CommonService>();
 
 
 //allow origin
