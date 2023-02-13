@@ -5,9 +5,9 @@ namespace CIR.Core.Interfaces.GlobalConfiguration
 {
     public interface IGlobalConfigurationHolidaysService
     {
-        public Task<IActionResult> GetGlobalConfigurationHolidayById(long id);
-        public Task<IActionResult> GetAllGlobalConfigurationHolidays(int displayLength, int displayStart, string? sortCol, string? search, int? countryCodeId, int? countryNameId, bool? sortAscending = true);
-        public Task<IActionResult> CreateOrUpdateGlobalConfigurationHoliday(Holidays holiday);
-        public Task<IActionResult> DeleteGlobalConfigurationHoliday(long id);
+        Task<IActionResult> GetGlobalConfigurationHolidayById(long id);
+        Task<IActionResult> GetAllGlobalConfigurationHolidays(int displayLength, int displayStart, string? sortCol, string? search, int? countryCodeId, int? countryNameId, bool? sortAscending = true);
+        Task<IActionResult> CreateOrUpdateGlobalConfigurationHoliday(Holidays holiday);
+        Task<IActionResult> DeleteGlobalConfigurationHoliday(long id);
     }
 }
