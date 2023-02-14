@@ -37,22 +37,7 @@ CREATE PROCEDURE [dbo].[spGetGlobalConfigurationCurrenciesByCountryId]
 
 AS
 	BEGIN
-		   select globalCurrency.Id,
-		   globalCurrency.CountryId,
-		   globalCurrency.CurrencyId,
-		   globalCurrency.Enabled,
-		   country.CountryName,
-		   currency.CodeName
-
-			from GlobalConfigurationCurrencies globalCurrency
-			inner join CountryCodes country
-			on globalCurrency.CountryId = country.Id
-
-			inner join Currencies currency
-			on globalCurrency.CurrencyId = currency.Id
-
-			where country.Id = @countryId
-
+		   SELECT CountryId, CurrencyId, Enabled FROM GlobalConfigurationCurrencies WHERE CountryId=@countryId;
 	END;
 GO
 
@@ -74,29 +59,23 @@ CREATE PROCEDURE [dbo].[spCreateOrUpdateGlobalConfigurationCurrencies](@Id bigin
   
 AS  
 BEGIN  
- IF (@Id = 0  and not exists(SELECT 1 FROM GlobalConfigurationCurrencies WHERE CountryId = @CountryId and CurrencyId = @CurrencyId))
-  BEGIN  
-   INSERT INTO GlobalConfigurationCurrencies(CountryId,CurrencyId,Enabled)  
-   VALUES (@CountryId,@CurrencyId,@Enabled);  
-  END;  
-
-ELSE IF (exists(select 1 FROM GlobalConfigurationCurrencies WHERE CountryId = @CountryId and CurrencyId = @CurrencyId))
+ IF(exists(SELECT 1 FROM Currencies WHERE Id = @CurrencyId) and exists(SELECT 1 FROM CountryCodes WHERE Id = @CountryId))
 	BEGIN
-		UPDATE GlobalConfigurationCurrencies   
-	   SET CountryId = @CountryId,  
-		CurrencyId = @CurrencyId,  
-		Enabled = @Enabled  
-	   WHERE CountryId = @CountryId and CurrencyId = @CurrencyId;  
+		 IF (not exists(SELECT 1 FROM GlobalConfigurationCurrencies WHERE CountryId = @CountryId and CurrencyId = @CurrencyId))
+			BEGIN  
+			   INSERT INTO GlobalConfigurationCurrencies(CountryId,CurrencyId,Enabled)  
+			   VALUES (@CountryId,@CurrencyId,@Enabled);  
+			END;  
+
+		ELSE 
+			BEGIN
+				UPDATE GlobalConfigurationCurrencies   
+				SET CountryId = @CountryId,  
+				CurrencyId = @CurrencyId,  
+				Enabled = @Enabled  
+				WHERE CountryId = @CountryId and CurrencyId = @CurrencyId;  
+			END;
 	END;
-  
- ELSE IF @Id > 0  
-  BEGIN  
-   UPDATE GlobalConfigurationCurrencies   
-   SET CountryId = @CountryId,  
-    CurrencyId = @CurrencyId,  
-    Enabled = @Enabled  
-   WHERE Id = @Id;  
-  END;  
 END; 
 GO
 
@@ -439,6 +418,166 @@ ALTER PROCEDURE [dbo].[spRemoveSection]
 AS
 BEGIN
 	DELETE FROM RoleGrouping where Id = @GroupId
+END
+END    
+
+----------------------------------------------------------------------------- spLogin Start ---------------------------------------------------------------------------------------
+
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+
+CREATE PROCEDURE [spLogin] (
+	@userName NVARCHAR(50)
+	,@password NVARCHAR(25)
+	)
+AS
+BEGIN
+	SELECT [Id]
+		,[UserName]
+		,[FirstName]
+		,[LastName]
+		,[RoleId]
+	FROM [Users]
+	WHERE [UserName] = @userName
+		AND [Password] = @password
+END
+GO
+
+-- spLogin End
+
+-- spResetLoginAttempts Start
+
+
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+
+CREATE PROCEDURE [dbo].[spResetLoginAttempts] (
+	@userName NVARCHAR(50)
+	,@password NVARCHAR(25)
+	)
+AS
+BEGIN
+	UPDATE Users
+	SET [LoginAttempts] = 0
+	WHERE [UserName] = @userName
+		AND [Password] = @password
+END
+GO
+
+-- spResetLoginAttempts End
+
+-- spResetPassword Start
+
+
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE PROCEDURE [dbo].[spResetPassword]
+(
+@UserName nvarchar(20),
+@Password nvarchar(20),
+@ResetRequired bit
+)
+AS
+BEGIN
+	UPDATE Users SET
+	Password  = @Password,
+	ResetRequired = @ResetRequired
+	WHERE UserName = @UserName
+END
+GO
+
+-- spResetPassword End 
+
+-- spResetRequired Start
+
+
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+
+CREATE PROCEDURE [dbo].[spResetRequired]
+(
+@userId bigint
+)	
+AS
+BEGIN
+	UPDATE Users SET
+	ResetRequired = 1
+	WHERE Id = @userId
+
+END
+GO
+
+-- spResetRequired End
+
+-- spIncrementLoginAttempts Start
+
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+
+CREATE PROCEDURE [dbo].[spIncrementLoginAttempts]
+(
+@userId bigint
+)	
+AS
+BEGIN
+	UPDATE Users SET
+	LoginAttempts = LoginAttempts + 1
+	WHERE Id = @userId
+	END
+GO
+
+-- spIncrementLoginAttempts End
+
+-- spGetUserDataForLogin Start
+
+
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+
+CREATE PROCEDURE [dbo].[spGetUserDataForLogin] (@userName NVARCHAR(50))
+AS
+BEGIN
+	SELECT [Id]
+	,[UserName]
+	,[Password]
+	,[LoginAttempts]
+	,[ResetRequired]
+	FROM [Users]
+	WHERE [UserName] = @userName
+END
+GO
+
+-- spGetUserDataForLogin End
+
+--------------------------------------------------------------------------------- Login End ----------------------------------------------------------------------------------------
+
+/****** Object:  StoredProcedure [dbo].[spGetCountries]    Script Date: 13-02-2023 16:26:06 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+ALTER PROCEDURE [dbo].[spGetCountries]
+AS
+BEGIN
+	select * from CountryCodes
 END
 END    internal class Sprint1_SP
     {

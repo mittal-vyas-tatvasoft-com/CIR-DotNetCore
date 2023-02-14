@@ -1,14 +1,3 @@
-using CIR.Application.Services.GlobalConfiguration;
-using CIR.Common.CommonModels;
-using CIR.Common.Data;
-using CIR.Common.EmailGeneration;
-using CIR.Common.Helper;
-using CIR.Core.Interfaces.GlobalConfiguration;
-using CIR.Data.Data.GlobalConfiguration;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
-using Microsoft.OpenApi.Models;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -59,11 +48,20 @@ builder.Services.Configure<EmailModel>(emailGeneration);
 //add thumbnailcreation appsettings
 var thumbnailCreation = builder.Configuration.GetSection("ThumbnailCreation");
 builder.Services.Configure<ThumbnailModel>(thumbnailCreation);
+builder.Services.AddScoped<ILoginService, LoginService>();
+builder.Services.AddScoped<ILoginRepository, LoginRepository>();
+builder.Services.AddScoped<JwtGenerateToken>();
 builder.Services.AddScoped<EmailGeneration>();
 builder.Services.AddScoped<ThumbnailCreation>();
 builder.Services.AddScoped<CSVExport>();
+builder.Services.AddScoped<IGlobalConfigurationCurrenciesService, GlobalConfigurationCurrenciesService>();
+builder.Services.AddScoped<IGlobalConfigurationCurrenciesRepository, GlobalConfigurationCurrenciesRepository>();
 builder.Services.AddScoped<IGlobalConfigurationHolidaysService, GlobalConfigurationHolidaysService>();
 builder.Services.AddScoped<IGlobalConfigurationHolidaysRepository, GlobalConfigurationHolidaysRepository>();
+builder.Services.AddScoped<IGlobalConfigurationEmailsService, GlobalConfigurationEmailsService>();
+builder.Services.AddScoped<IGlobalConfigurationEmailsRepository, GlobalConfigurationEmailsRepository>();
+builder.Services.AddScoped<ICommonRepository, CommonRepository>();
+builder.Services.AddScoped<ICommonService, CommonService>();
 builder.Services.AddScoped<IGlobalConfigurationReasonsService, GlobalConfigurationReasonsService>();
 builder.Services.AddScoped<IGlobalConfigurationReasonsRepository, GlobalConfigurationReasonsRepository>();
 
