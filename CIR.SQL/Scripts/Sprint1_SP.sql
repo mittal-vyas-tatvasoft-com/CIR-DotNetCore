@@ -419,7 +419,7 @@ AS
 BEGIN
 	DELETE FROM Roles where Id = @RoleId
 END
-Begin
+
 	select * from CTE_Holidays CH where  CH.RowNum > @FirstRec and CH.RowNum <= @LastRec order by @SortCol+' '+@SortDirection;
 END
 /****** Object:  StoredProcedure [dbo].[spRemoveSection]    Script Date: 08-02-2023 17:38:52 ******/
@@ -440,6 +440,10 @@ AS
 BEGIN
 	DELETE FROM RoleGrouping where Id = @GroupId
 END
+END    internal class Sprint1_SP
+    {
+    }
+}
 Go
 -- =============================================
 -- Author:		<Bansari Bhatt>
