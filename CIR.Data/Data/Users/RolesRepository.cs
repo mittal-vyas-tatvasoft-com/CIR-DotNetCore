@@ -146,7 +146,7 @@ namespace CIR.Data.Data.Users
                             {
                                 Name = Enum.GetName(typeof(RolePriviledgesEnums), enumValue),
                                 DisplayName = ((RolePriviledgesEnums)enumValue).GetDescriptionAttribute(),
-                                Value = enumValue
+                                Id = enumValue
                             });
                         }
                     }

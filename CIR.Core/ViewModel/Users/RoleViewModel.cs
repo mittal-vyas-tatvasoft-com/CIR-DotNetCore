@@ -22,6 +22,6 @@
     {
         public string Name { get; set; }
         public string DisplayName { get; set; }
-        public long Value { get; set; }
+        public long Id { get; set; }
     }
 }
