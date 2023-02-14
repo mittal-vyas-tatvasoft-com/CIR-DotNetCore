@@ -22,7 +22,6 @@
     <Folder Include="Entities\GlobalConfiguration\" />
     <Folder Include="Entities\GlobalConfiguration\" />
     <Folder Include="Interfaces\GlobalConfiguration\" />
-    <Folder Include="Interfaces\Common\" />
     <Folder Include="Interfaces\Users\" />
     <Folder Include="ViewModel\Users\" />
     <Folder Include="ViewModel\GlobalConfiguration\" />
