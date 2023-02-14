@@ -568,3 +568,14 @@ GO
 -- spGetUserDataForLogin End
 
 --------------------------------------------------------------------------------- Login End ----------------------------------------------------------------------------------------
+
+/****** Object:  StoredProcedure [dbo].[spGetCountries]    Script Date: 13-02-2023 16:26:06 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+ALTER PROCEDURE [dbo].[spGetCountries]
+AS
+BEGIN
+	select * from CountryCodes
+END

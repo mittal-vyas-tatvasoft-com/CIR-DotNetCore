@@ -1,4 +1,6 @@
-﻿using System;
+﻿using CIR.Core.Entities.GlobalConfiguration;
+using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,5 +10,7 @@ namespace CIR.Core.Interfaces.GlobalConfiguration
 {
     public interface IGlobalConfigurationEmailsService
     {
+        Task<IActionResult> CreateOrUpdateGlobalConfigurationEmails(List<GlobalConfigurationEmails> globalConfigurationEmails);
+        Task<IActionResult> GetGlobalConfigurationEmailsDataList(int cultureId);
     }
 }
