@@ -244,7 +244,7 @@ BEGIN
                  Or H.[Description] like '%' + @Search + '%'                 
 				 Or C.CountryName like '%' + @Search + '%'
 				 Or C.Code like '%' + @Search + '%')
-)
+) 
 
 /****** Object:  StoredProcedure [dbo].[spGetAllRoles]    Script Date: 08-02-2023 17:34:50 ******/
 SET ANSI_NULLS ON
@@ -419,7 +419,7 @@ AS
 BEGIN
 	DELETE FROM Roles where Id = @RoleId
 END
-
+Begin
 	select * from CTE_Holidays CH where  CH.RowNum > @FirstRec and CH.RowNum <= @LastRec order by @SortCol+' '+@SortDirection;
 END
 /****** Object:  StoredProcedure [dbo].[spRemoveSection]    Script Date: 08-02-2023 17:38:52 ******/
@@ -440,7 +440,41 @@ AS
 BEGIN
 	DELETE FROM RoleGrouping where Id = @GroupId
 END
-END    internal class Sprint1_SP
-    {
-    }
-}
+Go
+-- =============================================
+-- Author:		<Bansari Bhatt>
+-- Create date:  Script Date: 09-02-2023 12:24:45
+-- Description:	<Description,,>
+-- =============================================
+CREATE PROCEDURE spGetGlobalConfigurationReasons  
+AS  
+BEGIN  
+ select * from GlobalConfigurationReasons  
+END
+Go;
+CREATE PROCEDURE spCreateOrUpdateGlobalConfigurationReasons(@Id bigint,    
+               @Type smallint,    
+               @Enabled bit,    
+               @Content nvarchar(255))    
+AS    
+BEGIN    
+ IF @Id = 0    
+  BEGIN    
+   INSERT INTO GlobalConfigurationReasons(Type,Enabled,Content)    
+   VALUES (@Type,@Enabled,@Content)    
+  END    
+    
+ IF @Id > 0    
+  BEGIN    
+   UPDATE GlobalConfigurationReasons     
+   SET Type = @Type,    
+    Enabled = @Enabled,    
+    Content = @Content    
+   WHERE Id = @Id   
+     
+   Update Portal2GlobalConfigurationReasons  
+   Set  Enabled = @Enabled,  
+  ContentOverride = @Content  
+  Where GlobalConfigurationReasonId = @Id  
+  END    
+END ;
