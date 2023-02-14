@@ -22,8 +22,4 @@
     <ProjectReference Include="..\CIR.Core\CIR.Core.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Data\Common\" />
-  </ItemGroup>
-
 </Project>
