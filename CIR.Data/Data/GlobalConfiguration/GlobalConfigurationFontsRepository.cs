@@ -13,13 +13,13 @@ namespace CIR.Data.Data.GlobalConfiguration
 	public class GlobalConfigurationFontsRepository : ControllerBase, IGlobalConfigurationFontsRepository
 	{
 		#region PROPERTIES
-		private readonly CIRDbContext CIRDBContext;
+		private readonly CIRDbContext cIRDBContext;
 		#endregion
 
 		#region CONSTRUCTOR
 		public GlobalConfigurationFontsRepository(CIRDbContext context)
 		{
-			CIRDBContext = context ??
+            cIRDBContext = context ??
 				throw new ArgumentNullException(nameof(context));
 		}
 		#endregion
@@ -39,13 +39,14 @@ namespace CIR.Data.Data.GlobalConfiguration
 				{
 					using (var connection = dbConnection.Connection)
 					{
-						globalConfigurationFontsList = connection.Query<GlobalConfigurationFonts>("spGetGlobalConfigurationFonts", null, commandType: CommandType.StoredProcedure).ToList();
+						globalConfigurationFontsList = await Task.FromResult(connection.Query<GlobalConfigurationFonts>("spGetGlobalConfigurationFonts", null, commandType: CommandType.StoredProcedure).ToList());
+                        
 					}
 				}
 
 				return new JsonResult(new CustomResponse<List<GlobalConfigurationFonts>>() { StatusCode = (int)HttpStatusCodesAndMessages.HttpStatus.Success, Result = true, Message = HttpStatusCodesAndMessages.HttpStatus.Success.GetDescriptionAttribute(), Data = globalConfigurationFontsList });
 			}
-			catch (Exception ex)
+			catch
 			{
                 return new JsonResult(new CustomResponse<Exception>() { StatusCode = (int)HttpStatusCodesAndMessages.HttpStatus.InternalServerError, Result = false, Message = SystemMessages.msgSomethingWentWrong });
             }
@@ -63,7 +64,7 @@ namespace CIR.Data.Data.GlobalConfiguration
             {
                 if (globalConfigurationFont.Name == string.Empty)
                 {
-                    return new JsonResult(new CustomResponse<string>() { StatusCode = (int)HttpStatusCodesAndMessages.HttpStatus.BadRequest, Result = false, Message = HttpStatusCodesAndMessages.HttpStatus.BadRequest.GetDescriptionAttribute(), Data = SystemMessages.msgEnterValidData });
+                    return new JsonResult(new CustomResponse<string>() { StatusCode = (int)HttpStatusCodesAndMessages.HttpStatus.BadRequest, Result = false, Message = SystemMessages.msgEnterValidData });
                 }
                 if (globalConfigurationFont != null)
                 {
@@ -80,7 +81,7 @@ namespace CIR.Data.Data.GlobalConfiguration
                             parameters.Add("@IsDefault", globalConfigurationFont.IsDefault);
                             parameters.Add("@Enabled", globalConfigurationFont.Enabled);
 
-                            result = connection.Execute("spCreateOrUpdateGlobalConfigurationFonts", parameters, commandType: CommandType.StoredProcedure);
+                            result = await Task.FromResult(connection.Execute("spCreateOrUpdateGlobalConfigurationFonts", parameters, commandType: CommandType.StoredProcedure));
                         }
                     }
                     if (result != 0)
@@ -89,9 +90,9 @@ namespace CIR.Data.Data.GlobalConfiguration
                     }
                     return new JsonResult(new CustomResponse<Exception>() { StatusCode = (int)HttpStatusCodesAndMessages.HttpStatus.UnprocessableEntity, Result = false, Message = HttpStatusCodesAndMessages.HttpStatus.UnprocessableEntity.GetDescriptionAttribute() });
                 }
-                return new JsonResult(new CustomResponse<string>() { StatusCode = (int)HttpStatusCodesAndMessages.HttpStatus.BadRequest, Result = false, Message = HttpStatusCodesAndMessages.HttpStatus.BadRequest.GetDescriptionAttribute(), Data = SystemMessages.msgBadRequest });
+                return new JsonResult(new CustomResponse<string>() { StatusCode = (int)HttpStatusCodesAndMessages.HttpStatus.BadRequest, Result = false, Message = SystemMessages.msgBadRequest });
             }
-            catch (Exception ex)
+            catch
             {
                 return new JsonResult(new CustomResponse<Exception>() { StatusCode = (int)HttpStatusCodesAndMessages.HttpStatus.InternalServerError, Result = false, Message = SystemMessages.msgSomethingWentWrong });
             }
@@ -108,7 +109,7 @@ namespace CIR.Data.Data.GlobalConfiguration
 			{
 				if (globalConfigurationFonts.Any(x => x.Name == string.Empty))
 				{
-					return new JsonResult(new CustomResponse<string>() { StatusCode = (int)HttpStatusCodesAndMessages.HttpStatus.BadRequest, Result = false, Message = HttpStatusCodesAndMessages.HttpStatus.BadRequest.GetDescriptionAttribute(), Data = SystemMessages.msgEnterValidData });
+					return new JsonResult(new CustomResponse<string>() { StatusCode = (int)HttpStatusCodesAndMessages.HttpStatus.BadRequest, Result = false, Message = SystemMessages.msgEnterValidData });
 				}
 				if (globalConfigurationFonts != null)
 				{
@@ -127,7 +128,7 @@ namespace CIR.Data.Data.GlobalConfiguration
                                 parameters.Add("@IsDefault", item.IsDefault);
 								parameters.Add("@Enabled", item.Enabled);
 
-								result = connection.Execute("spCreateOrUpdateGlobalConfigurationFonts", parameters, commandType: CommandType.StoredProcedure);
+                                result = await Task.FromResult(connection.Execute("spCreateOrUpdateGlobalConfigurationFonts", parameters, commandType: CommandType.StoredProcedure));
 							}
 						}
 					}
@@ -137,9 +138,9 @@ namespace CIR.Data.Data.GlobalConfiguration
 					}
 					return new JsonResult(new CustomResponse<Exception>() { StatusCode = (int)HttpStatusCodesAndMessages.HttpStatus.UnprocessableEntity, Result = false, Message = HttpStatusCodesAndMessages.HttpStatus.UnprocessableEntity.GetDescriptionAttribute() });
 				}
-				return new JsonResult(new CustomResponse<string>() { StatusCode = (int)HttpStatusCodesAndMessages.HttpStatus.BadRequest, Result = false, Message = HttpStatusCodesAndMessages.HttpStatus.BadRequest.GetDescriptionAttribute(), Data = SystemMessages.msgBadRequest });
+				return new JsonResult(new CustomResponse<string>() { StatusCode = (int)HttpStatusCodesAndMessages.HttpStatus.BadRequest, Result = false, Message = SystemMessages.msgBadRequest });
 			}
-			catch (Exception ex)
+			catch
 			{
                 return new JsonResult(new CustomResponse<Exception>() { StatusCode = (int)HttpStatusCodesAndMessages.HttpStatus.InternalServerError, Result = false, Message = SystemMessages.msgSomethingWentWrong });
             }
