@@ -41,5 +41,16 @@
             Return = 2,
             ProductType = 3
         }
+
+        public enum GlobalConfigurationMessages
+        {
+            WelcomeMessage=0,
+            FinalMessage=1,
+            RefundMessage=2,
+            MaintenanceModeMessage=3,
+            ReturnDetailsMessage=4,
+            TrackingWelcomeMessage=5,
+            PrintLabelWelcomeMessage=6
+        }
     }
 }

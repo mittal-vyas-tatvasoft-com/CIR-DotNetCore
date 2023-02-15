@@ -579,3 +579,81 @@ AS
 BEGIN
 	select * from CountryCodes
 END
+
+
+--spGetGlobalConfigurationMessagesListByCultureId Start
+
+/****** Object:  StoredProcedure [dbo].[spGetGlobalConfigurationMessagesListByCultureId]    Script Date: 15-02-2023 18:20:36 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+-- =============================================
+-- Author:		<Author,,Name>
+-- Create date: <Create Date,,>
+-- Description:	<Description,,>
+-- Last UpdatedBy: <>
+-- =============================================
+
+ALTER PROCEDURE [dbo].[spGetGlobalConfigurationMessagesListByCultureId]
+(
+	@CultureId int
+)
+as
+BEGIN
+
+	select GCM.Id,GCM.[Type],GCM.Content,GCM.CultureId,C.[Name] CultureName from GlobalConfigurationMessages GCM
+	join Cultures C ON C.Id = GCM.CultureId
+	where GCM.CultureId = @CultureId
+
+END
+
+--spGetGlobalConfigurationMessagesListByCultureId End
+
+--spCreateOrUpdateGlobalConfigurationMessages Start
+
+/****** Object:  StoredProcedure [dbo].[spCreateOrUpdateGlobalConfigurationMessages]    Script Date: 15-02-2023 18:03:27 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+-- =============================================
+-- Author:		<Author,,Name>
+-- Create date: <Create Date,,>
+-- Description:	<Description,,>
+-- Last UpdatedBy: <>
+-- =============================================
+
+CREATE PROCEDURE [dbo].[spCreateOrUpdateGlobalConfigurationMessages]
+(  
+ @Id int,  
+ @Type nvarchar(max),  
+ @Content nvarchar(max),  
+ @CultureId int  
+)  
+  
+AS  
+BEGIN  
+ IF(@Id = 0)  
+ BEGIN  
+   INSERT INTO GlobalConfigurationMessages([Type],Content,CultureId)  
+   VALUES (@Type,@Content,@CultureId)  
+ END;  
+ ELSE  
+  BEGIN  
+   UPDATE GlobalConfigurationMessages SET  
+   Type = @Type,  
+   Content = @Content,  
+   CultureId = @CultureId     
+   WHERE Id = @Id  
+
+   Update Portal2GlobalConfigurationMessages 
+   Set ValueOverride = @Content
+   where GlobalConfigurationMessageId =@Id
+
+  END;  
+END;
+
+--spCreateOrUpdateGlobalConfigurationMessages End

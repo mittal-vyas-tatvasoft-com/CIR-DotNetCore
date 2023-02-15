@@ -1,4 +1,8 @@
-﻿using CIR.Core.Interfaces.GlobalConfiguration;
+﻿using CIR.Application.Services.GlobalConfiguration;
+using CIR.Common.Enums;
+using CIR.Common.Helper;
+using CIR.Core.Entities.GlobalConfiguration;
+using CIR.Core.Interfaces.GlobalConfiguration;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,13 +17,75 @@ namespace CIR.Controllers.GlobalConfiguration
 
         #endregion
         #region CONSTRUCTOR
-        public GlobalConfigurationMessagesController(IGlobalConfigurationMessagesService globalConfigurationMessagesServices)
+        public GlobalConfigurationMessagesController(IGlobalConfigurationMessagesService _globalConfigurationMessagesServices)
         {
-            this.globalConfigurationMessagesService = globalConfigurationMessagesServices;
+            globalConfigurationMessagesService = _globalConfigurationMessagesServices;
         }
         #endregion
 
         #region METHODS
+
+        /// <summary>
+        /// This method takes a get globalconfiguration messages list
+        /// </summary>
+        /// <param name="cultureId"></param>
+        /// <returns></returns>
+        [HttpGet("{cultureId}")]
+        public async Task<IActionResult> GetGlobalConfigurationMessagesList(int cultureId)
+        {
+            try
+            {
+                return await globalConfigurationMessagesService.GetGlobalConfigurationMessagesList(cultureId);
+            }
+            catch (Exception ex)
+            {
+                return new JsonResult(new CustomResponse<Exception>() { StatusCode = (int)HttpStatusCodesAndMessages.HttpStatus.InternalServerError, Result = false, Message = HttpStatusCodesAndMessages.HttpStatus.InternalServerError.GetDescriptionAttribute(), Data = ex });
+            }
+        }
+
+        /// <summary>
+        /// This method takes a create globalconfiguration messages
+        /// </summary>
+        /// <param name="globalConfigurationMessages"></param>
+        /// <returns></returns>
+        [HttpPost("[action]")]
+        public async Task<IActionResult> Create(List<GlobalConfigurationMessage> globalConfigurationMessages)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    return await globalConfigurationMessagesService.CreateOrUpdateGlobalConfigurationMessages(globalConfigurationMessages);
+                }
+                catch (Exception ex)
+                {
+                    return new JsonResult(new CustomResponse<Exception>() { StatusCode = (int)HttpStatusCodesAndMessages.HttpStatus.InternalServerError, Result = false, Message = HttpStatusCodesAndMessages.HttpStatus.InternalServerError.GetDescriptionAttribute(), Data = ex });
+                }
+            }
+            return new JsonResult(new CustomResponse<string>() { StatusCode = (int)HttpStatusCodesAndMessages.HttpStatus.BadRequest, Result = false, Message = HttpStatusCodesAndMessages.HttpStatus.BadRequest.GetDescriptionAttribute(), Data = SystemMessages.msgBadRequest });
+        }
+
+        /// <summary>
+        /// This method takes a update globalconfiguration messages
+        /// </summary>
+        /// <param name="globalConfigurationMessages"></param>
+        /// <returns></returns>
+        [HttpPut("[action]")]
+        public async Task<IActionResult> Update(List<GlobalConfigurationMessage> globalConfigurationMessages)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    return await globalConfigurationMessagesService.CreateOrUpdateGlobalConfigurationMessages(globalConfigurationMessages);
+                }
+                catch (Exception ex)
+                {
+                    return new JsonResult(new CustomResponse<Exception>() { StatusCode = (int)HttpStatusCodesAndMessages.HttpStatus.InternalServerError, Result = false, Message = HttpStatusCodesAndMessages.HttpStatus.InternalServerError.GetDescriptionAttribute(), Data = ex });
+                }
+            }
+            return new JsonResult(new CustomResponse<string>() { StatusCode = (int)HttpStatusCodesAndMessages.HttpStatus.BadRequest, Result = false, Message = HttpStatusCodesAndMessages.HttpStatus.BadRequest.GetDescriptionAttribute(), Data = SystemMessages.msgBadRequest });
+        }
         #endregion
     }
 }
