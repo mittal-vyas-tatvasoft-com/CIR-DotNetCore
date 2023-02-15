@@ -13,7 +13,7 @@ namespace CIR.Controllers.GlobalConfiguration
     {
         #region PROPERTIES
 
-        private readonly IGlobalConfigurationCutOffTimesService _globalConfigurationCutOffTimesService;
+        private readonly IGlobalConfigurationCutOffTimesService iGlobalConfigurationCutOffTimesService;
 
         #endregion
 
@@ -21,7 +21,7 @@ namespace CIR.Controllers.GlobalConfiguration
 
         public GlobalConfigurationCutOffTimesController(IGlobalConfigurationCutOffTimesService globalConfigurationCutOffTimesService)
         {
-            _globalConfigurationCutOffTimesService= globalConfigurationCutOffTimesService;
+            iGlobalConfigurationCutOffTimesService= globalConfigurationCutOffTimesService;
         }
 
         #endregion
@@ -38,7 +38,7 @@ namespace CIR.Controllers.GlobalConfiguration
         {
             try
             {
-                return await _globalConfigurationCutOffTimesService.GetGlobalConfigurationCutOffTimeByCountryWise(countryId);
+                return await iGlobalConfigurationCutOffTimesService.GetGlobalConfigurationCutOffTimeByCountryWise(countryId);
             }
             catch (Exception ex)
             {
@@ -58,7 +58,7 @@ namespace CIR.Controllers.GlobalConfiguration
             {
                 try
                 {
-                    return await _globalConfigurationCutOffTimesService.CreateOrUpdateGlobalConfigurationCutOffTime(globalConfigurationCutOffTimeModel);
+                    return await iGlobalConfigurationCutOffTimesService.CreateOrUpdateGlobalConfigurationCutOffTime(globalConfigurationCutOffTimeModel);
                 }
                 catch (Exception ex)
                 {
@@ -80,7 +80,7 @@ namespace CIR.Controllers.GlobalConfiguration
             {
                 try
                 {
-                    return await _globalConfigurationCutOffTimesService.CreateOrUpdateGlobalConfigurationCutOffTime(globalConfigurationCutOffTimeModel);
+                    return await iGlobalConfigurationCutOffTimesService.CreateOrUpdateGlobalConfigurationCutOffTime(globalConfigurationCutOffTimeModel);
                 }
                 catch (Exception ex)
                 {

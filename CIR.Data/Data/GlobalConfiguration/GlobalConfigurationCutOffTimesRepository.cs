@@ -2,8 +2,10 @@
 using CIR.Common.Enums;
 using CIR.Common.Helper;
 using CIR.Core.Entities.GlobalConfiguration;
+using CIR.Core.Interfaces.Common;
 using CIR.Core.Interfaces.GlobalConfiguration;
 using CIR.Core.ViewModel.GlobalConfiguration;
+using CIR.Data.Data.Common;
 using Dapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -19,15 +21,17 @@ namespace CIR.Data.Data.GlobalConfiguration
     public class GlobalConfigurationCutOffTimesRepository : IGlobalConfigurationCutOffTimesRepository
     {
         #region PROPERTIES
-        private readonly CIRDbContext _cIRDbContext;
-        private readonly IConfiguration _configuration;
+        private readonly CIRDbContext cIRDbContext;
+        private readonly CommonRepository commonRepository;
+        private readonly IConfiguration configuration;
         #endregion
 
         #region CONSTRUCTOR
-        public GlobalConfigurationCutOffTimesRepository(CIRDbContext context, IConfiguration configuration)
+        public GlobalConfigurationCutOffTimesRepository(CIRDbContext context, IConfiguration Iconfiguration)
         {
-            _cIRDbContext= context ?? throw new ArgumentNullException(nameof(context));
-            _configuration = configuration;
+            cIRDbContext= context ?? throw new ArgumentNullException(nameof(context));
+            configuration = Iconfiguration;
+            commonRepository = new CommonRepository(cIRDbContext);
         }
         #endregion
 
@@ -61,15 +65,15 @@ namespace CIR.Data.Data.GlobalConfiguration
                     GlobalConfigurationCutOffTimeModel cutOffTimeModel = new()
                     {
                         CountryId = countryId,
-                        CutOffTime = _configuration.GetSection("StaticCutOffTime").GetSection("CutOffTime").Value,
+                        CutOffTime = configuration.GetSection("StaticCutOffTime").GetSection("CutOffTime").Value,
                         CutOffDay = (int)GlobalConfigurationEnums.CutOffDays.SameDay
                     };
                     return new JsonResult(new CustomResponse<GlobalConfigurationCutOffTimeModel>() { StatusCode = (int)HttpStatusCodesAndMessages.HttpStatus.Success, Result = true, Message = HttpStatusCodesAndMessages.HttpStatus.Success.GetDescriptionAttribute(), Data = cutOffTimeModel });
                 }
             }
-            catch (Exception ex)
+            catch
             {
-                return new JsonResult(new CustomResponse<Exception>() { StatusCode = (int)HttpStatusCodesAndMessages.HttpStatus.InternalServerError, Result = false, Message = HttpStatusCodesAndMessages.HttpStatus.InternalServerError.GetDescriptionAttribute(), Data = ex });
+                return new JsonResult(new CustomResponse<Exception>() { StatusCode = (int)HttpStatusCodesAndMessages.HttpStatus.InternalServerError, Result = false, Message = SystemMessages.msgSomethingWentWrong });
             }
         }
 
@@ -82,11 +86,11 @@ namespace CIR.Data.Data.GlobalConfiguration
         {
             try
             {
-                if (IsStringNullorEmpty(globalConfigurationCutOffTimeModel.CutOffTime) || globalConfigurationCutOffTimeModel.CountryId == 0)
+                if (commonRepository.IsStringNullorEmpty(globalConfigurationCutOffTimeModel.CutOffTime) || globalConfigurationCutOffTimeModel.CountryId == 0)
                 {
                     return new JsonResult(new CustomResponse<string>() { StatusCode = (int)HttpStatusCodesAndMessages.HttpStatus.BadRequest, Result = false, Message = HttpStatusCodesAndMessages.HttpStatus.BadRequest.GetDescriptionAttribute(), Data = SystemMessages.msgEnterValidData });
                 }
-                string result = "";
+                var result = 0;
                 using (DbConnection dbConnection = new DbConnection())
                 {
                     using (var connection = dbConnection.Connection)
@@ -97,10 +101,10 @@ namespace CIR.Data.Data.GlobalConfiguration
                         parameters.Add("@CutOffTime", globalConfigurationCutOffTimeModel.CutOffTime);
                         parameters.Add("@CutOffDay", globalConfigurationCutOffTimeModel.CutOffDay);
 
-                        result = Convert.ToString(connection.ExecuteScalar("spCreateOrUpdateGlobalConfigurationCutOffTimes", parameters, commandType: CommandType.StoredProcedure));
+                        result = (int)await Task.FromResult(connection.ExecuteScalar("spCreateOrUpdateGlobalConfigurationCutOffTimes", parameters, commandType: CommandType.StoredProcedure));
                     }
                 }
-                if (result != "False")
+                if (result != 0)
                 {
                     if (globalConfigurationCutOffTimeModel.Id > 0)
                     {
@@ -113,23 +117,10 @@ namespace CIR.Data.Data.GlobalConfiguration
                 }
                 return new JsonResult(new CustomResponse<string>() { StatusCode = (int)HttpStatusCodesAndMessages.HttpStatus.UnprocessableEntity, Result = false, Message = HttpStatusCodesAndMessages.HttpStatus.UnprocessableEntity.GetDescriptionAttribute(), Data = SystemMessages.msgBadRequest });
             }
-            catch (Exception ex)
+            catch
             {
-                return new JsonResult(new CustomResponse<Exception>() { StatusCode = (int)HttpStatusCodesAndMessages.HttpStatus.InternalServerError, Result = false, Message = HttpStatusCodesAndMessages.HttpStatus.InternalServerError.GetDescriptionAttribute(), Data = ex });
+                return new JsonResult(new CustomResponse<Exception>() { StatusCode = (int)HttpStatusCodesAndMessages.HttpStatus.InternalServerError, Result = false, Message = SystemMessages.msgSomethingWentWrong });
             }
-        }
-
-
-        /// <summary>
-        /// This method used by check Is StringNullorEmpty
-        /// </summary>
-        /// <returns></returns>
-        public Boolean IsStringNullorEmpty(string value)
-        {
-            if (value == null || value == string.Empty)
-                return true;
-            else
-                return false;
         }
         #endregion
     }

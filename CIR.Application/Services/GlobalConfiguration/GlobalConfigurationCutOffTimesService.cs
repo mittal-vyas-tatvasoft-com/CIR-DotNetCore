@@ -11,21 +11,21 @@ namespace CIR.Application.Services.GlobalConfiguration
 {
     public class GlobalConfigurationCutOffTimesService : IGlobalConfigurationCutOffTimesService
     {
-        private readonly IGlobalConfigurationCutOffTimesRepository _globalConfigurationCutOffTimesRepository;
+        private readonly IGlobalConfigurationCutOffTimesRepository iGlobalConfigurationCutOffTimesRepository;
 
         public GlobalConfigurationCutOffTimesService(IGlobalConfigurationCutOffTimesRepository globalConfigurationCutOffTimesRepository)
         {
-            _globalConfigurationCutOffTimesRepository = globalConfigurationCutOffTimesRepository;
+            iGlobalConfigurationCutOffTimesRepository = globalConfigurationCutOffTimesRepository;
         }
 
         public async Task<IActionResult> GetGlobalConfigurationCutOffTimeByCountryWise(int countryId)
         {
-            return await _globalConfigurationCutOffTimesRepository.GetGlobalConfigurationCutOffTimeByCountryWise(countryId);
+            return await iGlobalConfigurationCutOffTimesRepository.GetGlobalConfigurationCutOffTimeByCountryWise(countryId);
         }
 
         public async Task<IActionResult> CreateOrUpdateGlobalConfigurationCutOffTime(GlobalConfigurationCutOffTimeModel globalConfigurationCutOffTimeModel)
         {
-            return await _globalConfigurationCutOffTimesRepository.CreateOrUpdateGlobalConfigurationCutOffTime(globalConfigurationCutOffTimeModel);
+            return await iGlobalConfigurationCutOffTimesRepository.CreateOrUpdateGlobalConfigurationCutOffTime(globalConfigurationCutOffTimeModel);
         }
     }
 }
