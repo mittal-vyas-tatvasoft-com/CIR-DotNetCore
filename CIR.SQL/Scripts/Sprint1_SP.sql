@@ -14,7 +14,7 @@ CREATE PROCEDURE [dbo].[spGetAllCurrencies]
 
 AS
 BEGIN
-	
+
  SELECT Id, CodeName, Symbol FROM Currencies
 
 END
@@ -52,31 +52,31 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 
-CREATE PROCEDURE [dbo].[spCreateOrUpdateGlobalConfigurationCurrencies](@Id bigint,  
-                  @CountryId bigint,  
-                  @CurrencyId bigint,  
-                  @Enabled bit)  
-  
-AS  
-BEGIN  
+CREATE PROCEDURE [dbo].[spCreateOrUpdateGlobalConfigurationCurrencies](@Id bigint,
+                  @CountryId bigint,
+                  @CurrencyId bigint,
+                  @Enabled bit)
+
+AS
+BEGIN
  IF(exists(SELECT 1 FROM Currencies WHERE Id = @CurrencyId) and exists(SELECT 1 FROM CountryCodes WHERE Id = @CountryId))
 	BEGIN
 		 IF (not exists(SELECT 1 FROM GlobalConfigurationCurrencies WHERE CountryId = @CountryId and CurrencyId = @CurrencyId))
-			BEGIN  
-			   INSERT INTO GlobalConfigurationCurrencies(CountryId,CurrencyId,Enabled)  
-			   VALUES (@CountryId,@CurrencyId,@Enabled);  
-			END;  
-
-		ELSE 
 			BEGIN
-				UPDATE GlobalConfigurationCurrencies   
-				SET CountryId = @CountryId,  
-				CurrencyId = @CurrencyId,  
-				Enabled = @Enabled  
-				WHERE CountryId = @CountryId and CurrencyId = @CurrencyId;  
+			   INSERT INTO GlobalConfigurationCurrencies(CountryId,CurrencyId,Enabled)
+			   VALUES (@CountryId,@CurrencyId,@Enabled);
+			END;
+
+		ELSE
+			BEGIN
+				UPDATE GlobalConfigurationCurrencies
+				SET CountryId = @CountryId,
+				CurrencyId = @CurrencyId,
+				Enabled = @Enabled
+				WHERE CountryId = @CountryId and CurrencyId = @CurrencyId;
 			END;
 	END;
-END; 
+END;
 GO
 
 -- spCreateOrUpdateGlobalConfigurationCurrenciesc End
@@ -158,7 +158,7 @@ ALTER PROCEDURE [dbo].[spGetFilteredHolidays]
 	@DisplayLength int,
 	@DisplayStart int,
 	@SortCol nvarchar(max)='',
-	@Search nvarchar(255) = '',	
+	@Search nvarchar(255) = '',
 	@SortDir bit,
 	@CountryCodeId int,
 	@CountryNameId int
@@ -168,7 +168,7 @@ BEGIN
 	Declare @FirstRec int, @LastRec int
     Set @FirstRec = @DisplayStart;
     Set @LastRec = @DisplayStart + @DisplayLength;
-    Declare @SortDirection nvarchar(max);  
+    Declare @SortDirection nvarchar(max);
 	print(@SortDir);
 	IF(@SortDir = '1')
 	BEGIN
@@ -177,19 +177,19 @@ BEGIN
 	IF(@SortDir = '0')
 	BEGIN
 		set @SortDirection = 'desc'
-	END			
+	END
 	print(@SortDirection);
 	;With CTE_Holidays as
     (
 		Select ROW_NUMBER() over (order by
-        
+
          case when (@SortCol = 'CountryName' and @SortDirection='asc')
              then C.CountryName
          end asc,
          case when (@SortCol = 'CountryName' and @SortDirection='desc')
              then C.CountryName
          end desc,
-        
+
        case when (@SortCol = 'CountryCode' and @SortDirection='asc')
              then C.Code
          end asc,
@@ -212,15 +212,15 @@ BEGIN
          end desc
         )
 		as RowNum,
-		 
+
 	      H.Id,H.CountryId,H.[Date],H.[Description],C.CountryName,C.Code CountryCode
 			from Holidays H
 		join CountryCodes C ON C.Id = H.CountryId
-		where 
-		H.CountryId = case when ISNULL(@CountryCodeId,0) = 0 then H.CountryId else @CountryCodeId END AND		 
+		where
+		H.CountryId = case when ISNULL(@CountryCodeId,0) = 0 then H.CountryId else @CountryCodeId END AND
 		H.CountryId = case when ISNULL(@CountryNameId,0) = 0 then H.CountryId else @CountryNameId END and
 		(@Search IS NULL
-                 Or H.[Description] like '%' + @Search + '%'                 
+                 Or H.[Description] like '%' + @Search + '%'
 				 Or C.CountryName like '%' + @Search + '%'
 				 Or C.Code like '%' + @Search + '%')
 )
@@ -239,8 +239,8 @@ ALTER PROCEDURE [dbo].[spGetAllRoles]
 
 as
 begin
-	
-  select Id,[Name],[Description],WrongLoginAttempts,AllPermissions from Roles  
+
+  select Id,[Name],[Description],WrongLoginAttempts,AllPermissions from Roles
 end
 
 /****** Object:  StoredProcedure [dbo].[spGetRoles]    Script Date: 08-02-2023 17:35:10 ******/
@@ -258,15 +258,15 @@ ALTER PROCEDURE [dbo].[spGetRoles]
 @DisplayLength int,
 @DisplayStart int,
 @SortCol nvarchar(max)='',
-@Search nvarchar(255) = '',	
+@Search nvarchar(255) = '',
 @SortDir bit
-)	
+)
 AS
 BEGIN
 	Declare @FirstRec int, @LastRec int
     Set @FirstRec = @DisplayStart;
     Set @LastRec = @DisplayStart + @DisplayLength;
-    Declare @SortDirection nvarchar(max);  
+    Declare @SortDirection nvarchar(max);
 	print(@SortDir);
 	IF(@SortDir = '1')
 	BEGIN
@@ -275,19 +275,19 @@ BEGIN
 	IF(@SortDir = '0')
 	BEGIN
 		set @SortDirection = 'desc'
-	END			
+	END
 	print(@SortDirection);
 	;With CTE_Roles as
     (
 		Select ROW_NUMBER() over (order by
-        
+
          case when (@SortCol = 'Name' and @SortDirection='asc')
              then R.[Name]
          end asc,
          case when (@SortCol = 'CountryName' and @SortDirection='desc')
              then R.[Name]
          end desc,
-              
+
 		  case when (@SortCol = 'Description' and @SortDirection='asc')
              then R.[Description]
          end asc,
@@ -298,10 +298,10 @@ BEGIN
          as RowNum,
 		 COUNT(*) over() as TotalCount,
 	      R.Id,R.[Name],R.[Description],R.WrongLoginAttempts,R.AllPermissions,R.CreatedOn,R.LastEditedOn
-			from Roles R		
-		where 		
+			from Roles R
+		where
 		(@Search IS NULL
-                 Or R.[Name] like '%' + @Search + '%'                 
+                 Or R.[Name] like '%' + @Search + '%'
 				 Or R.[Description] like '%' + @Search + '%')
 )
 
@@ -326,17 +326,17 @@ ALTER proc [dbo].[spGetRoleDetailByRoleId]
 as
 
 begin
-	
+
 	select R.Id,R.[Name],R.[Description],R.WrongLoginAttempts,R.AllPermissions,
-	RG.Id As GroupId,RGS.SubSiteId As SiteId,	
-	RGC.CultureLCId As CultureId,	
+	RG.Id As GroupId,RGS.SubSiteId As SiteId,
+	RGC.CultureLCId As CultureId,
 	RGP.PermissionEnumId As PrivilegesId
 	from Roles R
 	left outer join RoleGrouping RG ON RG.RoleId = R.Id
 	left outer join RoleGrouping2SubSite RGS ON RGS.RoleGroupingId = RG.Id
 	left outer join RoleGrouping2Culture RGC ON RGC.RoleGroupingId = RG.Id
 	left outer join RoleGrouping2Permission RGP ON RGP.RoleGroupingId = RG.Id
-	where R.Id = @RoleId 
+	where R.Id = @RoleId
 
 end
 
@@ -355,7 +355,7 @@ ALTER PROCEDURE [dbo].[spGetLanguagesListByRole]
 
 as
 begin
-	
+
   select Id,ParentId,Name,DisplayName,[Enabled],NativeName from Cultures
   where [Enabled]=1
 end
@@ -374,7 +374,7 @@ ALTER PROCEDURE [dbo].[spGetSubSites]
 
 as
 begin
-	
+
 	select Id,Directory,DisplayName,Domain,[Description],AssetId,[Enabled],SystemEmailFromAddress,FaviconAssetId,
 	RobotTxt,[Stopped],ShowTax,PortalId,BCCEmailAddress,CloudFrontDistributionId,EmailStopped
 	from SubSites
@@ -419,7 +419,7 @@ AS
 BEGIN
 	DELETE FROM RoleGrouping where Id = @GroupId
 END
-END    
+END
 
 ----------------------------------------------------------------------------- spLogin Start ---------------------------------------------------------------------------------------
 
@@ -495,7 +495,7 @@ BEGIN
 END
 GO
 
--- spResetPassword End 
+-- spResetPassword End
 
 -- spResetRequired Start
 
@@ -509,7 +509,7 @@ GO
 CREATE PROCEDURE [dbo].[spResetRequired]
 (
 @userId bigint
-)	
+)
 AS
 BEGIN
 	UPDATE Users SET
@@ -532,7 +532,7 @@ GO
 CREATE PROCEDURE [dbo].[spIncrementLoginAttempts]
 (
 @userId bigint
-)	
+)
 AS
 BEGIN
 	UPDATE Users SET
@@ -621,3 +621,13 @@ BEGIN
 END
 
 GO
+/****** Object:  StoredProcedure [dbo].[spGetCountries]    Script Date: 13-02-2023 16:26:06 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+ALTER PROCEDURE [dbo].[spGetCountries]
+AS
+BEGIN
+	select * from CountryCodes
+END

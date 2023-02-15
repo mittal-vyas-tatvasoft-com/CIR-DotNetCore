@@ -2,8 +2,8 @@
 {
     public class HolidayModel
     {
-        public int TotalCount { get; set; }
         public List<HolidayViewModel> Holidays { get; set; }
+        public int TotalCount { get; set; }
     }
 
     public class HolidayViewModel

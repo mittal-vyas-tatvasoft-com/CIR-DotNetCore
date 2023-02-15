@@ -1,13 +1,19 @@
 using CIR.Application.Services;
+using CIR.Application.Services.Common;
 using CIR.Application.Services.GlobalConfiguration;
+using CIR.Application.Services.Users;
 using CIR.Common.CommonModels;
 using CIR.Common.Data;
 using CIR.Common.EmailGeneration;
 using CIR.Common.Helper;
 using CIR.Core.Interfaces;
-using CIR.Data.Data;
+using CIR.Core.Interfaces.Common;
 using CIR.Core.Interfaces.GlobalConfiguration;
+using CIR.Core.Interfaces.Users;
+using CIR.Data.Data;
+using CIR.Data.Data.Common;
 using CIR.Data.Data.GlobalConfiguration;
+using CIR.Data.Data.Users;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -75,6 +81,12 @@ builder.Services.AddScoped<IGlobalConfigurationCurrenciesService, GlobalConfigur
 builder.Services.AddScoped<IGlobalConfigurationCurrenciesRepository, GlobalConfigurationCurrenciesRepository>();
 builder.Services.AddScoped<IGlobalConfigurationHolidaysService, GlobalConfigurationHolidaysService>();
 builder.Services.AddScoped<IGlobalConfigurationHolidaysRepository, GlobalConfigurationHolidaysRepository>();
+builder.Services.AddScoped<IGlobalConfigurationEmailsService, GlobalConfigurationEmailsService>();
+builder.Services.AddScoped<IGlobalConfigurationEmailsRepository, GlobalConfigurationEmailsRepository>();
+builder.Services.AddScoped<ICommonRepository, CommonRepository>();
+builder.Services.AddScoped<ICommonService, CommonService>();
+builder.Services.AddScoped<IRolesService, RolesService>();
+builder.Services.AddScoped<IRolesRepository, RolesRepository>();
 
 
 //allow origin
