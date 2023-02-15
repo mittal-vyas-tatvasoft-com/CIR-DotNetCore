@@ -5,13 +5,7 @@ using CIR.Core.Entities.GlobalConfiguration;
 using CIR.Core.Interfaces.GlobalConfiguration;
 using Dapper;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
 using System.Data;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CIR.Data.Data.GlobalConfiguration
 {
@@ -95,7 +89,7 @@ namespace CIR.Data.Data.GlobalConfiguration
             }
             catch
             {
-                return new JsonResult(new CustomResponse<Exception>() { StatusCode = (int)HttpStatusCodesAndMessages.HttpStatus.InternalServerError, Result = false, Message = SystemMessages.msgSomethingWentWrong});
+                return new JsonResult(new CustomResponse<Exception>() { StatusCode = (int)HttpStatusCodesAndMessages.HttpStatus.InternalServerError, Result = false, Message = SystemMessages.msgSomethingWentWrong });
             }
         }
         #endregion
