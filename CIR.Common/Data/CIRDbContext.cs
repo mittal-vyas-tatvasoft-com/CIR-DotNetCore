@@ -60,6 +60,14 @@ namespace CIR.Common.Data
             set;
         }
 
+        public virtual DbSet<GlobalConfigurationEmails> GlobalConfigurationEmails { get; set; }
+
+        public DbSet<User> Users
+        {
+            get;
+            set;
+        }
+
     }
 }
 
