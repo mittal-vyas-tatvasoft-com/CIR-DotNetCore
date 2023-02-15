@@ -11,13 +11,13 @@ namespace CIR.Controllers.GlobalConfiguration
     public class GlobalConfigurationFontsController : ControllerBase
     {
         #region PROPERTIES
-        private readonly IGlobalConfigurationFontsServices _globalConfigurationFontsServices;
+        private readonly IGlobalConfigurationFontsServices globalConfigurationFontsServices;
         #endregion
 
         #region CONSTRUCTOR
         public GlobalConfigurationFontsController(IGlobalConfigurationFontsServices globalConfigurationFontsServices)
         {
-            _globalConfigurationFontsServices = globalConfigurationFontsServices;
+            globalConfigurationFontsServices = globalConfigurationFontsServices;
         }
         #endregion
 
@@ -32,7 +32,7 @@ namespace CIR.Controllers.GlobalConfiguration
         {
             try
             {
-                return await _globalConfigurationFontsServices.GetGlobalConfigurationFonts();
+                return await globalConfigurationFontsServices.GetGlobalConfigurationFonts();
             }
             catch (Exception ex)
             {
@@ -52,7 +52,7 @@ namespace CIR.Controllers.GlobalConfiguration
             {
                 try
                 {
-                    return await _globalConfigurationFontsServices.CreateGlobalConfigurationFonts(globalConfigurationFonts);
+                    return await globalConfigurationFontsServices.CreateGlobalConfigurationFonts(globalConfigurationFonts);
                 }
                 catch (Exception ex)
                 {
@@ -74,7 +74,7 @@ namespace CIR.Controllers.GlobalConfiguration
             {
                 try
                 {
-                    return await _globalConfigurationFontsServices.UpdateGlobalConfigurationFonts(globalConfigurationFonts);
+                    return await globalConfigurationFontsServices.UpdateGlobalConfigurationFonts(globalConfigurationFonts);
                 }
                 catch (Exception ex)
                 {

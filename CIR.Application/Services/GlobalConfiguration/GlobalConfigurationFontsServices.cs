@@ -11,23 +11,23 @@ namespace CIR.Application.Services.GlobalConfiguration
 {
     public class GlobalConfigurationFontsServices: IGlobalConfigurationFontsServices
     {
-        private readonly IGlobalConfigurationFontsRepository _globalConfigurationFontsRepository;
+        private readonly IGlobalConfigurationFontsRepository globalConfigurationFontsRepository;
         public GlobalConfigurationFontsServices(IGlobalConfigurationFontsRepository globalConfigurationFontsRepository)
         {
-            _globalConfigurationFontsRepository = globalConfigurationFontsRepository;
+            globalConfigurationFontsRepository = globalConfigurationFontsRepository;
         }
         public async Task<IActionResult> GetGlobalConfigurationFonts()
         {
-            return await _globalConfigurationFontsRepository.GetGlobalConfigurationFonts();
+            return await globalConfigurationFontsRepository.GetGlobalConfigurationFonts();
         }
         public async Task<IActionResult> UpdateGlobalConfigurationFonts(List<GlobalConfigurationFonts> globalConfigurationFonts)
         {
-            return await _globalConfigurationFontsRepository.UpdateGlobalConfigurationFonts(globalConfigurationFonts);
+            return await globalConfigurationFontsRepository.UpdateGlobalConfigurationFonts(globalConfigurationFonts);
         }
 
         public async Task<IActionResult> CreateGlobalConfigurationFonts(GlobalConfigurationFonts globalConfigurationFonts)
         {
-            return await _globalConfigurationFontsRepository.CreateGlobalConfigurationFonts(globalConfigurationFonts);
+            return await globalConfigurationFontsRepository.CreateGlobalConfigurationFonts(globalConfigurationFonts);
         }
     }
 }
