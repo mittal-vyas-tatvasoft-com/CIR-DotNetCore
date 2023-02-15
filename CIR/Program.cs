@@ -1,7 +1,10 @@
+using CIR.Application.Services.GlobalConfiguration;
 using CIR.Common.CommonModels;
 using CIR.Common.Data;
 using CIR.Common.EmailGeneration;
 using CIR.Common.Helper;
+using CIR.Core.Interfaces.GlobalConfiguration;
+using CIR.Data.Data.GlobalConfiguration;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -59,6 +62,10 @@ builder.Services.Configure<ThumbnailModel>(thumbnailCreation);
 builder.Services.AddScoped<EmailGeneration>();
 builder.Services.AddScoped<ThumbnailCreation>();
 builder.Services.AddScoped<CSVExport>();
+builder.Services.AddScoped<IGlobalConfigurationHolidaysService, GlobalConfigurationHolidaysService>();
+builder.Services.AddScoped<IGlobalConfigurationHolidaysRepository, GlobalConfigurationHolidaysRepository>();
+builder.Services.AddScoped<IGlobalConfigurationCutOffTimesRepository,GlobalConfigurationCutOffTimesRepository>();
+builder.Services.AddScoped<IGlobalConfigurationCutOffTimesService, GlobalConfigurationCutOffTimesService>();
 
 
 //allow origin

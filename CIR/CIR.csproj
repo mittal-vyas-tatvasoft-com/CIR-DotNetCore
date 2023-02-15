@@ -30,6 +30,8 @@
   <ItemGroup>
     <Folder Include="Controllers\Common\" />
     <Folder Include="Controllers\Users\" />
+    <Folder Include="Controllers\GlobalConfiguration\" />
+    <Folder Include="Controllers\Common\" />
   </ItemGroup>
 
 </Project>
