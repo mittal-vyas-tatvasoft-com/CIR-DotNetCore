@@ -1,6 +1,6 @@
 ﻿namespace CIR.Core.Interfaces.GlobalConfiguration
 {
-	public interface IGlobalConfigurationFieldsService
-	{
-	}
+    public interface IGlobalConfigurationFieldsService
+    {
+    }
 }
