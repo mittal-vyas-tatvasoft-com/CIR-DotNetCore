@@ -5,5 +5,6 @@ namespace CIR.Core.Interfaces.Common
     public interface ICommonRepository
     {
         Task<IActionResult> GetCountries();
+        Task<IActionResult> GetCultures();
     }
 }

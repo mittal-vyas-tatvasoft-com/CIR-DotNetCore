@@ -85,6 +85,77 @@ GO
 -- #Global Configuration Currencies SP End
 
 
+-- spCreateOrUpdateGlobalConfigurationEmails Start
+CREATE PROCEDURE [dbo].[spCreateOrUpdateGlobalConfigurationEmails](
+                @FieldTypeId bigint,  
+                  @CultureId bigint,  
+                  @Content nvarchar(MAX),  
+                  @Subject nvarchar(255))  
+  
+AS  
+BEGIN  
+ Declare @Result bit=0;  
+  IF exists (select 1 from Cultures Where Id = @CultureId)
+  Begin
+	if exists(select 1 from GlobalConfigurationEmails where CultureId = @CultureId AND FieldTypeId = @FieldTypeId)
+	Begin
+			UPDATE GlobalConfigurationEmails   
+			SET FieldTypeId = @FieldTypeId,  
+			CultureId = @CultureId,  
+			Content = @Content,  
+			Subject = @Subject  
+			WHERE CultureId = @CultureId AND FieldTypeId = @FieldTypeId
+	End
+	else
+	Begin
+			INSERT into GlobalConfigurationEmails (FieldTypeId,CultureId,Content,[Subject]) VALUES (@FieldTypeId,@CultureId,@Content,@Subject)
+	End
+	 set @Result = 1
+  End
+  SELECT @Result   
+END  
+-- spCreateOrUpdateGlobalConfigurationEmails End
+
+
+-- spGetGlobalConfigurationEmailsByCultureId Start
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+ALTER PROCEDURE [dbo].[spGetGlobalConfigurationEmailsByCultureId]( @CultureId bigint)
+
+AS
+BEGIN
+	IF Exists(select 1 From GlobalConfigurationEmails where CultureId = @CultureId)
+		Begin
+			SELECT [Id],[FieldTypeId],[CultureId],[Content],[Subject] 
+			FROM GlobalConfigurationEmails WHERE CultureId = @CultureId	
+		End
+	Else
+		Begin
+			SELECT [Id],[FieldTypeId],[CultureId],[Content],[Subject] 
+			FROM GlobalConfigurationEmails WHERE CultureId = 1
+		End
+END
+GO
+
+-- spGetGlobalConfigurationEmailsByCultureId End
+
+-- spGetCultures Start
+
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+ALTER PROCEDURE [dbo].[spGetCultures]
+AS
+BEGIN
+ SELECT Id,ParentId,[Name],DisplayName,[Enabled],NativeName FROM Cultures
+END
+
+-- spGetCultures End
+
 ---------------------------------------------------------------------- Global Configuration SP End -----------------------------------------------------------------------------
 /****** Object:  StoredProcedure [dbo].[spCreateOrUpdateGlobalConfigurationHolidays]    Script Date: 08-02-2023 17:11:43 ******/
 SET ANSI_NULLS ON
