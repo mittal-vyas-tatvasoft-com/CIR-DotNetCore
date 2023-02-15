@@ -5,8 +5,8 @@ using CIR.Common.Data;
 using CIR.Common.EmailGeneration;
 using CIR.Common.Helper;
 using CIR.Core.Interfaces;
-using CIR.Data.Data;
 using CIR.Core.Interfaces.GlobalConfiguration;
+using CIR.Data.Data;
 using CIR.Data.Data.GlobalConfiguration;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
@@ -23,28 +23,28 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(s =>
 {
-    var jwtSecurityScheme = new OpenApiSecurityScheme
-    {
-        BearerFormat = "JWT",
-        Name = "JWT Authentication",
-        In = ParameterLocation.Header,
-        Type = SecuritySchemeType.Http,
-        Scheme = JwtBearerDefaults.AuthenticationScheme,
-        Description = "Put **_ONLY_** your JWT Bearer token on textbox below!",
+	var jwtSecurityScheme = new OpenApiSecurityScheme
+	{
+		BearerFormat = "JWT",
+		Name = "JWT Authentication",
+		In = ParameterLocation.Header,
+		Type = SecuritySchemeType.Http,
+		Scheme = JwtBearerDefaults.AuthenticationScheme,
+		Description = "Put **_ONLY_** your JWT Bearer token on textbox below!",
 
-        Reference = new OpenApiReference
-        {
-            Id = JwtBearerDefaults.AuthenticationScheme,
-            Type = ReferenceType.SecurityScheme
-        }
-    };
+		Reference = new OpenApiReference
+		{
+			Id = JwtBearerDefaults.AuthenticationScheme,
+			Type = ReferenceType.SecurityScheme
+		}
+	};
 
-    s.AddSecurityDefinition(jwtSecurityScheme.Reference.Id, jwtSecurityScheme);
+	s.AddSecurityDefinition(jwtSecurityScheme.Reference.Id, jwtSecurityScheme);
 
-    s.AddSecurityRequirement(new OpenApiSecurityRequirement
-    {
-        { jwtSecurityScheme, Array.Empty<string>() }
-    });
+	s.AddSecurityRequirement(new OpenApiSecurityRequirement
+	{
+		{ jwtSecurityScheme, Array.Empty<string>() }
+	});
 });
 
 //add dbcontext
@@ -74,30 +74,32 @@ builder.Services.AddScoped<IGlobalConfigurationHolidaysService, GlobalConfigurat
 builder.Services.AddScoped<IGlobalConfigurationHolidaysRepository, GlobalConfigurationHolidaysRepository>();
 builder.Services.AddScoped<IGlobalConfigurationEmailsService, GlobalConfigurationEmailsService>();
 builder.Services.AddScoped<IGlobalConfigurationEmailsRepository, GlobalConfigurationEmailsRepository>();
+builder.Services.AddScoped<IGlobalConfigurationFieldsService, GlobalConfigurationFieldsService>();
+builder.Services.AddScoped<IGlobalConfigurationFieldsRepository, GlobalConfigurationFieldsRepository>();
 
 
 //allow origin
 builder.Services.AddCors(options => options.AddDefaultPolicy(builder => builder.AllowAnyOrigin()
-            .AllowAnyMethod()
-            .AllowAnyHeader()
-            ));
+			.AllowAnyMethod()
+			.AllowAnyHeader()
+			));
 
 
 //add authentication 
 builder.Services.AddAuthentication().AddJwtBearer("JWTScheme", x =>
 {
-    x.RequireHttpsMetadata = false;
-    x.SaveToken = true;
-    x.TokenValidationParameters = new TokenValidationParameters
-    {
-        ValidateIssuerSigningKey = true,
-        ValidateIssuer = false,
-        ValidateAudience = false,
-        RequireExpirationTime = true,
-        ClockSkew = TimeSpan.Zero,
-        ValidateLifetime = true,
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["AppSettings:AuthKey"]))
-    };
+	x.RequireHttpsMetadata = false;
+	x.SaveToken = true;
+	x.TokenValidationParameters = new TokenValidationParameters
+	{
+		ValidateIssuerSigningKey = true,
+		ValidateIssuer = false,
+		ValidateAudience = false,
+		RequireExpirationTime = true,
+		ClockSkew = TimeSpan.Zero,
+		ValidateLifetime = true,
+		IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["AppSettings:AuthKey"]))
+	};
 });
 builder.Services.AddAuthorization();
 
@@ -108,16 +110,16 @@ var app = builder.Build();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment() || app.Environment.IsProduction())
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+	app.UseSwagger();
+	app.UseSwaggerUI();
 }
 
 app.UseHttpsRedirection();
 
 app.UseCors(options => options.AllowAnyOrigin()
-            .AllowAnyMethod()
-            .AllowAnyHeader()
-            );
+			.AllowAnyMethod()
+			.AllowAnyHeader()
+			);
 
 app.UseAuthentication();
 app.UseAuthorization();

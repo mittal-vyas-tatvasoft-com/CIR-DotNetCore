@@ -1,4 +1,6 @@
-﻿using CIR.Core.Interfaces.GlobalConfiguration;
+﻿using CIR.Core.Entities.GlobalConfiguration;
+using CIR.Core.Interfaces.GlobalConfiguration;
+using Microsoft.AspNetCore.Mvc;
 
 namespace CIR.Application.Services.GlobalConfiguration
 {
@@ -10,6 +12,14 @@ namespace CIR.Application.Services.GlobalConfiguration
 		{
 			globalConfigurationFieldsRepository = iGlobalConfigurationFieldsRepository;
 		}
+		public async Task<IActionResult> GetAllGlobalConfigurationFields()
+		{
+			return await globalConfigurationFieldsRepository.GetAllGlobalConfigurationFields();
+		}
 
+		public async Task<IActionResult> CreateOrUpdateGlobalConfigurationFields(List<GlobalConfigurationField> globalConfigurationFields)
+		{
+			return await globalConfigurationFieldsRepository.CreateOrUpdateGlobalConfigurationFields(globalConfigurationFields);
+		}
 	}
 }
