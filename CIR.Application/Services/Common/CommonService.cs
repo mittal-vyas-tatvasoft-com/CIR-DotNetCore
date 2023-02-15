@@ -16,5 +16,9 @@ namespace CIR.Application.Services.Common
         {
             return await commonRepository.GetCountries();
         }
+        public async Task<IActionResult> GetCultures()
+        {
+            return await commonRepository.GetCultures();
+        }
     }
 }

@@ -82,7 +82,7 @@ namespace CIR.Data.Data.GlobalConfiguration
                                 parameters.Add("@Content", email.Content);
                                 parameters.Add("@Subject", email.Subject);
 
-                                result = Convert.ToString(connection.ExecuteScalar("spUpdateGlobalConfigurationEmails", parameters, commandType: CommandType.StoredProcedure));
+                                result = Convert.ToString(connection.ExecuteScalar("spCreateOrUpdateGlobalConfigurationEmails", parameters, commandType: CommandType.StoredProcedure));
                             }
                         }
                     }
