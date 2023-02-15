@@ -43,6 +43,23 @@ namespace CIR.Controllers.Common
             }
         }
 
+        /// <summary>
+        /// This method get a culture list
+        /// </summary>
+        /// <returns>CultureList</returns>
+        [HttpGet("GetCultures")]
+        public async Task<IActionResult> GetCultures()
+        {
+            try
+            {
+                return await commonService.GetCultures();
+            }
+            catch
+            {
+                return new JsonResult(new CustomResponse<Exception>() { StatusCode = (int)HttpStatusCodesAndMessages.HttpStatus.InternalServerError, Result = false, Message = SystemMessages.msgSomethingWentWrong });
+            }
+        }
+
         #endregion
 
     }

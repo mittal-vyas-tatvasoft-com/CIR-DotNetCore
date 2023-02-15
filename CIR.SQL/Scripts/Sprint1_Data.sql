@@ -73,3 +73,13 @@ VALUES
 (N'tatva@gmail.com', N'Tatva@1234', N'tatva@gmail.com', NULL, N'testFirst', N'testLast', 3, 0, 
 GETDATE(), GETDATE(), NULL, 1, 1, N'IST', 1, N'EMP001', N'7979797979', GETDATE(), 10, N'TestCompany',
 NULL)
+
+--Add Data in GlobalConfigurationEmail Table --
+INSERT INTO [dbo].[GlobalConfigurationEmails]([FieldTypeId],[CultureId],[Content],[Subject])VALUES(1,1,'Default1','Default1')
+GO
+INSERT INTO [dbo].[GlobalConfigurationEmails]([FieldTypeId],[CultureId],[Content],[Subject])VALUES(2,1,'Default2','Defaut2')
+Go
+INSERT INTO [dbo].[GlobalConfigurationEmails]([FieldTypeId],[CultureId],[Content],[Subject])VALUES(3,1,'Default3','Default3')
+GO
+INSERT INTO [dbo].[GlobalConfigurationEmails]([FieldTypeId],[CultureId],[Content],[Subject])VALUES(4,1,'Default4','Default4')
+GO
