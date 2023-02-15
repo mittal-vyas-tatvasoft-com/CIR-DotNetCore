@@ -1,4 +1,6 @@
-﻿namespace CIR.Core.ViewModel.Users
+﻿using System.ComponentModel;
+
+namespace CIR.Core.ViewModel.Users
 {
     public class RolePermissionModel
     {
@@ -6,7 +8,8 @@
         public string Name { get; set; }
         public string Description { get; set; }
         public long WrongLoginAttempts { get; set; }
-        public Boolean AllPermissions { get; set; } = false;
+        [DefaultValue("false")]
+        public Boolean AllPermissions { get; set; }
         public List<SubRolesModel> Roles { get; set; }
     }
 }
