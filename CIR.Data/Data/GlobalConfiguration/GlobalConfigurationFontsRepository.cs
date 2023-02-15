@@ -13,13 +13,13 @@ namespace CIR.Data.Data.GlobalConfiguration
 	public class GlobalConfigurationFontsRepository : ControllerBase, IGlobalConfigurationFontsRepository
 	{
 		#region PROPERTIES
-		private readonly CIRDbContext _CIRDBContext;
+		private readonly CIRDbContext CIRDBContext;
 		#endregion
 
 		#region CONSTRUCTOR
 		public GlobalConfigurationFontsRepository(CIRDbContext context)
 		{
-			_CIRDBContext = context ??
+			CIRDBContext = context ??
 				throw new ArgumentNullException(nameof(context));
 		}
 		#endregion
