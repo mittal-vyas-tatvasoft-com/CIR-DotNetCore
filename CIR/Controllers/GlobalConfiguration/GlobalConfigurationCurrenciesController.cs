@@ -1,10 +1,7 @@
-﻿using CIR.Application.Services.GlobalConfiguration;
-using CIR.Common.Enums;
+﻿using CIR.Common.Enums;
 using CIR.Common.Helper;
-using CIR.Core.Entities.GlobalConfiguration;
 using CIR.Core.Interfaces.GlobalConfiguration;
 using CIR.Core.ViewModel.GlobalConfiguration;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CIR.Controllers.GlobalConfiguration

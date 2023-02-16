@@ -1,17 +1,11 @@
 ﻿using CIR.Common.Data;
 using CIR.Common.Enums;
 using CIR.Common.Helper;
-using CIR.Core.Entities.GlobalConfiguration;
 using CIR.Core.Interfaces.GlobalConfiguration;
 using CIR.Core.ViewModel.GlobalConfiguration;
 using Dapper;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
 using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CIR.Data.Data.GlobalConfiguration
 {
@@ -80,7 +74,7 @@ namespace CIR.Data.Data.GlobalConfiguration
             {
                 if (globalConfigurationCurrencyModels.Any(x => x.CountryId == 0 || x.CurrencyId == 0))
                 {
-                    return new JsonResult(new CustomResponse<string>() { StatusCode = (int)HttpStatusCodesAndMessages.HttpStatus.BadRequest, Result = false, Message = SystemMessages.msgBadRequest });                 
+                    return new JsonResult(new CustomResponse<string>() { StatusCode = (int)HttpStatusCodesAndMessages.HttpStatus.BadRequest, Result = false, Message = SystemMessages.msgBadRequest });
                 }
                 if (globalConfigurationCurrencyModels != null)
                 {
