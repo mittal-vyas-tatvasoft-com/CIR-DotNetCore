@@ -41,5 +41,13 @@
             Return = 2,
             ProductType = 3
         }
+        public enum Fields
+        {
+            AddressLine2 = 1,
+            Postcode = 2,
+            MobileNumber = 3,
+            TelePhoneNumber = 4,
+            State = 5
+        }
     }
 }
