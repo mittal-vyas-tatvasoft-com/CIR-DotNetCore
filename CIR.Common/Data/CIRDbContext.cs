@@ -2,6 +2,7 @@
 using CIR.Core.Entities.GlobalConfiguration;
 using CIR.Core.Entities.Users;
 using Microsoft.EntityFrameworkCore;
+using static CIR.Common.Enums.GlobalConfigurationEnums;
 
 
 namespace CIR.Common.Data
@@ -67,7 +68,7 @@ namespace CIR.Common.Data
             get;
             set;
         }
-
+        public DbSet<GlobalConfigurationMessage> GlobalConfigurationMessages { get; set; }
     }
 }
 

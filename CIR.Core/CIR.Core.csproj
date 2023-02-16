@@ -18,7 +18,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Interfaces\GlobalConfiguration\" />
     <Folder Include="Interfaces\Users\" />
     <Folder Include="ViewModel\Users\" />
   </ItemGroup>
