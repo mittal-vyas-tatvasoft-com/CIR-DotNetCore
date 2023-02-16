@@ -14,15 +14,15 @@ namespace CIR.Controllers.GlobalConfiguration
     {
         #region PROPERTIES
 
-        private readonly IGlobalConfigurationReasonsService _globalConfigurationReasonsService;
+        private readonly IGlobalConfigurationReasonsService globalConfigurationReasonsService;
 
         #endregion
 
         #region CONSTRUCTORS
 
-        public GlobalConfigurationReasonsController(IGlobalConfigurationReasonsService globalConfigurationReasonsService)
+        public GlobalConfigurationReasonsController(IGlobalConfigurationReasonsService iglobalConfigurationReasonsService)
         {
-            _globalConfigurationReasonsService = globalConfigurationReasonsService;
+            globalConfigurationReasonsService = iglobalConfigurationReasonsService;
         }
 
         #endregion
@@ -39,11 +39,11 @@ namespace CIR.Controllers.GlobalConfiguration
         {
             try
             {
-                return await _globalConfigurationReasonsService.GetGlobalConfigurationReasons();
+                return await globalConfigurationReasonsService.GetGlobalConfigurationReasons();
             }
-            catch (Exception ex)
+            catch
             {
-                return new JsonResult(new CustomResponse<Exception>() { StatusCode = (int)HttpStatusCodesAndMessages.HttpStatus.InternalServerError, Result = false, Message = HttpStatusCodesAndMessages.HttpStatus.InternalServerError.GetDescriptionAttribute(), Data = ex });
+                return new JsonResult(new CustomResponse<Exception>() { StatusCode = (int)HttpStatusCodesAndMessages.HttpStatus.InternalServerError, Result = false, Message = SystemMessages.msgSomethingWentWrong });
             }
         }
 
@@ -59,14 +59,14 @@ namespace CIR.Controllers.GlobalConfiguration
             {
                 try
                 {
-                    return await _globalConfigurationReasonsService.CreateOrUpdateGlobalConfigurationReasons(globalConfigurationReasons);
+                    return await globalConfigurationReasonsService.CreateOrUpdateGlobalConfigurationReasons(globalConfigurationReasons);
                 }
-                catch (Exception ex)
+                catch
                 {
-                    return new JsonResult(new CustomResponse<Exception>() { StatusCode = (int)HttpStatusCodesAndMessages.HttpStatus.InternalServerError, Result = false, Message = HttpStatusCodesAndMessages.HttpStatus.InternalServerError.GetDescriptionAttribute(), Data = ex });
+                    return new JsonResult(new CustomResponse<Exception>() { StatusCode = (int)HttpStatusCodesAndMessages.HttpStatus.InternalServerError, Result = false, Message = SystemMessages.msgSomethingWentWrong });
                 }
             }
-            return new JsonResult(new CustomResponse<string>() { StatusCode = (int)HttpStatusCodesAndMessages.HttpStatus.BadRequest, Result = false, Message = HttpStatusCodesAndMessages.HttpStatus.BadRequest.GetDescriptionAttribute(), Data = SystemMessages.msgBadRequest });
+            return new JsonResult(new CustomResponse<string>() { StatusCode = (int)HttpStatusCodesAndMessages.HttpStatus.BadRequest, Result = false, Message = SystemMessages.msgBadRequest });
         }
 
 
@@ -82,14 +82,14 @@ namespace CIR.Controllers.GlobalConfiguration
             {
                 try
                 {
-                    return await _globalConfigurationReasonsService.CreateOrUpdateGlobalConfigurationReasons(globalConfigurationReasons);
+                    return await globalConfigurationReasonsService.CreateOrUpdateGlobalConfigurationReasons(globalConfigurationReasons);
                 }
-                catch (Exception ex)
+                catch
                 {
-                    return new JsonResult(new CustomResponse<Exception>() { StatusCode = (int)HttpStatusCodesAndMessages.HttpStatus.InternalServerError, Result = false, Message = HttpStatusCodesAndMessages.HttpStatus.InternalServerError.GetDescriptionAttribute(), Data = ex });
+                    return new JsonResult(new CustomResponse<Exception>() { StatusCode = (int)HttpStatusCodesAndMessages.HttpStatus.InternalServerError, Result = false, Message = SystemMessages.msgSomethingWentWrong });
                 }
             }
-            return new JsonResult(new CustomResponse<string>() { StatusCode = (int)HttpStatusCodesAndMessages.HttpStatus.BadRequest, Result = false, Message = HttpStatusCodesAndMessages.HttpStatus.BadRequest.GetDescriptionAttribute(), Data = SystemMessages.msgBadRequest });
+            return new JsonResult(new CustomResponse<string>() { StatusCode = (int)HttpStatusCodesAndMessages.HttpStatus.BadRequest, Result = false, Message = SystemMessages.msgBadRequest });
         }
 
         #endregion

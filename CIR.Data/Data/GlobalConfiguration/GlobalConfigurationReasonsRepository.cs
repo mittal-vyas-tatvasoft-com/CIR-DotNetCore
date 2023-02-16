@@ -13,7 +13,7 @@ namespace CIR.Data.Data.GlobalConfiguration
     {
         #region PROPERTIES
 
-        private readonly CIRDbContext _CIRDbContext;
+        private readonly CIRDbContext cIRDbContext;
 
         #endregion
 
@@ -21,7 +21,7 @@ namespace CIR.Data.Data.GlobalConfiguration
 
         public GlobalConfigurationReasonsRepository(CIRDbContext context)
         {
-            _CIRDbContext = context ??
+            cIRDbContext = context ??
                 throw new ArgumentNullException(nameof(context));
         }
 
@@ -48,7 +48,7 @@ namespace CIR.Data.Data.GlobalConfiguration
 
                 if (globalConfigurationReasonsList.Count == 0)
                 {
-                    return new JsonResult(new CustomResponse<List<GlobalConfigurationReason>>() { StatusCode = (int)HttpStatusCodesAndMessages.HttpStatus.NotFound, Result = false, Message = HttpStatusCodesAndMessages.HttpStatus.NotFound.GetDescriptionAttribute() });
+                    return new JsonResult(new CustomResponse<List<GlobalConfigurationReason>>() { StatusCode = (int)HttpStatusCodesAndMessages.HttpStatus.NotFound, Result = false, Message = string.Format(SystemMessages.msgNotFound, "Reasons") });
                 }
 
                 return new JsonResult(new CustomResponse<List<GlobalConfigurationReason>>() { StatusCode = (int)HttpStatusCodesAndMessages.HttpStatus.Success, Result = true, Message = HttpStatusCodesAndMessages.HttpStatus.Success.GetDescriptionAttribute(), Data = globalConfigurationReasonsList });
@@ -56,7 +56,7 @@ namespace CIR.Data.Data.GlobalConfiguration
             }
             catch (Exception ex)
             {
-                return new JsonResult(new CustomResponse<Exception>() { StatusCode = (int)HttpStatusCodesAndMessages.HttpStatus.InternalServerError, Result = false, Message = HttpStatusCodesAndMessages.HttpStatus.InternalServerError.GetDescriptionAttribute() });
+                return new JsonResult(new CustomResponse<Exception>() { StatusCode = (int)HttpStatusCodesAndMessages.HttpStatus.InternalServerError, Result = false, Message = SystemMessages.msgSomethingWentWrong });
             }
         }
 
@@ -91,15 +91,15 @@ namespace CIR.Data.Data.GlobalConfiguration
                     }
                     if (result != 0)
                     {
-                        return new JsonResult(new CustomResponse<string>() { StatusCode = (int)HttpStatusCodesAndMessages.HttpStatus.Saved, Result = true, Message = string.Format(SystemMessages.msgDataSavedSuccessfully, "GlobalConfiguration Reason") });
+                        return new JsonResult(new CustomResponse<string>() { StatusCode = (int)HttpStatusCodesAndMessages.HttpStatus.Saved, Result = true, Message = string.Format(SystemMessages.msgDataSavedSuccessfully, "Reasons") });
                     }
-                    return new JsonResult(new CustomResponse<Exception>() { StatusCode = (int)HttpStatusCodesAndMessages.HttpStatus.UnprocessableEntity, Result = false, Message = HttpStatusCodesAndMessages.HttpStatus.UnprocessableEntity.GetDescriptionAttribute() });
+                    return new JsonResult(new CustomResponse<Exception>() { StatusCode = (int)HttpStatusCodesAndMessages.HttpStatus.UnprocessableEntity, Result = false, Message = string.Format(SystemMessages.msgSavingDataError, "Reasons") });
                 }
-                return new JsonResult(new CustomResponse<string>() { StatusCode = (int)HttpStatusCodesAndMessages.HttpStatus.BadRequest, Result = false, Message = HttpStatusCodesAndMessages.HttpStatus.BadRequest.GetDescriptionAttribute() });
+                return new JsonResult(new CustomResponse<string>() { StatusCode = (int)HttpStatusCodesAndMessages.HttpStatus.BadRequest, Result = false, Message = SystemMessages.msgEnterValidData });
             }
-            catch (Exception ex)
+            catch
             {
-                return new JsonResult(new CustomResponse<Exception>() { StatusCode = (int)HttpStatusCodesAndMessages.HttpStatus.InternalServerError, Result = false, Message = HttpStatusCodesAndMessages.HttpStatus.InternalServerError.GetDescriptionAttribute() });
+                return new JsonResult(new CustomResponse<Exception>() { StatusCode = (int)HttpStatusCodesAndMessages.HttpStatus.InternalServerError, Result = false, Message = SystemMessages.msgSomethingWentWrong });
             }
         }
 

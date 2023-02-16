@@ -6,21 +6,21 @@ namespace CIR.Application.Services.GlobalConfiguration
 {
     public class GlobalConfigurationReasonsService : IGlobalConfigurationReasonsService
     {
-        private readonly IGlobalConfigurationReasonsRepository _globalConfigurationReasonsRepository;
+        private readonly IGlobalConfigurationReasonsRepository globalConfigurationReasonsRepository;
 
-        public GlobalConfigurationReasonsService(IGlobalConfigurationReasonsRepository globalConfigurationReasonsRepository)
+        public GlobalConfigurationReasonsService(IGlobalConfigurationReasonsRepository iglobalConfigurationReasonsRepository)
         {
-            _globalConfigurationReasonsRepository = globalConfigurationReasonsRepository;
+            globalConfigurationReasonsRepository = iglobalConfigurationReasonsRepository;
         }
 
         public async Task<IActionResult> GetGlobalConfigurationReasons()
         {
-            return await _globalConfigurationReasonsRepository.GetGlobalConfigurationReasons();
+            return await globalConfigurationReasonsRepository.GetGlobalConfigurationReasons();
         }
 
         public async Task<IActionResult> CreateOrUpdateGlobalConfigurationReasons(List<GlobalConfigurationReason> globalConfigurationReasons)
         {
-            return await _globalConfigurationReasonsRepository.CreateOrUpdateGlobalConfigurationReasons(globalConfigurationReasons);
+            return await globalConfigurationReasonsRepository.CreateOrUpdateGlobalConfigurationReasons(globalConfigurationReasons);
         }
     }
 }

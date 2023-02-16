@@ -8,84 +8,82 @@ namespace CIR.Controllers.GlobalConfiguration
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class GlobalConfigurationEmailsController : ControllerBase
+    public class GlobalConfigurationFontsController : ControllerBase
     {
         #region PROPERTIES
-        private readonly IGlobalConfigurationEmailsService iGlobalConfigurationEmailsService;
+        private readonly IGlobalConfigurationFontsServices globalConfigurationFontsServices;
         #endregion
 
-        #region CONSTRUCTORS
-        public GlobalConfigurationEmailsController(IGlobalConfigurationEmailsService globalConfigurationEmailsService)
+        #region CONSTRUCTOR
+        public GlobalConfigurationFontsController(IGlobalConfigurationFontsServices globalConfigurationFontsServices)
         {
-            iGlobalConfigurationEmailsService = globalConfigurationEmailsService;
+            globalConfigurationFontsServices = globalConfigurationFontsServices;
         }
         #endregion
 
         #region METHODS
 
         /// <summary>
-        /// This method takes a get globalconfiguration email list
+        /// This method takes a get globalconfiguration fonts list
         /// </summary>
-        /// <param name="id"></param>
         /// <returns></returns>
-        [HttpGet("{cultureId}")]
-        public async Task<IActionResult> Get(int cultureId)
+        [HttpGet]
+        public async Task<IActionResult> Get()
         {
             try
             {
-                return await iGlobalConfigurationEmailsService.GetGlobalConfigurationEmailsDataList(cultureId);
+                return await globalConfigurationFontsServices.GetGlobalConfigurationFonts();
             }
-            catch
+            catch (Exception ex)
             {
                 return new JsonResult(new CustomResponse<Exception>() { StatusCode = (int)HttpStatusCodesAndMessages.HttpStatus.InternalServerError, Result = false, Message = SystemMessages.msgSomethingWentWrong });
             }
         }
 
         /// <summary>
-        /// This method takes a add globalconfiguration Emails
+        /// This method takes a create globalconfiguration fonts
         /// </summary>
-        /// <param name="globalConfigurationEmails"></param>
+        /// <param name="globalConfigurationFonts"></param>
         /// <returns></returns>
-        [HttpPost("[action]")]
-        public async Task<IActionResult> Create(List<GlobalConfigurationEmails> globalConfigurationEmails)
+        [HttpPost]
+        public async Task<IActionResult> Create(GlobalConfigurationFonts globalConfigurationFonts)
         {
             if (ModelState.IsValid)
             {
                 try
                 {
-                    return await iGlobalConfigurationEmailsService.CreateOrUpdateGlobalConfigurationEmails(globalConfigurationEmails);
+                    return await globalConfigurationFontsServices.CreateGlobalConfigurationFonts(globalConfigurationFonts);
                 }
-                catch
+                catch (Exception ex)
                 {
                     return new JsonResult(new CustomResponse<Exception>() { StatusCode = (int)HttpStatusCodesAndMessages.HttpStatus.InternalServerError, Result = false, Message = SystemMessages.msgSomethingWentWrong });
                 }
             }
             return new JsonResult(new CustomResponse<string>() { StatusCode = (int)HttpStatusCodesAndMessages.HttpStatus.BadRequest, Result = false, Message = SystemMessages.msgBadRequest });
-
         }
 
         /// <summary>
-        /// This method takes a update globalconfiguration Emails
+        /// This method takes a update globalconfiguration fonts
         /// </summary>
-        /// <param name="globalConfigurationEmails"></param>
+        /// <param name="globalConfigurationFonts"></param>
         /// <returns></returns>
-        [HttpPut("[action]")]
-        public async Task<IActionResult> Update(List<GlobalConfigurationEmails> globalConfigurationEmails)
+        [HttpPut]
+        public async Task<IActionResult> Update(List<GlobalConfigurationFonts> globalConfigurationFonts)
         {
             if (ModelState.IsValid)
             {
                 try
                 {
-                    return await iGlobalConfigurationEmailsService.CreateOrUpdateGlobalConfigurationEmails(globalConfigurationEmails);
+                    return await globalConfigurationFontsServices.UpdateGlobalConfigurationFonts(globalConfigurationFonts);
                 }
-                catch
+                catch (Exception ex)
                 {
                     return new JsonResult(new CustomResponse<Exception>() { StatusCode = (int)HttpStatusCodesAndMessages.HttpStatus.InternalServerError, Result = false, Message = SystemMessages.msgSomethingWentWrong });
                 }
             }
             return new JsonResult(new CustomResponse<string>() { StatusCode = (int)HttpStatusCodesAndMessages.HttpStatus.BadRequest, Result = false, Message = SystemMessages.msgBadRequest });
-
         }
+
         #endregion
     }
 }

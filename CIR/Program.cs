@@ -54,6 +54,8 @@ builder.Services.AddScoped<JwtGenerateToken>();
 builder.Services.AddScoped<EmailGeneration>();
 builder.Services.AddScoped<ThumbnailCreation>();
 builder.Services.AddScoped<CSVExport>();
+builder.Services.AddScoped<IGlobalConfigurationFontsServices, GlobalConfigurationFontsServices>();
+builder.Services.AddScoped<IGlobalConfigurationFontsRepository, GlobalConfigurationFontsRepository>();
 builder.Services.AddScoped<IGlobalConfigurationCurrenciesService, GlobalConfigurationCurrenciesService>();
 builder.Services.AddScoped<IGlobalConfigurationCurrenciesRepository, GlobalConfigurationCurrenciesRepository>();
 builder.Services.AddScoped<IGlobalConfigurationHolidaysService, GlobalConfigurationHolidaysService>();
@@ -62,6 +64,10 @@ builder.Services.AddScoped<IGlobalConfigurationEmailsService, GlobalConfiguratio
 builder.Services.AddScoped<IGlobalConfigurationEmailsRepository, GlobalConfigurationEmailsRepository>();
 builder.Services.AddScoped<ICommonRepository, CommonRepository>();
 builder.Services.AddScoped<ICommonService, CommonService>();
+builder.Services.AddScoped<IRolesService, RolesService>();
+builder.Services.AddScoped<IRolesRepository, RolesRepository>();
+builder.Services.AddScoped<IGlobalConfigurationCutOffTimesRepository, GlobalConfigurationCutOffTimesRepository>();
+builder.Services.AddScoped<IGlobalConfigurationCutOffTimesService, GlobalConfigurationCutOffTimesService>();
 builder.Services.AddScoped<IGlobalConfigurationReasonsService, GlobalConfigurationReasonsService>();
 builder.Services.AddScoped<IGlobalConfigurationReasonsRepository, GlobalConfigurationReasonsRepository>();
 

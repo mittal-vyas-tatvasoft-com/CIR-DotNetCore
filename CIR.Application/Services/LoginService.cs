@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CIR.Application.Services
 {
-    public class LoginService: ILoginService
+    public class LoginService : ILoginService
     {
         private readonly ILoginRepository loginRepository;
         public LoginService(ILoginRepository _loginRepository)
