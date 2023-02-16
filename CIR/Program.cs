@@ -84,6 +84,8 @@ builder.Services.AddScoped<ICommonRepository, CommonRepository>();
 builder.Services.AddScoped<ICommonService, CommonService>();
 builder.Services.AddScoped<IRolesService, RolesService>();
 builder.Services.AddScoped<IRolesRepository, RolesRepository>();
+builder.Services.AddScoped<IGlobalConfigurationCutOffTimesRepository,GlobalConfigurationCutOffTimesRepository>();
+builder.Services.AddScoped<IGlobalConfigurationCutOffTimesService, GlobalConfigurationCutOffTimesService>();
 
 
 //allow origin

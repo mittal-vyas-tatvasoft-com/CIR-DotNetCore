@@ -10,20 +10,16 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 
-CREATE PROCEDURE [dbo].[spGetAllCurrencies]
+CREATE PROCEDURE [dbo].[spGetGlobalConfigurationCutOffTimesByCountryId]( @CountryId bigint)
 
 AS
 BEGIN
-	
- SELECT Id, CodeName, Symbol FROM Currencies
-
+	SELECT TOP 1 * FROM GlobalConfigurationCutOffTimes where CountryId = @CountryId
 END
 GO
+-- spGetGlobalConfigurationCutOffTimesByCountryId End
 
--- spGetAllCurrencies End
-
--- spGetGlobalConfigurationCurrenciesByCountryId Start
-
+-- spCreateOrUpdateGlobalConfigurationCutOffTimes Start
 SET ANSI_NULLS ON
 GO
 
@@ -201,112 +197,19 @@ BEGIN
 	Delete from Holidays where Id = @Id
 END
 
+	Update Portal2GlobalConfigurationCutOffTimes 
+	Set CutOffTimeOverride = @CutOffTime,  
+    CutOffDayOverride = @CutOffDay
+	Where GlobalConfigurationCutOffTimeId = @Id
 
-
-/****** Object:  StoredProcedure [dbo].[spGetHolidayById]    Script Date: 08-02-2023 17:17:05 ******/
-SET ANSI_NULLS ON
+	SET @Result = 1;
+  
+   END  
+  
+ SELECT @Result  
+END 
 GO
-SET QUOTED_IDENTIFIER ON
-GO
-ALTER PROCEDURE [dbo].[spGetHolidayById]
-(
-	@Id bigint
-)
-AS
-BEGIN
-	select * from Holidays where Id = @Id;
-END
-
-
-
-/****** Object:  StoredProcedure [dbo].[spGetFilteredHolidays]    Script Date: 08-02-2023 17:17:50 ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-ALTER PROCEDURE [dbo].[spGetFilteredHolidays]
-(
-	@DisplayLength int,
-	@DisplayStart int,
-	@SortCol nvarchar(max)='',
-	@Search nvarchar(255) = '',	
-	@SortDir bit,
-	@CountryCodeId int,
-	@CountryNameId int
-)
-AS
-BEGIN
-	Declare @FirstRec int, @LastRec int
-    Set @FirstRec = @DisplayStart;
-    Set @LastRec = @DisplayStart + @DisplayLength;
-    Declare @SortDirection nvarchar(max);  
-	print(@SortDir);
-	IF(@SortDir = '1')
-	BEGIN
-		set @SortDirection = 'asc'
-	END
-	IF(@SortDir = '0')
-	BEGIN
-		set @SortDirection = 'desc'
-	END			
-	print(@SortDirection);
-	;With CTE_Holidays as
-    (
-		Select ROW_NUMBER() over (order by
-        
-         case when (@SortCol = 'CountryName' and @SortDirection='asc')
-             then C.CountryName
-         end asc,
-         case when (@SortCol = 'CountryName' and @SortDirection='desc')
-             then C.CountryName
-         end desc,
-        
-       case when (@SortCol = 'CountryCode' and @SortDirection='asc')
-             then C.Code
-         end asc,
-         case when (@SortCol = 'CountryCode' and @SortDirection='desc')
-             then C.Code
-         end desc,
-
-		 case when (@SortCol = 'Date' and @SortDirection='asc')
-             then H.[Date]
-         end asc,
-         case when (@SortCol = 'Date' and @SortDirection='desc')
-             then H.[Date]
-         end desc,
-
-		  case when (@SortCol = 'Description' and @SortDirection='asc')
-             then H.[Description]
-         end asc,
-         case when (@SortCol = 'Description' and @SortDirection='desc')
-             then H.[Description]
-         end desc
-        )
-		as RowNum,
-		 
-	      H.Id,H.CountryId,H.[Date],H.[Description],C.CountryName,C.Code CountryCode
-			from Holidays H
-		join CountryCodes C ON C.Id = H.CountryId
-		where 
-		H.CountryId = case when ISNULL(@CountryCodeId,0) = 0 then H.CountryId else @CountryCodeId END AND		 
-		H.CountryId = case when ISNULL(@CountryNameId,0) = 0 then H.CountryId else @CountryNameId END and
-		(@Search IS NULL
-                 Or H.[Description] like '%' + @Search + '%'                 
-				 Or C.CountryName like '%' + @Search + '%'
-				 Or C.Code like '%' + @Search + '%')
-)
-
-/****** Object:  StoredProcedure [dbo].[spGetAllRoles]    Script Date: 08-02-2023 17:34:50 ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
--- =============================================
--- Author:		<Gohil Amit>
--- Create date:  Script Date: 08-02-2023 14:20:10
--- Description:	<Description,,>
--- =============================================
-ALTER PROCEDURE [dbo].[spGetAllRoles]
+-- spCreateOrUpdateGlobalConfigurationCutOffTimes End
 
 as
 begin
@@ -650,3 +553,74 @@ AS
 BEGIN
 	select * from CountryCodes
 END
+
+-- GlobalCutOffTimes SP start
+
+-- spGetGlobalConfigurationCutOffTimesByCountryId start
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+
+CREATE PROCEDURE [dbo].[spGetGlobalConfigurationCutOffTimesByCountryId]( @CountryId bigint)
+
+AS
+BEGIN
+	SELECT TOP 1 * FROM GlobalConfigurationCutOffTimes where CountryId = @CountryId
+END
+GO
+-- spGetGlobalConfigurationCutOffTimesByCountryId end
+
+-- spCreateOrUpdateGlobalConfigurationCutOffTimes start
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+
+CREATE PROCEDURE [dbo].[spCreateOrUpdateGlobalConfigurationCutOffTimes]  
+(  
+ @Id bigint,  
+ @CountryId bigint,  
+ @CutOffTime time(7),  
+ @CutOffDay smallint  
+)  
+  
+AS  
+BEGIN  
+ Declare @Result bit = 0;  
+  
+ IF(@Id = 0 and exists(select 1 from CountryCodes where Id = @CountryId) and not exists(select 1 from GlobalConfigurationCutOffTimes where CountryId = @CountryId))  
+ BEGIN  
+   INSERT INTO GlobalConfigurationCutOffTimes(CountryId, CutOffTime, CutOffDay)  
+   VALUES (@CountryId, @CutOffTime, @CutOffDay)  
+  
+   SET @Result = 1;  
+  
+ END  
+ ELSE  
+  IF(exists(select 1 from CountryCodes where Id = @CountryId) and exists(select 1 from GlobalConfigurationCutOffTimes where CountryId = @CountryId))  
+   BEGIN  
+    UPDATE GlobalConfigurationCutOffTimes SET  
+    CountryId = @CountryId,  
+    CutOffTime = @CutOffTime,  
+    CutOffDay = @CutOffDay  
+    WHERE Id = @Id  
+
+	Update Portal2GlobalConfigurationCutOffTimes 
+	Set CutOffTimeOverride = @CutOffTime,  
+    CutOffDayOverride = @CutOffDay
+	Where GlobalConfigurationCutOffTimeId = @Id
+
+	SET @Result = 1;
+  
+   END  
+  
+ SELECT @Result  
+END 
+GO
+-- spCreateOrUpdateGlobalConfigurationCutOffTimes end
+-- GlobalCutOffTimes SP end
