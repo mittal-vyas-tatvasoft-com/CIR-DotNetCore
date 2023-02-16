@@ -84,6 +84,60 @@ GO
 
 -- #Global Configuration Currencies SP End
 
+--#Global Configuration Fields SP Start
+
+/****** Object:  StoredProcedure [dbo].[spCreateOrUpdateGlobalConfigurationFields]    Script Date: 15-02-2023 15:25:16 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE PROCEDURE [dbo].[spCreateOrUpdateGlobalConfigurationFields]
+@Id as bigint,
+@FieldTypeId as bigint,
+@Enabled as bit,
+@Required as bit
+AS
+BEGIN
+
+ IF (not exists(SELECT 1 FROM GlobalConfigurationFields WHERE Id = @Id))
+			BEGIN  
+			   INSERT INTO GlobalConfigurationFields(FieldTypeId,Enabled,Required)  
+			   VALUES (@FieldTypeId,@Enabled,@Required)
+			END
+
+		ELSE 
+			BEGIN
+				UPDATE GlobalConfigurationFields   
+				SET FieldTypeId = @FieldTypeId,  
+				Enabled = @Enabled,  
+				Required = @Required  
+				WHERE Id = @Id
+			END;
+
+END
+
+GO
+
+/****** Object:  StoredProcedure [dbo].[spGetGlobalConfigurationFields]    Script Date: 15-02-2023 15:26:35 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE PROCEDURE [dbo].[spGetGlobalConfigurationFields]
+AS
+BEGIN
+Select * from GlobalConfigurationFields 
+END
+
+GO
+
+--#Global Configuration Fields SP End
+
+
 
 -- spCreateOrUpdateGlobalConfigurationEmails Start
 CREATE PROCEDURE [dbo].[spCreateOrUpdateGlobalConfigurationEmails](
