@@ -15,9 +15,9 @@ namespace CIR.Controllers.GlobalConfiguration
         #endregion
 
         #region CONSTRUCTOR
-        public GlobalConfigurationFontsController(IGlobalConfigurationFontsServices globalConfigurationFontsServices)
+        public GlobalConfigurationFontsController(IGlobalConfigurationFontsServices _globalConfigurationFontsServices)
         {
-            globalConfigurationFontsServices = globalConfigurationFontsServices;
+            globalConfigurationFontsServices = _globalConfigurationFontsServices;
         }
         #endregion
 
