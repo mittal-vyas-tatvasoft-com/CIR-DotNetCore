@@ -53,7 +53,7 @@ namespace CIR.Data.Data.GlobalConfiguration
                     {
                         DynamicParameters parameters = new DynamicParameters();
                         parameters.Add("@CountryId", countryId);
-                        cutOffTime = await Task.FromResult(connection.Query<GlobalConfigurationCutOffTime>("spGetGlobalConfigurationCutOffTimesByCountryId", parameters, commandType: CommandType.StoredProcedure).ToList().FirstOrDefault());
+                        cutOffTime = await Task.FromResult(connection.Query<GlobalConfigurationCutOffTime>("spGetGlobalConfigurationCutOffTimesByCountryId", parameters, commandType: CommandType.StoredProcedure).FirstOrDefault());
                     }
                 }
                 if (cutOffTime != null)
@@ -88,9 +88,9 @@ namespace CIR.Data.Data.GlobalConfiguration
             {
                 if (commonRepository.IsStringNullorEmpty(globalConfigurationCutOffTimeModel.CutOffTime) || globalConfigurationCutOffTimeModel.CountryId == 0)
                 {
-                    return new JsonResult(new CustomResponse<string>() { StatusCode = (int)HttpStatusCodesAndMessages.HttpStatus.BadRequest, Result = false, Message = HttpStatusCodesAndMessages.HttpStatus.BadRequest.GetDescriptionAttribute(), Data = SystemMessages.msgEnterValidData });
+                    return new JsonResult(new CustomResponse<string>() { StatusCode = (int)HttpStatusCodesAndMessages.HttpStatus.BadRequest, Result = false, Message = SystemMessages.msgEnterValidData });
                 }
-                var result = 0;
+                var result = "";
                 using (DbConnection dbConnection = new DbConnection())
                 {
                     using (var connection = dbConnection.Connection)
@@ -101,21 +101,21 @@ namespace CIR.Data.Data.GlobalConfiguration
                         parameters.Add("@CutOffTime", globalConfigurationCutOffTimeModel.CutOffTime);
                         parameters.Add("@CutOffDay", globalConfigurationCutOffTimeModel.CutOffDay);
 
-                        result = (int)await Task.FromResult(connection.ExecuteScalar("spCreateOrUpdateGlobalConfigurationCutOffTimes", parameters, commandType: CommandType.StoredProcedure));
+                        result = Convert.ToString(await Task.FromResult(connection.ExecuteScalar("spCreateOrUpdateGlobalConfigurationCutOffTimes", parameters, commandType: CommandType.StoredProcedure)));
                     }
                 }
-                if (result != 0)
+                if (result != "False")
                 {
                     if (globalConfigurationCutOffTimeModel.Id > 0)
                     {
-                        return new JsonResult(new CustomResponse<string>() { StatusCode = (int)HttpStatusCodesAndMessages.HttpStatus.Success, Result = true, Message = HttpStatusCodesAndMessages.HttpStatus.Success.GetDescriptionAttribute(), Data = string.Format(SystemMessages.msgDataUpdatedSuccessfully, "GlobalConfiguration CutOffTimes") });
+                        return new JsonResult(new CustomResponse<string>() { StatusCode = (int)HttpStatusCodesAndMessages.HttpStatus.Saved, Result = true, Message = string.Format(SystemMessages.msgDataUpdatedSuccessfully, "GlobalConfiguration CutOffTimes") });
                     }
                     else
                     {
-                        return new JsonResult(new CustomResponse<string>() { StatusCode = (int)HttpStatusCodesAndMessages.HttpStatus.Success, Result = true, Message = HttpStatusCodesAndMessages.HttpStatus.Success.GetDescriptionAttribute(), Data = string.Format(SystemMessages.msgDataSavedSuccessfully, "GlobalConfiguration CutOffTimes") });
+                        return new JsonResult(new CustomResponse<string>() { StatusCode = (int)HttpStatusCodesAndMessages.HttpStatus.Saved, Result = true, Message = string.Format(SystemMessages.msgDataSavedSuccessfully, "GlobalConfiguration CutOffTimes") });
                     }
                 }
-                return new JsonResult(new CustomResponse<string>() { StatusCode = (int)HttpStatusCodesAndMessages.HttpStatus.UnprocessableEntity, Result = false, Message = HttpStatusCodesAndMessages.HttpStatus.UnprocessableEntity.GetDescriptionAttribute(), Data = SystemMessages.msgBadRequest });
+                return new JsonResult(new CustomResponse<string>() { StatusCode = (int)HttpStatusCodesAndMessages.HttpStatus.UnprocessableEntity, Result = false, Message = string.Format(SystemMessages.msgSavingDataError, "CutOffTimes") });
             }
             catch
             {
