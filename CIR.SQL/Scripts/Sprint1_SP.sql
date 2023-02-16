@@ -10,20 +10,16 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 
-CREATE PROCEDURE [dbo].[spGetAllCurrencies]
+CREATE PROCEDURE [dbo].[spGetGlobalConfigurationCutOffTimesByCountryId]( @CountryId bigint)
 
 AS
 BEGIN
-
- SELECT Id, CodeName, Symbol FROM Currencies
-
+	SELECT TOP 1 * FROM GlobalConfigurationCutOffTimes where CountryId = @CountryId
 END
 GO
+-- spGetGlobalConfigurationCutOffTimesByCountryId End
 
--- spGetAllCurrencies End
-
--- spGetGlobalConfigurationCurrenciesByCountryId Start
-
+-- spCreateOrUpdateGlobalConfigurationCutOffTimes Start
 SET ANSI_NULLS ON
 GO
 
@@ -87,23 +83,23 @@ GO
 
 -- spCreateOrUpdateGlobalConfigurationEmails Start
 CREATE PROCEDURE [dbo].[spCreateOrUpdateGlobalConfigurationEmails](
-                @FieldTypeId bigint,  
-                  @CultureId bigint,  
-                  @Content nvarchar(MAX),  
-                  @Subject nvarchar(255))  
-  
-AS  
-BEGIN  
- Declare @Result bit=0;  
+                @FieldTypeId bigint,
+                  @CultureId bigint,
+                  @Content nvarchar(MAX),
+                  @Subject nvarchar(255))
+
+AS
+BEGIN
+ Declare @Result bit=0;
   IF exists (select 1 from Cultures Where Id = @CultureId)
   Begin
 	if exists(select 1 from GlobalConfigurationEmails where CultureId = @CultureId AND FieldTypeId = @FieldTypeId)
 	Begin
-			UPDATE GlobalConfigurationEmails   
-			SET FieldTypeId = @FieldTypeId,  
-			CultureId = @CultureId,  
-			Content = @Content,  
-			Subject = @Subject  
+			UPDATE GlobalConfigurationEmails
+			SET FieldTypeId = @FieldTypeId,
+			CultureId = @CultureId,
+			Content = @Content,
+			Subject = @Subject
 			WHERE CultureId = @CultureId AND FieldTypeId = @FieldTypeId
 	End
 	else
@@ -112,8 +108,8 @@ BEGIN
 	End
 	 set @Result = 1
   End
-  SELECT @Result   
-END  
+  SELECT @Result
+END
 -- spCreateOrUpdateGlobalConfigurationEmails End
 
 
@@ -129,12 +125,12 @@ AS
 BEGIN
 	IF Exists(select 1 From GlobalConfigurationEmails where CultureId = @CultureId)
 		Begin
-			SELECT [Id],[FieldTypeId],[CultureId],[Content],[Subject] 
-			FROM GlobalConfigurationEmails WHERE CultureId = @CultureId	
+			SELECT [Id],[FieldTypeId],[CultureId],[Content],[Subject]
+			FROM GlobalConfigurationEmails WHERE CultureId = @CultureId
 		End
 	Else
 		Begin
-			SELECT [Id],[FieldTypeId],[CultureId],[Content],[Subject] 
+			SELECT [Id],[FieldTypeId],[CultureId],[Content],[Subject]
 			FROM GlobalConfigurationEmails WHERE CultureId = 1
 		End
 END
@@ -201,11 +197,19 @@ BEGIN
 	Delete from Holidays where Id = @Id
 END
 
+	Update Portal2GlobalConfigurationCutOffTimes
+	Set CutOffTimeOverride = @CutOffTime,
+    CutOffDayOverride = @CutOffDay
+	Where GlobalConfigurationCutOffTimeId = @Id
 
+	SET @Result = 1;
 
-/****** Object:  StoredProcedure [dbo].[spGetHolidayById]    Script Date: 08-02-2023 17:17:05 ******/
-SET ANSI_NULLS ON
+   END
+
+ SELECT @Result
+END
 GO
+
 SET QUOTED_IDENTIFIER ON
 GO
 ALTER PROCEDURE [dbo].[spGetHolidayById]
@@ -307,6 +311,7 @@ GO
 -- Description:	<Description,,>
 -- =============================================
 ALTER PROCEDURE [dbo].[spGetAllRoles]
+-- spCreateOrUpdateGlobalConfigurationCutOffTimes End
 
 as
 begin
@@ -702,3 +707,74 @@ AS
 BEGIN
 	select * from CountryCodes
 END
+
+-- GlobalCutOffTimes SP start
+
+-- spGetGlobalConfigurationCutOffTimesByCountryId start
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+
+CREATE PROCEDURE [dbo].[spGetGlobalConfigurationCutOffTimesByCountryId]( @CountryId bigint)
+
+AS
+BEGIN
+	SELECT TOP 1 * FROM GlobalConfigurationCutOffTimes where CountryId = @CountryId
+END
+GO
+-- spGetGlobalConfigurationCutOffTimesByCountryId end
+
+-- spCreateOrUpdateGlobalConfigurationCutOffTimes start
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+
+CREATE PROCEDURE [dbo].[spCreateOrUpdateGlobalConfigurationCutOffTimes]
+(
+ @Id bigint,
+ @CountryId bigint,
+ @CutOffTime time(7),
+ @CutOffDay smallint
+)
+
+AS
+BEGIN
+ Declare @Result bit = 0;
+
+ IF(@Id = 0 and exists(select 1 from CountryCodes where Id = @CountryId) and not exists(select 1 from GlobalConfigurationCutOffTimes where CountryId = @CountryId))
+ BEGIN
+   INSERT INTO GlobalConfigurationCutOffTimes(CountryId, CutOffTime, CutOffDay)
+   VALUES (@CountryId, @CutOffTime, @CutOffDay)
+
+   SET @Result = 1;
+
+ END
+ ELSE
+  IF(exists(select 1 from CountryCodes where Id = @CountryId) and exists(select 1 from GlobalConfigurationCutOffTimes where CountryId = @CountryId))
+   BEGIN
+    UPDATE GlobalConfigurationCutOffTimes SET
+    CountryId = @CountryId,
+    CutOffTime = @CutOffTime,
+    CutOffDay = @CutOffDay
+    WHERE Id = @Id
+
+	Update Portal2GlobalConfigurationCutOffTimes
+	Set CutOffTimeOverride = @CutOffTime,
+    CutOffDayOverride = @CutOffDay
+	Where GlobalConfigurationCutOffTimeId = @Id
+
+	SET @Result = 1;
+
+   END
+
+ SELECT @Result
+END
+GO
+-- spCreateOrUpdateGlobalConfigurationCutOffTimes end
+-- GlobalCutOffTimes SP end
