@@ -12,9 +12,9 @@ namespace CIR.Application.Services.GlobalConfiguration
     public class GlobalConfigurationFontsServices: IGlobalConfigurationFontsServices
     {
         private readonly IGlobalConfigurationFontsRepository globalConfigurationFontsRepository;
-        public GlobalConfigurationFontsServices(IGlobalConfigurationFontsRepository globalConfigurationFontsRepository)
+        public GlobalConfigurationFontsServices(IGlobalConfigurationFontsRepository _globalConfigurationFontsRepository)
         {
-            globalConfigurationFontsRepository = globalConfigurationFontsRepository;
+            globalConfigurationFontsRepository = _globalConfigurationFontsRepository;
         }
         public async Task<IActionResult> GetGlobalConfigurationFonts()
         {
