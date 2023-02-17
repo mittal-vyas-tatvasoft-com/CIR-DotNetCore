@@ -12,6 +12,11 @@ namespace CIR.Application.Services.Common
             this.commonRepository = commonRepository;
         }
 
+        public async Task<IActionResult> GetCurrencies()
+        {
+            return await commonRepository.GetCurrencies();
+        }
+
         public async Task<IActionResult> GetCountries()
         {
             return await commonRepository.GetCountries();
