@@ -1,8 +1,141 @@
 ﻿---------------------------------------------------------------------- Global Configuration SP Start -----------------------------------------------------------------------------
 
--- #Global Configuration Currencies SP Start
+---- #Global Configuration Currencies SP Start
 
--- spGetAllCurrencies Start
+-- Check currency exists or not SP start
+
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE PROCEDURE [dbo].[spCurrencyExists]
+(
+	@CodeName nvarchar(3)
+)
+AS
+BEGIN
+	Declare @Sql nvarchar(max);
+	Declare @Count int;	
+	Declare @Result nvarchar(max);
+
+	IF(@CodeName is not null AND @CodeName <> '')
+	BEGIN
+		Set @Sql = 'select @Count = Count(Id) from Currencies where CodeName = '''+@CodeName+'''';
+		exec sp_executeSql @Sql,N'@Count int out',@Count out		
+	END
+	set @Result = case when @Count > 0 then 'true' else 'false' end;
+	select @Result	
+END
+GO
+
+-- Check currency exists or not SP end
+
+-- Add new currency SP start
+
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE PROCEDURE [dbo].[spAddNewCurrency](
+                  @CodeName nvarchar(3),  
+                  @Symbol nvarchar(3)  )    
+AS  
+BEGIN  
+	BEGIN
+		 INSERT INTO Currencies(CodeName, Symbol)  
+			   VALUES (@CodeName, @Symbol); 
+	END;
+END; 
+GO
+
+-- Add new currency Sp end
+
+-- Create or Update global configuration currency SP start
+
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE PROCEDURE [dbo].[spCreateOrUpdateGlobalConfigurationCurrencies](  
+                  @CountryId bigint,  
+                  @CurrencyId bigint,  
+                  @Enabled bit)  
+  
+AS  
+BEGIN  
+	IF(exists(SELECT 1 FROM Currencies WHERE Id = @CurrencyId) and exists(SELECT 1 FROM CountryCodes WHERE Id = @CountryId))
+	BEGIN
+		 IF (not exists(SELECT 1 FROM GlobalConfigurationCurrencies WHERE CountryId = @CountryId and CurrencyId = @CurrencyId))
+			BEGIN  
+			   INSERT INTO GlobalConfigurationCurrencies(CountryId,CurrencyId,Enabled)  
+			   VALUES (@CountryId,@CurrencyId,@Enabled);  
+			END;  
+
+		ELSE 
+			BEGIN
+				UPDATE GlobalConfigurationCurrencies   
+				SET CountryId = @CountryId,  
+				CurrencyId = @CurrencyId,  
+				Enabled = @Enabled  
+				WHERE CountryId = @CountryId and CurrencyId = @CurrencyId;  
+			END;
+	END;
+END; 
+GO
+
+-- Create or Update global configuration currency SP end
+
+-- get lobal configuration currency countryId wise SP start
+
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE PROCEDURE [dbo].[spGetGlobalConfigurationCurrenciesByCountryId]
+(
+	@countryId int
+)
+
+AS
+	BEGIN
+
+		SELECT CountryId, CurrencyId, Enabled FROM GlobalConfigurationCurrencies WHERE CountryId=@countryId;
+
+	END;
+GO
+
+-- get lobal configuration currency countryId wise SP end
+
+-- get all currencies SP start
+
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE PROCEDURE [dbo].[spGetAllCurrencies]
+
+AS
+BEGIN
+	
+ SELECT Id, CodeName, Symbol FROM Currencies ORDER BY CodeName
+
+END
+GO
+
+-- get all currencies SP end
+
+---- #Global Configuration Currencies SP End
+
 
 SET ANSI_NULLS ON
 GO
@@ -20,65 +153,7 @@ GO
 -- spGetGlobalConfigurationCutOffTimesByCountryId End
 
 -- spCreateOrUpdateGlobalConfigurationCutOffTimes Start
-SET ANSI_NULLS ON
-GO
 
-SET QUOTED_IDENTIFIER ON
-GO
-
-CREATE PROCEDURE [dbo].[spGetGlobalConfigurationCurrenciesByCountryId]
-(
-	@countryId int
-)
-
-AS
-	BEGIN
-		   SELECT CountryId, CurrencyId, Enabled FROM GlobalConfigurationCurrencies WHERE CountryId=@countryId;
-	END;
-GO
-
-
--- spGetGlobalConfigurationCurrenciesByCountryId End
-
--- spCreateOrUpdateGlobalConfigurationCurrenciesc Start
-
-SET ANSI_NULLS ON
-GO
-
-SET QUOTED_IDENTIFIER ON
-GO
-
-CREATE PROCEDURE [dbo].[spCreateOrUpdateGlobalConfigurationCurrencies](@Id bigint,
-                  @CountryId bigint,
-                  @CurrencyId bigint,
-                  @Enabled bit)
-
-AS
-BEGIN
- IF(exists(SELECT 1 FROM Currencies WHERE Id = @CurrencyId) and exists(SELECT 1 FROM CountryCodes WHERE Id = @CountryId))
-	BEGIN
-		 IF (not exists(SELECT 1 FROM GlobalConfigurationCurrencies WHERE CountryId = @CountryId and CurrencyId = @CurrencyId))
-			BEGIN
-			   INSERT INTO GlobalConfigurationCurrencies(CountryId,CurrencyId,Enabled)
-			   VALUES (@CountryId,@CurrencyId,@Enabled);
-			END;
-
-		ELSE
-			BEGIN
-				UPDATE GlobalConfigurationCurrencies
-				SET CountryId = @CountryId,
-				CurrencyId = @CurrencyId,
-				Enabled = @Enabled
-				WHERE CountryId = @CountryId and CurrencyId = @CurrencyId;
-			END;
-	END;
-END;
-GO
-
--- spCreateOrUpdateGlobalConfigurationCurrenciesc End
-
-
--- #Global Configuration Currencies SP End
 
 --#Global Configuration Fields SP Start
 
