@@ -1,6 +1,7 @@
 ﻿using CIR.Common.Data;
 using CIR.Common.Enums;
 using CIR.Common.Helper;
+using CIR.Core.Entities.GlobalConfiguration;
 using CIR.Core.Interfaces.GlobalConfiguration;
 using CIR.Core.ViewModel.GlobalConfiguration;
 using Dapper;
@@ -32,7 +33,7 @@ namespace CIR.Data.Data.GlobalConfiguration
         /// <summary>
         /// This method used by getcurrency List countryid wise
         /// </summary>
-        /// <param name="countryId"></param>
+        /// <param name="countryId">Id of a available country</param>
         /// <returns>list of currencies country Id wise</returns>
         public async Task<IActionResult> GetGlobalConfigurationCurrenciesCountryWise(int countryId)
         {
@@ -65,7 +66,7 @@ namespace CIR.Data.Data.GlobalConfiguration
         /// <summary>
         /// This method is used by create method and update method of globalcurrency controller
         /// </summary>
-        /// <param name="globalConfigurationCurrencyModels"></param>
+        /// <param name="globalConfigurationCurrencyModels">this object contains different parameters as details of a list of globalcurrencies</param>
         /// <returns>Success status if input is valid else failure status</returns>
 
         public async Task<IActionResult> CreateOrUpdateGlobalConfigurationCurrencies(List<GlobalConfigurationCurrencyModel> globalConfigurationCurrencyModels)
@@ -106,6 +107,63 @@ namespace CIR.Data.Data.GlobalConfiguration
                 return new JsonResult(new CustomResponse<Exception>() { StatusCode = (int)HttpStatusCodesAndMessages.HttpStatus.InternalServerError, Result = false, Message = SystemMessages.msgSomethingWentWrong });
             }
         }
+
+        /// <summary>
+        /// This method is used in add new currency method of controller to check if input currency already exists or not
+        /// </summary>
+        /// <param name="codeName">name of a currency</param>
+        /// <returns>returns true if currency exists else returns false</returns>
+        public async Task<Boolean> CurrencyExists(string codeName)
+        {
+            var result = false;
+            using (DbConnection dbConnection = new DbConnection())
+            {
+                using (var connection = dbConnection.Connection)
+                {
+                    DynamicParameters parameters = new DynamicParameters();
+                    parameters.Add("@CodeName", codeName);
+                    result = await Task.FromResult(Convert.ToBoolean(connection.ExecuteScalar("spCurrencyExists", parameters, commandType: CommandType.StoredProcedure)));
+                }
+                return result;
+            }
+        }
+
+        /// <summary>
+        /// This method is used by add new currency method of controller to add new currency if not available
+        /// </summary>
+        /// <param name="currency">this object containes currency code name and symbol as parameter</param>
+        /// <returns>>Success status if input is valid else failure status</returns>
+        public async Task<IActionResult> AddNewCurrency(Currency currency)
+        {
+            try
+            {
+                if (!String.IsNullOrEmpty(currency.CodeName) && !String.IsNullOrEmpty(currency.Symbol))
+                {
+                    var result = 0;
+                    using (DbConnection dbConnection = new DbConnection())
+                    {
+                        using (var connection = dbConnection.Connection)
+                        {
+                            DynamicParameters parameters = new DynamicParameters();
+                            parameters.Add("@CodeName", currency.CodeName);
+                            parameters.Add("@Symbol", currency.Symbol);
+
+                            result = await Task.FromResult(connection.Execute("spAddNewCurrency", parameters, commandType: CommandType.StoredProcedure));
+                        }
+                    }
+                    if (result == 1)
+                    {
+                        return new JsonResult(new CustomResponse<string>() { StatusCode = (int)HttpStatusCodesAndMessages.HttpStatus.Saved, Result = true, Message = string.Format(SystemMessages.msgDataSavedSuccessfully, "Currency") });
+                    }
+                }
+                return new JsonResult(new CustomResponse<string>() { StatusCode = (int)HttpStatusCodesAndMessages.HttpStatus.BadRequest, Result = false, Message = SystemMessages.msgBadRequest });
+            }
+            catch
+            {
+                return new JsonResult(new CustomResponse<Exception>() { StatusCode = (int)HttpStatusCodesAndMessages.HttpStatus.InternalServerError, Result = false, Message = SystemMessages.msgSomethingWentWrong });
+            }
+        }
+
         #endregion
 
 

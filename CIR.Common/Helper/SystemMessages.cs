@@ -20,6 +20,10 @@
         public static string msgDeleteDataError = "An error occurred while deleting {0}.";
         #endregion
 
+        #region GlobalConfigurationCurrencies
+        public static string invalidCurrencyCodeName = "Invalid currency code name, it should contain exact 3 letters ";
+        #endregion
+
         #region GlobalConfigurationHolidays
         public static string msgSelectXlsxOrCSVFile = "Select only .xlsx or .csv file.";
         #endregion
