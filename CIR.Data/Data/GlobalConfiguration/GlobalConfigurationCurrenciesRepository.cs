@@ -31,7 +31,7 @@ namespace CIR.Data.Data.GlobalConfiguration
         #region METHODS
 
         /// <summary>
-        /// This method used by getcurrency List countryid wise
+        /// This method is used by get currency List by countryId method in contoller
         /// </summary>
         /// <param name="countryId">Id of a available country</param>
         /// <returns>list of currencies country Id wise</returns>
