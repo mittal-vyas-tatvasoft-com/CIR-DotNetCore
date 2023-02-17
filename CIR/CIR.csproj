@@ -29,7 +29,6 @@
 
   <ItemGroup>
     <Folder Include="Controllers\Users\" />
-    <Folder Include="Controllers\GlobalConfiguration\" />
   </ItemGroup>
 
 </Project>

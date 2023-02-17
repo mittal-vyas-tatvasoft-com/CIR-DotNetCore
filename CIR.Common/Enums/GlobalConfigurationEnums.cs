@@ -49,5 +49,15 @@
             TelePhoneNumber = 4,
             State = 5
         }
+        public enum GlobalConfigurationMessages
+        {
+            WelcomeMessage = 0,
+            FinalMessage = 1,
+            RefundMessage = 2,
+            MaintenanceModeMessage = 3,
+            ReturnDetailsMessage = 4,
+            TrackingWelcomeMessage = 5,
+            PrintLabelWelcomeMessage = 6
+        }
     }
 }
