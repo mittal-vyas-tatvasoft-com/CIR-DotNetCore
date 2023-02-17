@@ -4,6 +4,7 @@ using CIR.Common.Helper;
 using CIR.Core.Entities;
 using CIR.Core.Entities.GlobalConfiguration;
 using CIR.Core.Interfaces.Common;
+using CIR.Core.ViewModel.GlobalConfiguration;
 using Dapper;
 using Microsoft.AspNetCore.Mvc;
 using System.Data;
@@ -29,6 +30,35 @@ namespace CIR.Data.Data.Common
         #endregion
 
         #region METHODS
+
+        /// <summary>
+        /// This method is used by get all currencies list method in controller
+        /// </summary>
+        /// <returns>returns list of all available currencies</returns>
+        public async Task<IActionResult> GetCurrencies()
+        {
+            try
+            {
+                List<Currency> currenciesList;
+                using (DbConnection dbConnection = new DbConnection())
+                {
+                    using (var connection = dbConnection.Connection)
+                    {
+                        currenciesList = await Task.FromResult(connection.Query<Currency>("spGetAllCurrencies", null, commandType: CommandType.StoredProcedure).ToList());
+                    }
+                }
+
+                if (currenciesList.Count == 0)
+                {
+                    return new JsonResult(new CustomResponse<string>() { StatusCode = (int)HttpStatusCodesAndMessages.HttpStatus.NotFound, Result = false, Message = string.Format(SystemMessages.msgNotFound, "Currencies") });
+                }
+                return new JsonResult(new CustomResponse<List<Currency>>() { StatusCode = (int)HttpStatusCodesAndMessages.HttpStatus.Success, Result = true, Message = HttpStatusCodesAndMessages.HttpStatus.Success.GetDescriptionAttribute(), Data = currenciesList });
+            }
+            catch 
+            {
+                return new JsonResult(new CustomResponse<Exception>() { StatusCode = (int)HttpStatusCodesAndMessages.HttpStatus.InternalServerError, Result = false, Message = SystemMessages.msgSomethingWentWrong });
+            }
+        }
 
         /// <summary>
         /// This method returns the list of Countries
