@@ -29,7 +29,12 @@
 
   <ItemGroup>
     <Folder Include="Controllers\Users\" />
-    <Folder Include="Controllers\GlobalConfiguration\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="CIR.Core">
+      <HintPath>..\CIR.Core\obj\Debug\net7.0\ref\CIR.Core.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>
