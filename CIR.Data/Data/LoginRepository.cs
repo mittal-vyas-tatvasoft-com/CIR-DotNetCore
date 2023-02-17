@@ -108,7 +108,7 @@ namespace CIR.Data.Data
                     return new JsonResult(new CustomResponse<string>() { StatusCode = (int)HttpStatusCodesAndMessages.HttpStatus.BadRequest, Result = false, Message = SystemMessages.msgInvalidUserNameOrPassword });
                 }
             }
-            catch (Exception ex)
+            catch
             {
                 return new JsonResult(new CustomResponse<Exception>() { StatusCode = (int)HttpStatusCodesAndMessages.HttpStatus.InternalServerError, Result = false, Message = SystemMessages.msgSomethingWentWrong });
             }
@@ -149,15 +149,15 @@ namespace CIR.Data.Data
                             string mailBody = EmailGeneration.ForgotPasswordTemplate(user);
                             emailGeneration.SendMail(forgotPasswordModel.UserName, mailSubject, mailBody);
 
-                            return new JsonResult(new CustomResponse<string>() { StatusCode = (int)HttpStatusCodesAndMessages.HttpStatus.Success, Result = true, Message = SystemMessages.msgSendNewPasswordOnMail  });
+                            return new JsonResult(new CustomResponse<string>() { StatusCode = (int)HttpStatusCodesAndMessages.HttpStatus.Success, Result = true, Message = SystemMessages.msgSendNewPasswordOnMail });
                         }
                     }
                     return new JsonResult(new CustomResponse<string>() { StatusCode = (int)HttpStatusCodesAndMessages.HttpStatus.NotFound, Result = false, Message = SystemMessages.msgEnterValidUserName });
                 }
             }
-            catch (Exception ex)
+            catch
             {
-                return new JsonResult(new CustomResponse<Exception>() { StatusCode = (int)HttpStatusCodesAndMessages.HttpStatus.InternalServerError, Result = false, Message = SystemMessages.msgSomethingWentWrong});
+                return new JsonResult(new CustomResponse<Exception>() { StatusCode = (int)HttpStatusCodesAndMessages.HttpStatus.InternalServerError, Result = false, Message = SystemMessages.msgSomethingWentWrong });
             }
         }
 
@@ -195,7 +195,7 @@ namespace CIR.Data.Data
                                 return new JsonResult(new CustomResponse<string>() { StatusCode = (int)HttpStatusCodesAndMessages.HttpStatus.Saved, Result = true, Message = SystemMessages.msgPasswordChangedSuccessfully });
                             }
                         }
-                        return new JsonResult(new CustomResponse<string>() { StatusCode = (int)HttpStatusCodesAndMessages.HttpStatus.NotFound, Result = false, Message = SystemMessages.msgIncorrectOldPassword  });
+                        return new JsonResult(new CustomResponse<string>() { StatusCode = (int)HttpStatusCodesAndMessages.HttpStatus.NotFound, Result = false, Message = SystemMessages.msgIncorrectOldPassword });
                     }
                     else
                     {
@@ -203,7 +203,7 @@ namespace CIR.Data.Data
                     }
                 }
             }
-            catch (Exception ex)
+            catch
             {
                 return new JsonResult(new CustomResponse<Exception>() { StatusCode = (int)HttpStatusCodesAndMessages.HttpStatus.InternalServerError, Result = false, Message = SystemMessages.msgSomethingWentWrong });
             }
