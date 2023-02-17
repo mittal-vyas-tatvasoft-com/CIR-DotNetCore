@@ -1,5 +1,6 @@
 ﻿using CIR.Common.Enums;
 using CIR.Common.Helper;
+using CIR.Core.Entities.GlobalConfiguration;
 using CIR.Core.Interfaces.GlobalConfiguration;
 using CIR.Core.ViewModel.GlobalConfiguration;
 using Microsoft.AspNetCore.Mvc;
@@ -28,9 +29,9 @@ namespace CIR.Controllers.GlobalConfiguration
         #region METHODS
 
         /// <summary>
-        /// This method takes get global currency country wise
+        /// This method takes country Id as input and gives currencies available in that country
         /// </summary>
-        /// <param name="countryId">this object contains countryId</param>
+        /// <param name="countryId">Id of a available country</param>
         /// <returns>list of currencies country Id wise</returns>
         [HttpGet("{countryId}")]
         public async Task<IActionResult> GetGlobalConfigurationCurrenciesCountryWise(int countryId)
@@ -46,31 +47,9 @@ namespace CIR.Controllers.GlobalConfiguration
         }
 
         /// <summary>
-        /// This method takes add global currency
+        /// This method updates global currency
         /// </summary>
-        /// <param name="globalConfigurationCurrencyModels">this object contains different parameters as details of a globalcurrency</param>
-        /// <returns>Success status if input is valid else failure status</returns>
-        [HttpPost("[action]")]
-        public async Task<IActionResult> Create(List<GlobalConfigurationCurrencyModel> globalConfigurationCurrencyModels)
-        {
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    return await globalConfigurationCurrenciesService.CreateOrUpdateGlobalConfigurationCurrencies(globalConfigurationCurrencyModels);
-                }
-                catch 
-                {
-                    return new JsonResult(new CustomResponse<Exception>() { StatusCode = (int)HttpStatusCodesAndMessages.HttpStatus.InternalServerError, Result = false, Message = SystemMessages.msgSomethingWentWrong });
-                }
-            }
-            return new JsonResult(new CustomResponse<string>() { StatusCode = (int)HttpStatusCodesAndMessages.HttpStatus.BadRequest, Result = false, Message = SystemMessages.msgBadRequest });
-        }
-
-        /// <summary>
-        /// This method takes update global currency
-        /// </summary>
-        /// <param name="globalConfigurationCurrencyModels">this object contains different parameters as details of a globalcurrency</param>
+        /// <param name="globalConfigurationCurrencyModels">this object contains different parameters as details of a list of globalcurrencies</param>
         /// <returns>Success status if input is valid else failure status</returns>
         [HttpPut("[action]")]
         public async Task<IActionResult> Update(List<GlobalConfigurationCurrencyModel> globalConfigurationCurrencyModels)
@@ -88,8 +67,42 @@ namespace CIR.Controllers.GlobalConfiguration
             }
             return new JsonResult(new CustomResponse<string>() { StatusCode = (int)HttpStatusCodesAndMessages.HttpStatus.BadRequest, Result = false, Message = SystemMessages.msgBadRequest });
         }
-        #endregion
 
+        /// <summary>
+        /// This method adds new currency 
+        /// </summary>
+        /// <param name="currency">this object containes currency code name and symbol as parameter</param>
+        /// <returns>Success status if input is valid else failure status </returns>
+        [HttpPost("[action]")]
+        public async Task<IActionResult> AddNewCurrency(Currency currency)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    if (currency.CodeName.Length == 3)
+                    {
+                        var isExist = await globalConfigurationCurrenciesService.CurrencyExists(currency.CodeName);
+                        if (isExist)
+                        {
+                            return new JsonResult(new CustomResponse<string>() { StatusCode = (int)HttpStatusCodesAndMessages.HttpStatus.BadRequest, Result = false, Message = string.Format(SystemMessages.msgDataExists, "Currency") });
+                        }
+                        else
+                        {
+                            return await globalConfigurationCurrenciesService.AddNewCurrency(currency);
+                        }
+                    }
+                    return new JsonResult(new CustomResponse<string>() { StatusCode = (int)HttpStatusCodesAndMessages.HttpStatus.BadRequest, Result = false, Message = SystemMessages.invalidCurrencyCodeName });
+                }
+                catch
+                {
+                    return new JsonResult(new CustomResponse<Exception>() { StatusCode = (int)HttpStatusCodesAndMessages.HttpStatus.InternalServerError, Result = false, Message = SystemMessages.msgSomethingWentWrong });
+                }
+            }
+            return new JsonResult(new CustomResponse<string>() { StatusCode = (int)HttpStatusCodesAndMessages.HttpStatus.BadRequest, Result = false, Message = SystemMessages.msgBadRequest });
+        }
+
+        #endregion
 
     }
 }
