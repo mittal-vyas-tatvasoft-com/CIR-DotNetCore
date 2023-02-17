@@ -636,7 +636,7 @@ GO
 
 CREATE PROCEDURE [spLogin] (
 	@userName NVARCHAR(50)
-	,@password NVARCHAR(25)
+	,@password NVARCHAR(255)
 	)
 AS
 BEGIN
@@ -664,7 +664,7 @@ GO
 
 CREATE PROCEDURE [dbo].[spResetLoginAttempts] (
 	@userName NVARCHAR(50)
-	,@password NVARCHAR(25)
+	,@password NVARCHAR(255)
 	)
 AS
 BEGIN
@@ -687,8 +687,8 @@ GO
 
 CREATE PROCEDURE [dbo].[spResetPassword]
 (
-@UserName nvarchar(20),
-@Password nvarchar(20),
+@UserName nvarchar(50),
+@Password nvarchar(255),
 @ResetRequired bit
 )
 AS
