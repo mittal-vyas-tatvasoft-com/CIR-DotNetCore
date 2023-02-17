@@ -24,6 +24,7 @@ namespace CIR.Common.Data
             get;
             set;
         }
+        public DbSet<GlobalConfigurationCutOffTime> GlobalConfigurationCutOffTimes { get; set; }
         public DbSet<Holidays> Holidays { get; set; }
 
 

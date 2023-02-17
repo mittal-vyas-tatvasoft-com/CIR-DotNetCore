@@ -86,6 +86,18 @@ namespace CIR.Data.Data.Common
             }
         }
 
+        /// <summary>
+        /// This method used by check Is StringNullorEmpty
+        /// </summary>
+        /// <returns></returns>
+        public Boolean IsStringNullorEmpty(string value)
+        {
+            if (value == null || value == string.Empty)
+                return true;
+            else
+                return false;
+        }
+
         #endregion
     }
 }
