@@ -6,5 +6,6 @@ namespace CIR.Core.Interfaces.Common
     {
         Task<IActionResult> GetCountries();
         Task<IActionResult> GetCultures();
+        Task<IActionResult> GetCurrencies();
     }
 }

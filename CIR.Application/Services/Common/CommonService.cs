@@ -20,5 +20,9 @@ namespace CIR.Application.Services.Common
         {
             return await commonRepository.GetCultures();
         }
+        public async Task<IActionResult> GetCurrencies()
+        {
+            return await commonRepository.GetCurrencies();
+        }
     }
 }

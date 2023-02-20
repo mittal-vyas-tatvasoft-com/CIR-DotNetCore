@@ -87,6 +87,34 @@ namespace CIR.Data.Data.Common
         }
 
         /// <summary>
+        /// This method used by get currencies list
+        /// </summary>
+        /// <returns></returns>
+        public async Task<IActionResult> GetCurrencies()
+        {
+            try
+            {
+                List<Currency> currenciesList = new List<Currency>();
+                using (DbConnection dbConnection = new DbConnection())
+                {
+                    using (var connection = dbConnection.Connection)
+                    {
+                        currenciesList = (await Task.FromResult(connection.Query<Currency>("spGetCurrencies", null, commandType: CommandType.StoredProcedure))).ToList();
+                    }
+                }
+                if (currenciesList.Count == 0)
+                {
+                    return new JsonResult(new CustomResponse<List<Currency>>() { StatusCode = (int)HttpStatusCodesAndMessages.HttpStatus.NotFound, Result = false, Message = string.Format(SystemMessages.msgDataNotExists, "Currencies") });
+                }
+                return new JsonResult(new CustomResponse<List<Currency>>() { StatusCode = (int)HttpStatusCodesAndMessages.HttpStatus.Success, Result = true, Message = HttpStatusCodesAndMessages.HttpStatus.Success.GetDescriptionAttribute(), Data = currenciesList });
+            }
+            catch
+            {
+                return new JsonResult(new CustomResponse<Exception>() { StatusCode = (int)HttpStatusCodesAndMessages.HttpStatus.InternalServerError, Result = false, Message = SystemMessages.msgSomethingWentWrong });
+            }
+        }
+
+        /// <summary>
         /// This method used by check Is StringNullorEmpty
         /// </summary>
         /// <returns></returns>

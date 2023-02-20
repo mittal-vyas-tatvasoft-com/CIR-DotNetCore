@@ -60,6 +60,22 @@ namespace CIR.Controllers.Common
             }
         }
 
+        /// <summary>
+        /// This method get a currencies list
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("GetCurrencies")]
+        public async Task<IActionResult> GetCurrencies()
+        {
+            try
+            {
+                return await commonService.GetCurrencies();
+            }
+            catch
+            {
+                return new JsonResult(new CustomResponse<Exception>() { StatusCode = (int)HttpStatusCodesAndMessages.HttpStatus.InternalServerError, Result = false, Message = SystemMessages.msgSomethingWentWrong });
+            }
+        }
         #endregion
 
     }
