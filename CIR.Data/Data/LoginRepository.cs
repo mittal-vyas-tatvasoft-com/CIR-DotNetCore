@@ -145,6 +145,10 @@ namespace CIR.Data.Data
 
                         if (result == 1)
                         {
+                            parameters = new DynamicParameters();
+                            parameters.Add("@userName", forgotPasswordModel.UserName);
+                            user = await Task.FromResult(connection.Query<User>("spGetUserDataForLogin", parameters, commandType: CommandType.StoredProcedure).FirstOrDefault());
+
                             string mailSubject = EmailGeneration.ForgotPasswordSubject();
                             string mailBody = EmailGeneration.ForgotPasswordTemplate(user);
                             emailGeneration.SendMail(forgotPasswordModel.UserName, mailSubject, mailBody);
