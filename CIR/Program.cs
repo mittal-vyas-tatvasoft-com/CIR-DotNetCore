@@ -13,7 +13,6 @@ using CIR.Core.Interfaces.Users;
 using CIR.Data.Data;
 using CIR.Data.Data.Common;
 using CIR.Data.Data.GlobalConfiguration;
-using CIR.Data.Data.GlobalConfiguration;
 using CIR.Data.Data.Users;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
