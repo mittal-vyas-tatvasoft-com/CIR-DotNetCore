@@ -1,6 +1,7 @@
 ﻿using CIR.Common.Data;
 using CIR.Common.Enums;
 using CIR.Common.Helper;
+using CIR.Common.Helper.EmailTemplates;
 using CIR.Core.Entities.Users;
 using CIR.Core.Interfaces;
 using CIR.Core.ViewModel;
@@ -150,7 +151,7 @@ namespace CIR.Data.Data
                             user = await Task.FromResult(connection.Query<User>("spGetUserDataForLogin", parameters, commandType: CommandType.StoredProcedure).FirstOrDefault());
 
                             string mailSubject = EmailGeneration.ForgotPasswordSubject();
-                            string mailBody = EmailGeneration.ForgotPasswordTemplate(user);
+                            string mailBody = ForgotPasswordTemplates.ForgotPasswordTemplate(user);
                             emailGeneration.SendMail(forgotPasswordModel.UserName, mailSubject, mailBody);
 
                             return new JsonResult(new CustomResponse<string>() { StatusCode = (int)HttpStatusCodesAndMessages.HttpStatus.Success, Result = true, Message = SystemMessages.msgSendNewPasswordOnMail });

@@ -1,16 +1,12 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace CIR.Core.Entities.Users
+﻿namespace CIR.Core.ViewModel.Users
 {
-	public partial class User
+	public class UserModel
 	{
 		public long Id { get; set; }
 
 		public string UserName { get; set; } = null!;
-		[RegularExpression(@"^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$", ErrorMessage = "Your password must be at least 8 characters long, contain at least one number and have a mixture of uppercase and lowercase letters")]
 		public string Password { get; set; } = null!;
 
-		[EmailAddress(ErrorMessage = "Please Enter Valid Email Address")]
 		public string? Email { get; set; }
 
 		public long? SalutationLookupItemId { get; set; }
@@ -18,8 +14,10 @@ namespace CIR.Core.Entities.Users
 		public string FirstName { get; set; } = null!;
 
 		public string LastName { get; set; } = null!;
+		public string FullName { get; set; }
 
 		public long RoleId { get; set; }
+		public string RoleName { get; set; }
 
 		public bool Enabled { get; set; }
 
@@ -36,10 +34,11 @@ namespace CIR.Core.Entities.Users
 		public string TimeZone { get; set; } = null!;
 
 		public long CultureLcid { get; set; }
+		public string CultureDisplayName { get; set; }
+		public string CultureNativeName { get; set; }
 
 		public string? EmployeeId { get; set; }
 
-		[RegularExpression(@"^(\d{10})$", ErrorMessage = "Please Enter Valid Phone Number")]
 		public string? PhoneNumber { get; set; }
 
 		public DateTime? ScheduledActiveChange { get; set; }
@@ -49,5 +48,6 @@ namespace CIR.Core.Entities.Users
 		public string? CompanyName { get; set; }
 
 		public long? PortalThemeId { get; set; }
+		public int TotalCount { get; set; }
 	}
 }
