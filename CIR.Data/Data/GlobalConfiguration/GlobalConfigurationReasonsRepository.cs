@@ -106,3 +106,4 @@ namespace CIR.Data.Data.GlobalConfiguration
         #endregion
     }
 }
+
