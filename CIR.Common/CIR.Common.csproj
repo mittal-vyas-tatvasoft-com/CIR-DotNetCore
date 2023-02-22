@@ -27,6 +27,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\CIR.Application\CIR.Application.csproj" />
+    <ProjectReference Include="..\CIR.Core\CIR.Core.csproj" />
   </ItemGroup>
 
 </Project>
