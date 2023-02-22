@@ -636,7 +636,7 @@ GO
 
 CREATE PROCEDURE [spLogin] (
 	@userName NVARCHAR(50)
-	,@password NVARCHAR(25)
+	,@password NVARCHAR(255)
 	)
 AS
 BEGIN
@@ -664,7 +664,7 @@ GO
 
 CREATE PROCEDURE [dbo].[spResetLoginAttempts] (
 	@userName NVARCHAR(50)
-	,@password NVARCHAR(25)
+	,@password NVARCHAR(255)
 	)
 AS
 BEGIN
@@ -687,8 +687,8 @@ GO
 
 CREATE PROCEDURE [dbo].[spResetPassword]
 (
-@UserName nvarchar(20),
-@Password nvarchar(20),
+@UserName nvarchar(50),
+@Password nvarchar(255),
 @ResetRequired bit
 )
 AS
@@ -907,46 +907,83 @@ END
 GO
 -- spCreateOrUpdateGlobalConfigurationCutOffTimes end
 -- GlobalCutOffTimes SP end
-END
-END    internal class Sprint1_SP
-    {
-    }
-}
-Go
+
+
+
+
+--spGetGlobalConfigurationMessagesListByCultureId Start
+
+/****** Object:  StoredProcedure [dbo].[spGetGlobalConfigurationMessagesListByCultureId]    Script Date: 15-02-2023 18:20:36 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
 -- =============================================
--- Author:		<Bansari Bhatt>
--- Create date:  Script Date: 09-02-2023 12:24:45
+-- Author:		<Author,,Name>
+-- Create date: <Create Date,,>
 -- Description:	<Description,,>
+-- Last UpdatedBy: <>
 -- =============================================
-CREATE PROCEDURE spGetGlobalConfigurationReasons  
+
+ALTER PROCEDURE [dbo].[spGetGlobalConfigurationMessagesListByCultureId]
+(
+	@CultureId int
+)
+as
+BEGIN
+
+	select GCM.Id,GCM.[Type],GCM.Content,GCM.CultureId,C.[Name] CultureName from GlobalConfigurationMessages GCM
+	join Cultures C ON C.Id = GCM.CultureId
+	where GCM.CultureId = @CultureId
+
+END
+
+--spGetGlobalConfigurationMessagesListByCultureId End
+
+--spCreateOrUpdateGlobalConfigurationMessages Start
+
+/****** Object:  StoredProcedure [dbo].[spCreateOrUpdateGlobalConfigurationMessages]    Script Date: 15-02-2023 18:03:27 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+-- =============================================
+-- Author:		<Author,,Name>
+-- Create date: <Create Date,,>
+-- Description:	<Description,,>
+-- Last UpdatedBy: <>
+-- =============================================
+
+CREATE PROCEDURE [dbo].[spCreateOrUpdateGlobalConfigurationMessages]
+(  
+ @Id int,  
+ @Type nvarchar(max),  
+ @Content nvarchar(max),  
+ @CultureId int  
+)  
+  
 AS  
 BEGIN  
- select * from GlobalConfigurationReasons  
-END
-Go;
-CREATE PROCEDURE spCreateOrUpdateGlobalConfigurationReasons(@Id bigint,    
-               @Type smallint,    
-               @Enabled bit,    
-               @Content nvarchar(255))    
-AS    
-BEGIN    
- IF @Id = 0    
-  BEGIN    
-   INSERT INTO GlobalConfigurationReasons(Type,Enabled,Content)    
-   VALUES (@Type,@Enabled,@Content)    
-  END    
-    
- IF @Id > 0    
-  BEGIN    
-   UPDATE GlobalConfigurationReasons     
-   SET Type = @Type,    
-    Enabled = @Enabled,    
-    Content = @Content    
-   WHERE Id = @Id   
-     
-   Update Portal2GlobalConfigurationReasons  
-   Set  Enabled = @Enabled,  
-  ContentOverride = @Content  
-  Where GlobalConfigurationReasonId = @Id  
-  END    
-END ;
+ IF(@Id = 0)  
+ BEGIN  
+   INSERT INTO GlobalConfigurationMessages([Type],Content,CultureId)  
+   VALUES (@Type,@Content,@CultureId)  
+ END;  
+ ELSE  
+  BEGIN  
+   UPDATE GlobalConfigurationMessages SET  
+   Type = @Type,  
+   Content = @Content,  
+   CultureId = @CultureId     
+   WHERE Id = @Id  
+
+   Update Portal2GlobalConfigurationMessages 
+   Set ValueOverride = @Content
+   where GlobalConfigurationMessageId =@Id
+
+  END;  
+END;
+
+--spCreateOrUpdateGlobalConfigurationMessages End

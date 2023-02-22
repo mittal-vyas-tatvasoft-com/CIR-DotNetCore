@@ -27,6 +27,23 @@ namespace CIR.Controllers.Common
         #region METHODS
 
         /// <summary>
+        /// This method is used to get list of all available currencies
+        /// </summary>
+        /// <returns>returns list of all available currencies</returns>
+        [HttpGet("[action]")]
+        public async Task<IActionResult> GetCurrencies()
+        {
+            try
+            {
+                return await commonService.GetCurrencies();
+            }
+            catch
+            {
+                return new JsonResult(new CustomResponse<Exception>() { StatusCode = (int)HttpStatusCodesAndMessages.HttpStatus.InternalServerError, Result = false, Message = SystemMessages.msgSomethingWentWrong });
+            }
+        }
+
+        /// <summary>
         /// This method returns the list of countries
         /// </summary>
         /// <returns></returns>

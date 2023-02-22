@@ -54,7 +54,7 @@ namespace CIR.Controllers
                 {
                     return await loginService.ForgotPassword(forgotPasswordModel);
                 }
-                catch (Exception ex)
+                catch
                 {
                     return new JsonResult(new CustomResponse<Exception>() { StatusCode = (int)HttpStatusCodesAndMessages.HttpStatus.InternalServerError, Result = false, Message = SystemMessages.msgSomethingWentWrong });
                 }
@@ -76,7 +76,7 @@ namespace CIR.Controllers
                 {
                     return await loginService.ResetPassword(resetPasswordModel);
                 }
-                catch (Exception ex)
+                catch
                 {
                     return new JsonResult(new CustomResponse<Exception>() { StatusCode = (int)HttpStatusCodesAndMessages.HttpStatus.InternalServerError, Result = false, Message = SystemMessages.msgSomethingWentWrong });
                 }
