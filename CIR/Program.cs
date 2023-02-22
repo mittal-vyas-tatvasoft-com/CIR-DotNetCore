@@ -1,5 +1,25 @@
+using CIR.Application.Services;
+using CIR.Application.Services.Common;
+using CIR.Application.Services.GlobalConfiguration;
+using CIR.Application.Services.Users;
+using CIR.Common.CommonModels;
+using CIR.Common.Data;
+using CIR.Common.EmailGeneration;
+using CIR.Common.Helper;
+using CIR.Core.Interfaces;
+using CIR.Core.Interfaces.Common;
+using CIR.Core.Interfaces.GlobalConfiguration;
+using CIR.Core.Interfaces.Users;
+using CIR.Data.Data;
+using CIR.Data.Data.Common;
+using CIR.Data.Data.GlobalConfiguration;
+using CIR.Data.Data.GlobalConfiguration;
+using CIR.Data.Data.Users;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using System.Text;
-
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
