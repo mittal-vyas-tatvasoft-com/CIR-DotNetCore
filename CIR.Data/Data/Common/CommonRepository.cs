@@ -29,6 +29,7 @@ namespace CIR.Data.Data.Common
 
         #endregion
 
+
         #region METHODS
 
         /// <summary>
@@ -54,7 +55,7 @@ namespace CIR.Data.Data.Common
                 }
                 return new JsonResult(new CustomResponse<List<Currency>>() { StatusCode = (int)HttpStatusCodesAndMessages.HttpStatus.Success, Result = true, Message = HttpStatusCodesAndMessages.HttpStatus.Success.GetDescriptionAttribute(), Data = currenciesList });
             }
-            catch 
+            catch
             {
                 return new JsonResult(new CustomResponse<Exception>() { StatusCode = (int)HttpStatusCodesAndMessages.HttpStatus.InternalServerError, Result = false, Message = SystemMessages.msgSomethingWentWrong });
             }
