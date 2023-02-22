@@ -109,7 +109,7 @@ namespace CIR.Data.Data
                     return new JsonResult(new CustomResponse<string>() { StatusCode = (int)HttpStatusCodesAndMessages.HttpStatus.BadRequest, Result = false, Message = SystemMessages.msgInvalidUserNameOrPassword });
                 }
             }
-            catch (Exception ex)
+            catch
             {
                 return new JsonResult(new CustomResponse<Exception>() { StatusCode = (int)HttpStatusCodesAndMessages.HttpStatus.InternalServerError, Result = false, Message = SystemMessages.msgSomethingWentWrong });
             }
@@ -146,6 +146,10 @@ namespace CIR.Data.Data
 
                         if (result == 1)
                         {
+                            parameters = new DynamicParameters();
+                            parameters.Add("@userName", forgotPasswordModel.UserName);
+                            user = await Task.FromResult(connection.Query<User>("spGetUserDataForLogin", parameters, commandType: CommandType.StoredProcedure).FirstOrDefault());
+
                             string mailSubject = EmailGeneration.ForgotPasswordSubject();
                             string mailBody = ForgotPasswordTemplates.ForgotPasswordTemplate(user);
                             emailGeneration.SendMail(forgotPasswordModel.UserName, mailSubject, mailBody);
@@ -156,7 +160,7 @@ namespace CIR.Data.Data
                     return new JsonResult(new CustomResponse<string>() { StatusCode = (int)HttpStatusCodesAndMessages.HttpStatus.NotFound, Result = false, Message = SystemMessages.msgEnterValidUserName });
                 }
             }
-            catch (Exception ex)
+            catch
             {
                 return new JsonResult(new CustomResponse<Exception>() { StatusCode = (int)HttpStatusCodesAndMessages.HttpStatus.InternalServerError, Result = false, Message = SystemMessages.msgSomethingWentWrong });
             }
@@ -204,7 +208,7 @@ namespace CIR.Data.Data
                     }
                 }
             }
-            catch (Exception ex)
+            catch
             {
                 return new JsonResult(new CustomResponse<Exception>() { StatusCode = (int)HttpStatusCodesAndMessages.HttpStatus.InternalServerError, Result = false, Message = SystemMessages.msgSomethingWentWrong });
             }

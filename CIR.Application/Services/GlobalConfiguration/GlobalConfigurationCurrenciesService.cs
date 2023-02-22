@@ -2,11 +2,6 @@
 using CIR.Core.Interfaces.GlobalConfiguration;
 using CIR.Core.ViewModel.GlobalConfiguration;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CIR.Application.Services.GlobalConfiguration
 {
@@ -26,6 +21,16 @@ namespace CIR.Application.Services.GlobalConfiguration
         public async Task<IActionResult> CreateOrUpdateGlobalConfigurationCurrencies(List<GlobalConfigurationCurrencyModel> globalConfigurationCurrencyModels)
         {
             return await globalConfigurationCurrenciesRepository.CreateOrUpdateGlobalConfigurationCurrencies(globalConfigurationCurrencyModels);
+        }
+
+        public async Task<Boolean> CurrencyExists(string codeName)
+        {
+            return await globalConfigurationCurrenciesRepository.CurrencyExists(codeName);
+        }
+
+        public async Task<IActionResult> AddNewCurrency(Currency currency)
+        {
+            return await globalConfigurationCurrenciesRepository.AddNewCurrency(currency);
         }
     }
 }

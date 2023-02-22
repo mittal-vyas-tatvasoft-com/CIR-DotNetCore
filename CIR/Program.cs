@@ -1,23 +1,3 @@
-using CIR.Application.Services;
-using CIR.Application.Services.Common;
-using CIR.Application.Services.GlobalConfiguration;
-using CIR.Application.Services.Users;
-using CIR.Common.CommonModels;
-using CIR.Common.Data;
-using CIR.Common.EmailGeneration;
-using CIR.Common.Helper;
-using CIR.Core.Interfaces;
-using CIR.Core.Interfaces.Common;
-using CIR.Core.Interfaces.GlobalConfiguration;
-using CIR.Core.Interfaces.Users;
-using CIR.Data.Data;
-using CIR.Data.Data.Common;
-using CIR.Data.Data.GlobalConfiguration;
-using CIR.Data.Data.Users;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
-using Microsoft.OpenApi.Models;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -76,6 +56,8 @@ builder.Services.AddScoped<ThumbnailCreation>();
 builder.Services.AddScoped<CSVExport>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IGlobalConfigurationFontsServices, GlobalConfigurationFontsServices>();
+builder.Services.AddScoped<IGlobalConfigurationFontsRepository, GlobalConfigurationFontsRepository>();
 builder.Services.AddScoped<IGlobalConfigurationCurrenciesService, GlobalConfigurationCurrenciesService>();
 builder.Services.AddScoped<IGlobalConfigurationCurrenciesRepository, GlobalConfigurationCurrenciesRepository>();
 builder.Services.AddScoped<IGlobalConfigurationHolidaysService, GlobalConfigurationHolidaysService>();
@@ -84,6 +66,12 @@ builder.Services.AddScoped<IGlobalConfigurationEmailsService, GlobalConfiguratio
 builder.Services.AddScoped<IGlobalConfigurationEmailsRepository, GlobalConfigurationEmailsRepository>();
 builder.Services.AddScoped<ICommonRepository, CommonRepository>();
 builder.Services.AddScoped<ICommonService, CommonService>();
+builder.Services.AddScoped<IRolesService, RolesService>();
+builder.Services.AddScoped<IRolesRepository, RolesRepository>();
+builder.Services.AddScoped<IGlobalConfigurationCutOffTimesRepository, GlobalConfigurationCutOffTimesRepository>();
+builder.Services.AddScoped<IGlobalConfigurationCutOffTimesService, GlobalConfigurationCutOffTimesService>();
+builder.Services.AddScoped<IGlobalConfigurationMessagesService, GlobalConfigurationMessagesService>();
+builder.Services.AddScoped<IGlobalConfigurationMessagesRepository, GlobalConfigurationMessagesRepository>();
 
 
 //allow origin

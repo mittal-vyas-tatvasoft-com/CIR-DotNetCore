@@ -41,5 +41,23 @@
             Return = 2,
             ProductType = 3
         }
+        public enum Fields
+        {
+            AddressLine2 = 1,
+            Postcode = 2,
+            MobileNumber = 3,
+            TelePhoneNumber = 4,
+            State = 5
+        }
+        public enum GlobalConfigurationMessages
+        {
+            WelcomeMessage = 0,
+            FinalMessage = 1,
+            RefundMessage = 2,
+            MaintenanceModeMessage = 3,
+            ReturnDetailsMessage = 4,
+            TrackingWelcomeMessage = 5,
+            PrintLabelWelcomeMessage = 6
+        }
     }
 }
