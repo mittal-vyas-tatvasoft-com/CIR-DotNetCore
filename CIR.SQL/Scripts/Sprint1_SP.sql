@@ -626,6 +626,231 @@ BEGIN
 END
 END
 
+
+---------------------------------------------------------------------- USER SP STARTED -----------------------------------------------------------------------------
+--- SP spGetUserIdWise START
+
+/****** Object:  StoredProcedure [dbo].[spGetUserIdWise]    Script Date: 10-02-2023 03:34:11 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- =============================================
+-- Author:		<Author,,Name>
+-- Create date: <Create Date,,>
+-- Description:	<Description,,>
+-- =============================================
+ALTER PROCEDURE [dbo].[spGetUserIdWise](@id integer)
+AS
+BEGIN
+	SELECT * FROM Users WHERE Id = @id;
+END
+--- SP spGetUserIdWise END
+
+
+--- SP spAddUpdateUsers START
+/****** Object:  StoredProcedure [dbo].[spAddUpdateUsers]    Script Date: 10-02-2023 03:36:52 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+ALTER PROCEDURE [dbo].[spAddUpdateUsers] 
+(	
+  @Id int,
+  @UserName nvarchar(max),
+  @Password nvarchar(max),
+  @Email nvarchar(max),
+  @SalutationLookupItemId int,
+  @FirstName nvarchar(max),
+  @LastName nvarchar(max),
+  @RoleId int,
+  @Enabled bit,    
+  @ResetRequired bit,
+  @DefaultAdminUser bit,
+  @TimeZone nvarchar(max),
+  @CultureLcid int,
+  @EmployeeId nvarchar(max),
+  @PhoneNumber nvarchar(max),
+  @ScheduledActiveChange datetime,
+  @LoginAttempts int,
+  @CompanyName nvarchar(max),
+  @PortalThemeId int
+)	
+AS
+BEGIN	
+	Declare @Messsage nvarchar(max)='Error in user in sql';
+	IF(@Id = '0')
+	BEGIN
+		Insert into [Users]
+		(UserName,[Password],Email,SalutationLookupItemId,FirstName,LastName,RoleId,[Enabled],LastLogOn,CreatedOn,ResetRequired,
+		DefaultAdminUser,TimeZone,CultureLCId,EmployeeId,PhoneNumber,ScheduledActiveChange,LoginAttempts,CompanyName,PortalThemeId) 
+		Values
+		(@UserName,@Password,@Email,@SalutationLookupItemId,@FirstName,@LastName,@RoleId,@Enabled,GETDATE(),GetDate(),@ResetRequired
+		,@DefaultAdminUser,@TimeZone,@CultureLcid,@EmployeeId,@PhoneNumber,@ScheduledActiveChange,@LoginAttempts,@CompanyName,@PortalThemeId);
+
+		SET @Messsage = 'UserDetail saved successfully.';
+	END
+	ELSE
+	BEGIN
+		Update [Users] set
+		UserName = @UserName,
+		[Password] = @Password,
+		Email = @Email,
+		SalutationLookupItemId = @SalutationLookupItemId,
+		FirstName = @FirstName,
+		LastName = @LastName,
+		RoleId = @RoleId,
+		[Enabled] = @Enabled,
+		LastEditedOn = GETDATE(),
+		ResetRequired = @ResetRequired,
+		DefaultAdminUser = @DefaultAdminUser,
+		TimeZone = @TimeZone,
+		CultureLCId = @CultureLcid,
+		EmployeeId = @EmployeeId,
+		PhoneNumber = @PhoneNumber,
+		ScheduledActiveChange = @ScheduledActiveChange,
+		LoginAttempts = @LoginAttempts,
+		CompanyName = @CompanyName,
+		PortalThemeId = @PortalThemeId		
+		where Id = @Id;
+
+		SET @Messsage = 'UserDetail updated successfully.';
+	END
+	SELECT @Messsage	
+END
+--- SP spAddUpdateUsers END
+
+-- SP spDeleteUser START
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+ALTER PROCEDURE [dbo].[spDeleteUser]
+(
+	@Id int
+)
+AS
+BEGIN
+	update Users set
+	Enabled = 0
+	where Id = @Id
+END
+-- SP spDeleteUser END
+
+--- SP spGetFilteredUsersList START
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+ALTER proc [dbo].[spGetFilteredUsersList]
+@DisplayLength int,
+@DisplayStart int,
+@SortCol nvarchar(max),
+@Search nvarchar(255) = '',
+@SortDir nvarchar(10),
+@RoleId int,
+@Enabled bit
+as
+
+begin
+    Declare @FirstRec int, @LastRec int
+    Set @FirstRec = @DisplayStart;
+    Set @LastRec = @DisplayStart + @DisplayLength;
+    Declare @SortDirection nvarchar(max);  
+
+	IF(@SortDir IS NULL OR @SortDir = '')
+	BEGIN
+		set @SortDirection = 'asc'
+	END
+	ELSE
+	BEGIN
+		set @SortDirection = @SortDir
+	END			
+	
+    ;With CTE_Users as
+    (
+         Select ROW_NUMBER() over (order by
+        
+         case when (@SortCol = 'UserName' and @SortDir='asc')
+             then U.UserName
+         end asc,
+         case when (@SortCol = 'UserName' and @SortDir='desc')
+             then U.UserName
+         end desc,
+        
+       case when (@SortCol = 'Email' and @SortDir='asc')
+             then U.Email
+         end asc,
+         case when (@SortCol = 'Email' and @SortDir='desc')
+             then U.Email
+         end desc,
+
+		 case when (@SortCol = 'RoleName' and @SortDir='asc')
+             then R.[Name]
+         end asc,
+         case when (@SortCol = 'RoleName' and @SortDir='desc')
+             then R.[Name]
+         end desc,
+   
+		case when (@SortCol = 'FullName' and @SortDir='asc')
+            then U.FirstName
+        end asc,
+        case when (@SortCol = 'FullName' and @SortDir='desc')
+            then U.FirstName
+        end desc,
+
+		case when (@SortCol = 'CreatedOn' and @SortDir='asc')
+            then U.CreatedOn
+        end asc,
+        case when (@SortCol = 'CreatedOn' and @SortDir='desc')
+            then U.CreatedOn
+        end desc
+        )
+         as RowNum,
+         COUNT(*) over() as TotalCount,
+         U.Id,U.UserName,U.[Password],U.Email,U.SalutationLookupItemId,U.FirstName,U.LastName,(U.FirstName+' '+U.LastName) As FullName
+		,U.RoleId,R.[Name] RoleName,
+		U.Enabled,U.LastLogOn,U.CreatedOn,U.LastEditedOn,U.ResetRequired,U.DefaultAdminUser,U.TimeZone
+		,U.CultureLCId,C.DisplayName CultureDisplayName,C.NativeName CultureNativeName 
+		,U.EmployeeId,U.PhoneNumber,U.ScheduledActiveChange,U.LoginAttempts,U.CompanyName,U.PortalThemeId
+		from Users U
+		join Roles R ON R.Id = U.RoleId
+		join Cultures C ON C.Id = U.CultureLCId
+         where
+		 U.RoleId = case when ISNULL(@RoleId,0) = 0 then U.RoleId else @RoleId END AND		 
+		 U.[Enabled] = case when @Enabled = 'true' then 1 when @Enabled = 'false' then 0 else  U.[Enabled] END AND
+		 (@Search IS NULL
+                 Or U.UserName like '%' + @Search + '%'
+                 Or U.FirstName like '%' + @Search + '%'
+				 Or U.LastName like '%' + @Search + '%'
+				 Or R.[Name] like '%' + @Search + '%'				 
+				 Or U.[Enabled] = (case when @Search = 'true' then  1 when @Search = 'false' then 0 end)
+                 Or U.Email like '%' + @Search + '%')		
+    )	
+	Select * from CTE_Users where RowNum > @FirstRec and RowNum <= @LastRec order by @SortCol+' '+@SortDirection;END
+
+--- SP spGetFilteredUsersList END
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+---------------------------------------------------------------------- USER SP END ---------------------------------------------------------------------------------
+
 ----------------------------------------------------------------------------- spLogin Start ---------------------------------------------------------------------------------------
 
 SET ANSI_NULLS ON
