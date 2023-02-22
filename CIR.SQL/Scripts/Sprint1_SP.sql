@@ -427,7 +427,7 @@ BEGIN
                  Or H.[Description] like '%' + @Search + '%'
 				 Or C.CountryName like '%' + @Search + '%'
 				 Or C.Code like '%' + @Search + '%')
-)
+) 
 
 /****** Object:  StoredProcedure [dbo].[spGetAllRoles]    Script Date: 08-02-2023 17:34:50 ******/
 SET ANSI_NULLS ON
