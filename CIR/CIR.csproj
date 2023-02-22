@@ -31,10 +31,10 @@
     <Folder Include="Controllers\Users\" />
   </ItemGroup>
 
-  <ItemGroup>
+  <!--<ItemGroup>
     <Reference Include="CIR.Core">
       <HintPath>..\CIR.Core\obj\Debug\net7.0\ref\CIR.Core.dll</HintPath>
     </Reference>
-  </ItemGroup>
+  </ItemGroup>-->
 
 </Project>
