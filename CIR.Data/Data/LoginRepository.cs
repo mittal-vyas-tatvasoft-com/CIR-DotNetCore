@@ -135,9 +135,7 @@ namespace CIR.Data.Data
 
                     if (user != null)
                     {
-                        string randomString = SystemConfig.randomString;
-                        string newPassword = new StringCreator(randomString).Get(8);
-
+                        string newPassword = GenerateRandomString();
                         parameters = new DynamicParameters();
                         parameters.Add("@userName", forgotPasswordModel.UserName);
                         parameters.Add("@password", newPassword);
@@ -212,6 +210,36 @@ namespace CIR.Data.Data
             {
                 return new JsonResult(new CustomResponse<Exception>() { StatusCode = (int)HttpStatusCodesAndMessages.HttpStatus.InternalServerError, Result = false, Message = SystemMessages.msgSomethingWentWrong });
             }
+        }
+        private string GenerateRandomString()
+        {
+            var capitalLatter = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+            var number = "0123456789";
+            var smallLatter = "abcdefghijklmnopqrstuvwxyz";
+            var specialCharacter = "!@$%&*";
+            var stringChars = new char[8];
+            var random = new Random();
+
+            for (int i = 0; i < 2; i++)
+            {
+                stringChars[i] = capitalLatter[random.Next(capitalLatter.Length)];
+            }
+            for (int i = 2; i < 3; i++)
+            {
+                stringChars[i] = specialCharacter[random.Next(specialCharacter.Length)];
+            }
+            for (int i = 3; i < 7; i++)
+            {
+                stringChars[i] = smallLatter[random.Next(smallLatter.Length)];
+            }
+            for (int i = 7; i < 8; i++)
+            {
+                stringChars[i] = number[random.Next(number.Length)];
+            }
+
+            var randomString = new String(stringChars);
+            return randomString;
+
         }
         #endregion
     }
