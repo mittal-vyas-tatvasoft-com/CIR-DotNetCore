@@ -2,6 +2,7 @@ using CIR.Application.Services;
 using CIR.Application.Services.Common;
 using CIR.Application.Services.GlobalConfiguration;
 using CIR.Application.Services.Users;
+using CIR.Application.Services.Utilities;
 using CIR.Common.CommonModels;
 using CIR.Common.Data;
 using CIR.Common.EmailGeneration;
@@ -10,10 +11,12 @@ using CIR.Core.Interfaces;
 using CIR.Core.Interfaces.Common;
 using CIR.Core.Interfaces.GlobalConfiguration;
 using CIR.Core.Interfaces.Users;
+using CIR.Core.Interfaces.Utilities;
 using CIR.Data.Data;
 using CIR.Data.Data.Common;
 using CIR.Data.Data.GlobalConfiguration;
 using CIR.Data.Data.Users;
+using CIR.Data.Data.Utilities;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -99,6 +102,8 @@ builder.Services.AddScoped<IGlobalConfigurationStylesRepository, GlobalConfigura
 
 builder.Services.AddScoped<IGlobalConfigurationFieldsRepository, GlobalConfigurationFieldsRepository>();
 builder.Services.AddScoped<IGlobalConfigurationFieldsService, GlobalConfigurationFieldsService>();
+builder.Services.AddScoped<ISystemSettingsLookupsService, SystemSettingsLookupsService>();
+builder.Services.AddScoped<ISystemSettingsLookupsRepository, SystemSettingsLookupsRepository>();
 
 
 //allow origin
