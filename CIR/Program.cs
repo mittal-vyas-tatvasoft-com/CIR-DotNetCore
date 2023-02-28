@@ -94,6 +94,11 @@ builder.Services.AddScoped<IGlobalConfigurationMessagesService, GlobalConfigurat
 builder.Services.AddScoped<IGlobalConfigurationMessagesRepository, GlobalConfigurationMessagesRepository>();
 builder.Services.AddScoped<IGlobalConfigurationReasonsService, GlobalConfigurationReasonsService>();
 builder.Services.AddScoped<IGlobalConfigurationReasonsRepository, GlobalConfigurationReasonsRepository>();
+builder.Services.AddScoped<IGlobalConfigurationStylesService, GlobalConfigurationStylesService>();
+builder.Services.AddScoped<IGlobalConfigurationStylesRepository, GlobalConfigurationStylesRepository>();
+
+builder.Services.AddScoped<IGlobalConfigurationFieldsRepository, GlobalConfigurationFieldsRepository>();
+builder.Services.AddScoped<IGlobalConfigurationFieldsService, GlobalConfigurationFieldsService>();
 
 
 //allow origin
