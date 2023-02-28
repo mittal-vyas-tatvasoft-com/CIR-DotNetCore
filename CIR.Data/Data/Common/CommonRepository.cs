@@ -1,8 +1,8 @@
 ﻿using CIR.Common.Data;
 using CIR.Common.Enums;
 using CIR.Common.Helper;
-using CIR.Core.Entities;
 using CIR.Core.Entities.GlobalConfiguration;
+using CIR.Core.Entities.Utilities;
 using CIR.Core.Interfaces.Common;
 using CIR.Core.ViewModel.GlobalConfiguration;
 using Dapper;

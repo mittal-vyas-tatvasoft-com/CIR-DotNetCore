@@ -1,4 +1,4 @@
-﻿namespace CIR.Core.Entities
+﻿namespace CIR.Core.Entities.Utilities
 {
     public partial class Culture
     {
