@@ -2,6 +2,7 @@ using CIR.Application.Services;
 using CIR.Application.Services.Common;
 using CIR.Application.Services.GlobalConfiguration;
 using CIR.Application.Services.Users;
+using CIR.Application.Services.Utilities;
 using CIR.Common.CommonModels;
 using CIR.Common.Data;
 using CIR.Common.EmailGeneration;
@@ -10,15 +11,18 @@ using CIR.Core.Interfaces;
 using CIR.Core.Interfaces.Common;
 using CIR.Core.Interfaces.GlobalConfiguration;
 using CIR.Core.Interfaces.Users;
+using CIR.Core.Interfaces.Utilities;
 using CIR.Data.Data;
 using CIR.Data.Data.Common;
 using CIR.Data.Data.GlobalConfiguration;
 using CIR.Data.Data.Users;
+using CIR.Data.Data.Utilities;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -96,10 +100,10 @@ builder.Services.AddScoped<IGlobalConfigurationReasonsService, GlobalConfigurati
 builder.Services.AddScoped<IGlobalConfigurationReasonsRepository, GlobalConfigurationReasonsRepository>();
 builder.Services.AddScoped<IGlobalConfigurationStylesService, GlobalConfigurationStylesService>();
 builder.Services.AddScoped<IGlobalConfigurationStylesRepository, GlobalConfigurationStylesRepository>();
-
 builder.Services.AddScoped<IGlobalConfigurationFieldsRepository, GlobalConfigurationFieldsRepository>();
 builder.Services.AddScoped<IGlobalConfigurationFieldsService, GlobalConfigurationFieldsService>();
-
+builder.Services.AddScoped<ISystemSettingsLanguagesService, SystemSettingsLanguagesService>();
+builder.Services.AddScoped<ISystemSettingsLanguagesRepository, SystemSettingsLanguagesRepository>();
 
 //allow origin
 builder.Services.AddCors(options => options.AddDefaultPolicy(builder => builder.AllowAnyOrigin()
