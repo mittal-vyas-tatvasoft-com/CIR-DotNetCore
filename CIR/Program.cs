@@ -95,6 +95,9 @@ builder.Services.AddScoped<IGlobalConfigurationMessagesRepository, GlobalConfigu
 builder.Services.AddScoped<IGlobalConfigurationReasonsService, GlobalConfigurationReasonsService>();
 builder.Services.AddScoped<IGlobalConfigurationReasonsRepository, GlobalConfigurationReasonsRepository>();
 
+builder.Services.AddScoped<IGlobalConfigurationFieldsRepository, GlobalConfigurationFieldsRepository>();
+builder.Services.AddScoped<IGlobalConfigurationFieldsService, GlobalConfigurationFieldsService>();
+
 
 //allow origin
 builder.Services.AddCors(options => options.AddDefaultPolicy(builder => builder.AllowAnyOrigin()
