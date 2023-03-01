@@ -99,7 +99,8 @@ builder.Services.AddScoped<IGlobalConfigurationStylesRepository, GlobalConfigura
 
 builder.Services.AddScoped<IGlobalConfigurationFieldsRepository, GlobalConfigurationFieldsRepository>();
 builder.Services.AddScoped<IGlobalConfigurationFieldsService, GlobalConfigurationFieldsService>();
-
+builder.Services.AddScoped<IGlobalConfigurationWeekendRepository,GlobalConfigurationWeekendRepository>();
+builder.Services.AddScoped<IGlobalConfigurationWeekendService, GlobalConfigurationWeekendService>();
 
 //allow origin
 builder.Services.AddCors(options => options.AddDefaultPolicy(builder => builder.AllowAnyOrigin()

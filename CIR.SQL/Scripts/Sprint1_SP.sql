@@ -1212,3 +1212,152 @@ BEGIN
 END;
 
 --spCreateOrUpdateGlobalConfigurationMessages End
+
+-- GlobalConfigurationWeeknds SP Start
+
+--spGetFilteredWeekends start
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE PROCEDURE [dbo].[spGetFilteredWeekends]
+(
+	@DisplayLength int,
+	@DisplayStart int,
+	@SortCol nvarchar(max)='',
+	@Search nvarchar(255) = '',	
+	@SortDir bit,
+	@CountryCodeId int,
+	@CountryNameId int
+)
+AS
+BEGIN
+	Declare @FirstRec int, @LastRec int
+    Set @FirstRec = @DisplayStart;
+    Set @LastRec = @DisplayStart + @DisplayLength;
+    Declare @SortDirection nvarchar(max);  
+	IF(@SortDir = '1')
+	BEGIN
+		set @SortDirection = 'asc'
+	END
+	IF(@SortDir = '0')
+	BEGIN
+		set @SortDirection = 'desc'
+	END			
+	;With CTE_GlobalConfigurationWeekends as
+    (
+		Select ROW_NUMBER() over (order by
+
+         case when (@SortCol = 'CountryName' and @SortDirection='asc')
+             then C.CountryName
+         end asc,
+         case when (@SortCol = 'CountryName' and @SortDirection='desc')
+             then C.CountryName
+         end desc,
+
+         case when (@SortCol = 'CountryCode' and @SortDirection='asc')
+             then C.Code
+         end asc,
+         case when (@SortCol = 'CountryCode' and @SortDirection='desc')
+             then C.Code
+         end desc,
+
+		 case when (@SortCol = 'DayOfWeek' and @SortDirection='asc')
+             then W.DayOfWeekId
+         end asc,
+         case when (@SortCol = 'DayOfWeek' and @SortDirection='desc')
+             then W.DayOfWeekId
+         end desc
+        )
+		as RowNum,
+	    W.Id,W.CountryId,W.DayOfWeekId,C.CountryName,C.Code CountryCode from GlobalConfigurationWeekends W
+		JOIN CountryCodes C ON C.Id = W.CountryId
+		where 
+		W.Enabled = 1 AND
+		W.CountryId = case when ISNULL(@CountryCodeId,0) = 0 then W.CountryId else @CountryCodeId END AND		 
+		W.CountryId = case when ISNULL(@CountryNameId,0) = 0 then W.CountryId else @CountryNameId END AND
+		(@Search IS NULL               
+				 OR C.CountryName LIKE '%' + @Search + '%'
+				 OR C.Code LIKE '%' + @Search + '%'))
+	select * from CTE_GlobalConfigurationWeekends CW where  CW.RowNum > @FirstRec AND CW.RowNum <= @LastRec order by @SortCol+' '+@SortDirection;
+END
+GO
+--spGetFilteredWeekends end
+
+--spCreateGlobalConfigurationWeekend start
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+
+CREATE PROCEDURE [dbo].[spCreateGlobalConfigurationWeekend](  
+                  @CountryId bigint,  
+                  @DayOfWeekId bigint)  
+
+AS  
+BEGIN  
+	Declare @Result bit = 0;  
+	IF(exists(SELECT 1 FROM CountryCodes WHERE Id = @CountryId))
+	BEGIN
+		INSERT INTO GlobalConfigurationWeekends(CountryId,DayOfWeekId,Enabled)  
+		VALUES (@CountryId,@DayOfWeekId,1);  
+		SET @Result = 1;
+	END;
+	 SELECT @Result  
+END; 
+GO
+--spCreateGlobalConfigurationWeekend end
+
+--spCountryWiseWeekendExists start
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE PROCEDURE [dbo].[spCountryWiseWeekendExists]
+(
+	@CountryId int,
+	@DayOfWeekId int
+)
+AS
+BEGIN
+	Declare @Sql nvarchar(max);
+	Declare @Count int;	
+	Declare @Result nvarchar(max);
+
+	IF(@CountryId is not null AND @DayOfWeekId is not null)
+	BEGIN
+		Set @Sql = 'select @Count = Count(Id) from GlobalConfigurationWeekends where CountryId = '+Convert(nvarchar(max),@CountryId)+' and DayOfWeekId = '+Convert(nvarchar(max),@DayOfWeekId)+' and Enabled=1';
+		exec sp_executeSql @Sql,N'@Count int out',@Count out		
+	END
+	set @Result = case when @Count > 0 then 'true' else 'false' end;
+	select @Result	
+END
+GO
+--spCountryWiseWeekendExists end
+
+--spDeleteWeekend start
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE PROCEDURE [dbo].[spDeleteWeekend]
+(
+	@WeekendId bigint
+)
+AS
+BEGIN
+	Update GlobalConfigurationWeekends
+	set Enabled = 0 where Id = @WeekendId
+END
+GO
+--spDeleteWeekend end
+
+-- GlobalConfigurationWeeknds SP End

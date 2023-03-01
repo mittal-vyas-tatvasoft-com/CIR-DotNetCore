@@ -67,5 +67,6 @@ namespace CIR.Common.Data
 		}
 		public DbSet<GlobalConfigurationMessage> GlobalConfigurationMessages { get; set; }
         public DbSet<GlobalConfigurationStyle> GlobalConfigurationStyles { get; set; }
+        public DbSet<GlobalConfigurationWeekend> GlobalConfigurationWeekends { get; set; }
     }
 }
