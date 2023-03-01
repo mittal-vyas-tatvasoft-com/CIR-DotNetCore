@@ -58,7 +58,7 @@ namespace CIR.Common.Helper
             var capitalLatter = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
             var number = "0123456789";
             var smallLatter = "abcdefghijklmnopqrstuvwxyz";
-            var specialCharacter = "!@$%&*";
+            var specialCharacter = "!@$%&?*";
             var stringChars = new char[8];
             var random = new Random();
 
