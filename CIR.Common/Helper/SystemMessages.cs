@@ -37,7 +37,7 @@
         #endregion
 
         #region login
-        public static string msgAccountIsLocked = "Your Account is locked. To Unlock this account contact to Aramex Support team.";
+        public static string msgAccountIsLocked = "Your Account is locked. To unlock this account reset the password or contact to Aramex Support team.";
         public static string msgInvalidUserNameOrPassword = "Invalid username or password.";
         public static string msgTokenNotGenerated = "Token not generated.";
         public static string msgEnterValidUserName = "Please enter valid username";
