@@ -1212,3 +1212,53 @@ BEGIN
 END;
 
 --spCreateOrUpdateGlobalConfigurationMessages End
+
+--------------------------------------------------------------------------------- Language/Culture START ----------------------------------------------------------------------------------------
+--spGetListForUpdatedLanguages START
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+ALTER PROCEDURE [dbo].[spGetListForUpdatedLanguages](@Id bigint)
+AS
+BEGIN
+	SELECT * FROM Cultures WHERE Id = @Id;
+END
+--spGetListForUpdatedLanguages END
+
+--spUpdateSystemSettingsLanguage START
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- =============================================
+-- Author:		<Author,,Name>
+-- Create date: <Create Date,,>
+-- Description:	<Description,,>
+-- =============================================
+ALTER PROCEDURE [dbo].[spUpdateSystemSettingsLanguage](
+@Id bigint,
+@ParentId bigint,
+@Name Nvarchar(MAX),
+@DisplayName Nvarchar(MAX),
+@Enabled bit,
+@NativeName Nvarchar(MAX))
+
+AS
+BEGIN
+	IF (@Id > 0)
+	BEGIN
+	UPDATE Cultures
+	SET 
+	ParentId = @ParentId,
+	Name = @Name,
+	DisplayName = @DisplayName,
+	Enabled = @Enabled,
+	NativeName = @NativeName
+
+	WHERE Id = @Id;
+	END
+END
+--spUpdateSystemSettingsLanguage END
+--------------------------------------------------------------------------------- Language/Culture END ------------------------------------------------------------------------------------------
