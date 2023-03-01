@@ -19,6 +19,9 @@
 
   <ItemGroup>
     <Folder Include="Entities\Users\" />
+    <Folder Include="Entities\GlobalConfiguration\" />
+    <Folder Include="Entities\GlobalConfiguration\" />
+    <Folder Include="Interfaces\GlobalConfiguration\" />
     <Folder Include="Entities\Users\" />
     <Folder Include="Interfaces\Users\" />
     <Folder Include="ViewModel\Users\" />

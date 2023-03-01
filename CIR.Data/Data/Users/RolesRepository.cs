@@ -3,6 +3,7 @@ using CIR.Common.Enums;
 using CIR.Common.Helper;
 using CIR.Core.Entities;
 using CIR.Core.Entities.Users;
+using CIR.Core.Entities.Utilities;
 using CIR.Core.Interfaces.Users;
 using CIR.Core.ViewModel.Users;
 using Dapper;
