@@ -53,5 +53,35 @@ namespace CIR.Common.Helper
 			return "Forgot Password";
 		}
 
-	}
+        public static string GenerateRandomString()
+        {
+            var capitalLatter = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+            var number = "0123456789";
+            var smallLatter = "abcdefghijklmnopqrstuvwxyz";
+            var specialCharacter = "!@$%&*";
+            var stringChars = new char[8];
+            var random = new Random();
+
+            for (int i = 0; i < 2; i++)
+            {
+                stringChars[i] = capitalLatter[random.Next(capitalLatter.Length)];
+            }
+            for (int i = 2; i < 3; i++)
+            {
+                stringChars[i] = specialCharacter[random.Next(specialCharacter.Length)];
+            }
+            for (int i = 3; i < 7; i++)
+            {
+                stringChars[i] = smallLatter[random.Next(smallLatter.Length)];
+            }
+            for (int i = 7; i < 8; i++)
+            {
+                stringChars[i] = number[random.Next(number.Length)];
+            }
+
+            var randomString = new String(stringChars);
+            return randomString;
+        }
+
+    }
 }
