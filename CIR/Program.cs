@@ -94,8 +94,7 @@ builder.Services.AddScoped<IGlobalConfigurationMessagesService, GlobalConfigurat
 builder.Services.AddScoped<IGlobalConfigurationMessagesRepository, GlobalConfigurationMessagesRepository>();
 builder.Services.AddScoped<IGlobalConfigurationReasonsService, GlobalConfigurationReasonsService>();
 builder.Services.AddScoped<IGlobalConfigurationReasonsRepository, GlobalConfigurationReasonsRepository>();
-builder.Services.AddScoped<IGlobalConfigurationWeekendRepository, GlobalConfigurationWeekendRepository>();	
-builder.Services.AddScoped<IGlobalConfigurationWeekendService, GlobalConfigurationWeekendService>();	
+
 
 //allow origin
 builder.Services.AddCors(options => options.AddDefaultPolicy(builder => builder.AllowAnyOrigin()
