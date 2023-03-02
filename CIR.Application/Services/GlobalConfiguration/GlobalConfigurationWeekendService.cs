@@ -38,9 +38,14 @@ namespace CIR.Application.Services.GlobalConfiguration
             return await iGlobalConfigurationWeekendRepository.DeleteGlobalConfigurationWeekend(id);
         }
 
-        public async Task<IActionResult> GetGlobalConfigurationWeekends(int displayLength, int displayStart, string? sortCol, int? countryNameId, int? countryCodeId, string? search, bool? sortAscending = true)
+/*        public async Task<IActionResult> GetGlobalConfigurationWeekends(int displayLength, int displayStart, string? sortCol, int? countryNameId, int? countryCodeId, int? dayOfWeekId, string? search, bool? sortAscending)
         {
-            return await iGlobalConfigurationWeekendRepository.GetGlobalConfigurationWeekends(displayLength, displayStart, sortCol, countryNameId, countryCodeId, search, sortAscending);
+            return await iGlobalConfigurationWeekendRepository.GetGlobalConfigurationWeekends(displayLength, displayStart, sortCol, countryNameId, countryCodeId, dayOfWeekId, search, sortAscending);
+        }*/
+
+        public async Task<IActionResult> GetGlobalConfigurationWeekends(int displayLength, int displayStart, string? sortCol, int? countryNameId, int? countryCodeId, string? search, int? dayOfWeekId, bool? sortAscending)
+        {
+            return await iGlobalConfigurationWeekendRepository.GetGlobalConfigurationWeekends(displayLength, displayStart, sortCol, countryNameId, countryCodeId, search, dayOfWeekId, sortAscending);
         }
         #endregion
     }

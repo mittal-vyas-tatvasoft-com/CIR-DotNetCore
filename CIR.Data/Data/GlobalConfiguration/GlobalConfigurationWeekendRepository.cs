@@ -41,7 +41,7 @@ namespace CIR.Data.Data.GlobalConfiguration
         /// <param name="countryCodeId">used to filter weekends list based on country code Id</param>
         /// <param name="countryNameId">used to filter weekends list based on country name Id</param>
         /// <returns> filtered list of Weekends </returns>
-        public async Task<IActionResult> GetGlobalConfigurationWeekends(int displayLength, int displayStart, string? sortCol, int? countryNameId, int? countryCodeId, string? search, bool? sortAscending)
+        public async Task<IActionResult> GetGlobalConfigurationWeekends(int displayLength, int displayStart, string? sortCol, int? countryNameId, int? countryCodeId, string? search, int? dayOfWeekId, bool? sortAscending)
         {
             try
             {

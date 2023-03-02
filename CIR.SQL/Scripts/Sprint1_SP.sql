@@ -1213,6 +1213,56 @@ END;
 
 --spCreateOrUpdateGlobalConfigurationMessages End
 
+
+--spGetGlobalConfigurationStyles Start
+
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[spGetGlobalConfigurationStyles]
+
+as
+begin
+	
+	select Id,[Name],[Description],TypeCode,TypeName,ValueType,Value,SortOrder from GlobalConfigurationStyles
+
+end
+GO
+
+--spGetGlobalConfigurationStyles End
+
+--spUpdateGlobalConfigurationStyles Start
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[spUpdateGlobalConfigurationStyles]  
+(  
+ @Id int,  
+ @Name nvarchar(max),  
+ @Description nvarchar(max),  
+ @TypeCode int,  
+ @TypeName nvarchar(max),  
+ @ValueType nvarchar(max),  
+ @Value nvarchar(max),  
+ @SortOrder int  
+)  
+as  
+begin  
+ Update GlobalConfigurationStyles set  
+ [Name] = @Name,  
+ [Description] = @Description,  
+ TypeCode = @TypeCode,  
+ TypeName = @TypeName,  
+ ValueType = @ValueType,  
+ [Value] = @Value,  
+ SortOrder = @SortOrder  
+ where Id = @Id  
+end  
+GO
+--spUpdateGlobalConfigurationStyles End
+
 -- GlobalConfigurationWeeknds SP Start
 
 --spGetFilteredWeekends start

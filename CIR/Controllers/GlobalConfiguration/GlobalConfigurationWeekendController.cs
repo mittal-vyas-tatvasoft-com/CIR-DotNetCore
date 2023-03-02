@@ -36,11 +36,11 @@ namespace CIR.Controllers.GlobalConfiguration
         /// <param name="sortAscending"></param>
         /// <returns></returns>
         [HttpGet]
-        public async Task<IActionResult> GetWeekends(int displayLength, int displayStart, string? sortCol, string? search, int? countryCodeId, int? dayOfWeekId, bool? sortAscending = true)
+        public async Task<IActionResult> GetWeekends(int displayLength, int displayStart, string? sortCol, string? search, int? countryCodeId, int? countryNameId, int? dayOfWeekId, bool? sortAscending = true)
         {
             try
             {
-                return await iGlobalConfigurationWeekendService.GetGlobalConfigurationWeekends(displayLength, displayStart, sortCol, countryCodeId, dayOfWeekId, search, sortAscending);
+                return await iGlobalConfigurationWeekendService.GetGlobalConfigurationWeekends(displayLength, displayStart, sortCol, countryCodeId, countryNameId, search, dayOfWeekId, sortAscending);
             }
             catch (Exception)
             {
