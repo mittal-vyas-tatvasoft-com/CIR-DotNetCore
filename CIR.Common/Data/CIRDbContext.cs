@@ -1,5 +1,6 @@
 ﻿using CIR.Core.Entities.GlobalConfiguration;
 using CIR.Core.Entities.Users;
+using CIR.Core.Entities.Utilities;
 using Microsoft.EntityFrameworkCore;
 
 namespace CIR.Common.Data
@@ -67,5 +68,8 @@ namespace CIR.Common.Data
 		}
 		public DbSet<GlobalConfigurationMessage> GlobalConfigurationMessages { get; set; }
         public DbSet<GlobalConfigurationStyle> GlobalConfigurationStyles { get; set; }
+        public DbSet<LookupItemsText> LookupItemsText { get; set; }
+        public DbSet<SystemCode> SystemCodes { get; set; }
+        public DbSet<LookupItem> LookupItems { get; set; }
     }
 }
