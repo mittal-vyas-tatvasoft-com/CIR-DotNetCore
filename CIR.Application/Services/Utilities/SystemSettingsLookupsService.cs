@@ -12,13 +12,13 @@ namespace CIR.Application.Services.Utilities
     public class SystemSettingsLookupsService : ISystemSettingsLookupsService
     {
         #region PROPERTIES
-        private readonly ISystemSettingsLookupsRepository _lookupsRepository;
+        private readonly ISystemSettingsLookupsRepository lookupsRepository;
         #endregion
 
         #region CONSTRUCTOR
         public SystemSettingsLookupsService(ISystemSettingsLookupsRepository lookupsRepository)
         {
-            _lookupsRepository = lookupsRepository;
+            lookupsRepository = lookupsRepository;
         }
         #endregion
 
@@ -26,22 +26,22 @@ namespace CIR.Application.Services.Utilities
 
         public Task<IActionResult> CreateOrUpdateLookupItem(LookupItemsTextModel lookupItemsTextModel)
         {
-            return _lookupsRepository.CreateOrUpdateLookupItem(lookupItemsTextModel);
+            return lookupsRepository.CreateOrUpdateLookupItem(lookupItemsTextModel);
         }
 
         public async Task<bool> LookupItemExists(long cultureId, long lookupItemId)
         {
-            return await _lookupsRepository.LookupItemExists(cultureId, lookupItemId);
+            return await lookupsRepository.LookupItemExists(cultureId, lookupItemId);
         }
 
         public Task<IActionResult> GetAllLookupsItems(long cultureId, string code, string? searchLookupItems, bool sortAscending = true)
         {
-            return _lookupsRepository.GetAllLookupsItems(cultureId, code, searchLookupItems, sortAscending);
+            return lookupsRepository.GetAllLookupsItems(cultureId, code, searchLookupItems, sortAscending);
         }
 
         public Task<IActionResult> GetLookupById(int id)
         {
-            return _lookupsRepository.GetLookupById(id);
+            return lookupsRepository.GetLookupById(id);
         }
         #endregion
     }

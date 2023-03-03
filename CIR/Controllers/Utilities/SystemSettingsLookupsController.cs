@@ -12,13 +12,13 @@ namespace CIR.Controllers.Utilities
     public class SystemSettingsLookupsController : ControllerBase
     {
         #region PROPERTIES
-        private readonly ISystemSettingsLookupsService _lookupService;
+        private readonly ISystemSettingsLookupsService lookupService;
         #endregion
 
         #region CONSTRUCTOR
         public SystemSettingsLookupsController(ISystemSettingsLookupsService lookupService)
         {
-            _lookupService = lookupService;
+            lookupService = lookupService;
         }
         #endregion
 
@@ -37,7 +37,7 @@ namespace CIR.Controllers.Utilities
             try
             {
                 searchLookupItems ??= string.Empty;
-                return await _lookupService.GetAllLookupsItems(cultureId, code, searchLookupItems, sortAscending);
+                return await lookupService.GetAllLookupsItems(cultureId, code, searchLookupItems, sortAscending);
             }
             catch {
                 return new JsonResult(new CustomResponse<Exception>() { StatusCode = (int)HttpStatusCodesAndMessages.HttpStatus.InternalServerError, Result = false, Message = SystemMessages.msgSomethingWentWrong });
@@ -56,14 +56,14 @@ namespace CIR.Controllers.Utilities
             {
                 try
                 {
-                    var isExist = await _lookupService.LookupItemExists(lookupItemsTextmodel.CultureId, lookupItemsTextmodel.LookupItemId);
+                    var isExist = await lookupService.LookupItemExists(lookupItemsTextmodel.CultureId, lookupItemsTextmodel.LookupItemId);
                     if (isExist)
                     {
                         return new JsonResult(new CustomResponse<string>() { StatusCode = (int)HttpStatusCodesAndMessages.HttpStatus.BadRequest, Result = false, Message =  string.Format(SystemMessages.msgDataExists, "Lookup Item") });
                     }
                     else
                     {
-                        return await _lookupService.CreateOrUpdateLookupItem(lookupItemsTextmodel);
+                        return await lookupService.CreateOrUpdateLookupItem(lookupItemsTextmodel);
                     }
                 }
                 catch {
@@ -86,7 +86,7 @@ namespace CIR.Controllers.Utilities
             {
                 try
                 {
-                    return await _lookupService.CreateOrUpdateLookupItem(lookupItemsTextmodel);
+                    return await lookupService.CreateOrUpdateLookupItem(lookupItemsTextmodel);
                 }
                 catch
                 {
@@ -101,7 +101,7 @@ namespace CIR.Controllers.Utilities
         {
             try
             {
-                return await _lookupService.GetLookupById(id);
+                return await lookupService.GetLookupById(id);
             }
             catch
             {
