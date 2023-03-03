@@ -105,6 +105,8 @@ builder.Services.AddScoped<IGlobalConfigurationFieldsService, GlobalConfiguratio
 builder.Services.AddScoped<ISystemSettingsLookupsService, SystemSettingsLookupsService>();
 builder.Services.AddScoped<ISystemSettingsLookupsRepository, SystemSettingsLookupsRepository>();
 
+builder.Services.AddScoped<IGlobalConfigurationWeekendRepository,GlobalConfigurationWeekendRepository>();
+builder.Services.AddScoped<IGlobalConfigurationWeekendService, GlobalConfigurationWeekendService>();
 
 //allow origin
 builder.Services.AddCors(options => options.AddDefaultPolicy(builder => builder.AllowAnyOrigin()

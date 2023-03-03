@@ -84,6 +84,47 @@ GO
 INSERT INTO [dbo].[GlobalConfigurationEmails]([FieldTypeId],[CultureId],[Content],[Subject])VALUES(4,1,'Default4','Default4')
 GO
 
+
+---Add data in GlobalConfigurationStyle Table--
+insert into GlobalConfigurationStyles values ('Logo (Background)','',1,'Colorpicker','string','#32a852',1);
+insert into GlobalConfigurationStyles values ('Header (Text)','',1,'Colorpicker','string','#32a852',1);
+insert into GlobalConfigurationStyles values ('Header - Hover (Text)','',1,'Colorpicker','string','#32a852',1);
+insert into GlobalConfigurationStyles values ('Logo Height','Logo height in pixels (numerical only)',0,'Textbox','integer','30',1);
+insert into GlobalConfigurationStyles values ('Page Title (Background)','',1,'Colorpicker','string','#32a852',1);
+insert into GlobalConfigurationStyles values ('Page Title (Text)','',1,'Colorpicker','string','#32a852',1);
+insert into GlobalConfigurationStyles values ('Progress Bar - Complete (Foreground)','',1,'Colorpicker','string','#32a852',1);
+insert into GlobalConfigurationStyles values ('Progress Bar - Incomplete (Foreground)','',1,'Colorpicker','string','#32a852',1);
+insert into GlobalConfigurationStyles values ('Progress Step - Previous (Text)','',1,'Colorpicker','string','#32a852',1);
+insert into GlobalConfigurationStyles values ('Progress Step - Current (Text)','',1,'Colorpicker','string','#32a852',1);
+insert into GlobalConfigurationStyles values ('Progress Step - Next (Text)','',1,'Colorpicker','string','#32a852',1);
+insert into GlobalConfigurationStyles values ('Page (Background)','Applies to the whole site',1,'Colorpicker','string','#32a852',1);
+insert into GlobalConfigurationStyles values ('Body (Background)','Applies to the text areas under tab titles',1,'Colorpicker','string','#32a852',1);
+insert into GlobalConfigurationStyles values ('Borders/Separators (Background)','',1,'Colorpicker','string','#32a852',1);
+insert into GlobalConfigurationStyles values ('Descriptive Box (Background)','',1,'Colorpicker','string','#32a852',1);
+insert into GlobalConfigurationStyles values ('Descriptive Box (Text)','',1,'Colorpicker','string','#32a852',1);
+insert into GlobalConfigurationStyles values ('Descriptive Box Link (Text)','',1,'Colorpicker','string','#32a852',1);
+insert into GlobalConfigurationStyles values ('Tab Title - Current (Background)','',1,'Colorpicker','string','#32a852',1);
+insert into GlobalConfigurationStyles values ('Tab Title - Current (Text)','',1,'Colorpicker','string','#32a852',1);
+insert into GlobalConfigurationStyles values ('Tab Title - Previous/Next (Background)','',1,'Colorpicker','string','#32a852',1);
+insert into GlobalConfigurationStyles values ('Tab Title - Previous/Next (Text)','',1,'Colorpicker','string','#32a852',1);
+insert into GlobalConfigurationStyles values ('Button (Background)','No Hover/Not ready',1,'Colorpicker','string','#32a852',1);
+insert into GlobalConfigurationStyles values ('Button (Text)','No Hover/Not ready',1,'Colorpicker','string','#32a852',1);
+insert into GlobalConfigurationStyles values ('Button - Hover (Background)','Hover/Ready',1,'Colorpicker','string','#32a852',1);
+insert into GlobalConfigurationStyles values ('Button - Hover (Text)','Hover/Ready',1,'Colorpicker','string','#32a852',1);
+insert into GlobalConfigurationStyles values ('Secondary Button (Background)','No Hover/Not ready',1,'Colorpicker','string','#32a852',1);
+insert into GlobalConfigurationStyles values ('Secondary Button (Text)','No Hover/Not ready',1,'Colorpicker','string','#32a852',1);
+insert into GlobalConfigurationStyles values ('Secondary Button - Hover (Background)','Hover/Ready',1,'Colorpicker','string','#32a852',1);
+insert into GlobalConfigurationStyles values ('Secondary Button - Hover (Text)','Hover/Ready',1,'Colorpicker','string','#32a852',1);
+insert into GlobalConfigurationStyles values ('Tool Button (Background)','No Hover/Not ready',1,'Colorpicker','string','#32a852',1);
+insert into GlobalConfigurationStyles values ('Tool Button (Text)','No Hover/Not ready',1,'Colorpicker','string','#32a852',1);
+insert into GlobalConfigurationStyles values ('Tool Button - Hover (Background)','Hover/Ready',1,'Colorpicker','string','#32a852',1);
+insert into GlobalConfigurationStyles values ('Tool Button - Hover (Text)','Hover/Ready',1,'Colorpicker','string','#32a852',1);
+insert into GlobalConfigurationStyles values ('Alternate Item (Background)','',1,'Colorpicker','string','#32a852',1);
+insert into GlobalConfigurationStyles values ('Radial Button - Selected (Background)','',1,'Colorpicker','string','#32a852',1);
+insert into GlobalConfigurationStyles values ('Checkbox - Checked (Background)','',1,'Colorpicker','string','#32a852',1);
+insert into GlobalConfigurationStyles values ('Checkbox - Checked (Foreground)','',1,'Colorpicker','string','#32a852',1);
+GO
+
 --Add Data in SystemCodes
 INSERT INTO SystemCodes VALUES('CompanyType',0,1);
 INSERT INTO SystemCodes VALUES('GroupDepartment',0,2);
