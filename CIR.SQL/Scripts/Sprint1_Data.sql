@@ -83,3 +83,10 @@ INSERT INTO [dbo].[GlobalConfigurationEmails]([FieldTypeId],[CultureId],[Content
 GO
 INSERT INTO [dbo].[GlobalConfigurationEmails]([FieldTypeId],[CultureId],[Content],[Subject])VALUES(4,1,'Default4','Default4')
 GO
+
+--Add Data in SystemCodes
+INSERT INTO SystemCodes VALUES('CompanyType',0,1);
+INSERT INTO SystemCodes VALUES('GroupDepartment',0,2);
+INSERT INTO SystemCodes VALUES('SolutionType',0,3);
+INSERT INTO SystemCodes VALUES('Salutation-type',1,4);
+INSERT INTO SystemCodes VALUES('Data Type',1,5);
