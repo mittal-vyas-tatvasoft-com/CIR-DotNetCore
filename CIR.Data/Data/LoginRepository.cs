@@ -135,9 +135,7 @@ namespace CIR.Data.Data
 
                     if (user != null)
                     {
-                        string randomString = SystemConfig.randomString;
-                        string newPassword = new StringCreator(randomString).Get(8);
-
+                        string newPassword = EmailGeneration.GenerateRandomString();
                         parameters = new DynamicParameters();
                         parameters.Add("@userName", forgotPasswordModel.UserName);
                         parameters.Add("@password", newPassword);
@@ -213,6 +211,7 @@ namespace CIR.Data.Data
                 return new JsonResult(new CustomResponse<Exception>() { StatusCode = (int)HttpStatusCodesAndMessages.HttpStatus.InternalServerError, Result = false, Message = SystemMessages.msgSomethingWentWrong });
             }
         }
+        
         #endregion
     }
 }
