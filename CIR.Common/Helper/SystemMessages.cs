@@ -21,7 +21,7 @@
         #endregion
 
         #region GlobalConfigurationCurrencies
-        public static string invalidCurrencyCodeName = "Invalid currency code name, it should contain exact 3 letters ";
+        public static string invalidCurrencyCodeName = "Invalid currency code name, it should contain 3 letters";
         #endregion
 
         #region GlobalConfigurationHolidays
