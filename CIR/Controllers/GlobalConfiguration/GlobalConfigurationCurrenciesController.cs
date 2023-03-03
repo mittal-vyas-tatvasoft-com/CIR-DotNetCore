@@ -4,12 +4,13 @@ using CIR.Core.Entities.GlobalConfiguration;
 using CIR.Core.Interfaces.GlobalConfiguration;
 using CIR.Core.ViewModel.GlobalConfiguration;
 using Microsoft.AspNetCore.Mvc;
+using System.Text.RegularExpressions;
 
 namespace CIR.Controllers.GlobalConfiguration
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class GlobalConfigurationCurrenciesController : ControllerBase
+    public partial class GlobalConfigurationCurrenciesController : ControllerBase
     {
         #region PROPERTIES
 
@@ -80,7 +81,9 @@ namespace CIR.Controllers.GlobalConfiguration
             {
                 try
                 {
-                    if (currency.CodeName.Length == 3)
+                    currency.CodeName = currency.CodeName.ToUpper();
+
+                    if (MyRegex().Match(currency.CodeName).Success)
                     {
                         var isExist = await globalConfigurationCurrenciesService.CurrencyExists(currency.CodeName);
                         if (isExist)
@@ -101,6 +104,9 @@ namespace CIR.Controllers.GlobalConfiguration
             }
             return new JsonResult(new CustomResponse<string>() { StatusCode = (int)HttpStatusCodesAndMessages.HttpStatus.BadRequest, Result = false, Message = SystemMessages.msgBadRequest });
         }
+
+        [GeneratedRegex("^[A-Z]{3}$")]
+        private static partial Regex MyRegex();
 
         #endregion
 
