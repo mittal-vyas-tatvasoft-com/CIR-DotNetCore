@@ -123,3 +123,11 @@ insert into GlobalConfigurationStyles values ('Alternate Item (Background)','',1
 insert into GlobalConfigurationStyles values ('Radial Button - Selected (Background)','',1,'Colorpicker','string','#32a852',1);
 insert into GlobalConfigurationStyles values ('Checkbox - Checked (Background)','',1,'Colorpicker','string','#32a852',1);
 insert into GlobalConfigurationStyles values ('Checkbox - Checked (Foreground)','',1,'Colorpicker','string','#32a852',1);
+GO
+
+--Add Data in SystemCodes
+INSERT INTO SystemCodes VALUES('CompanyType',0,1);
+INSERT INTO SystemCodes VALUES('GroupDepartment',0,2);
+INSERT INTO SystemCodes VALUES('SolutionType',0,3);
+INSERT INTO SystemCodes VALUES('Salutation-type',1,4);
+INSERT INTO SystemCodes VALUES('Data Type',1,5);
